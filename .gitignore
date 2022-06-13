@@ -1,0 +1,12 @@
+/target/
+.classpath
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+.project
+/Cache/settings.dat
+/bin/
+*.txt
+*.iml
+*.xml
+*.class
+*.png
