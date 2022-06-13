@@ -23,7 +23,7 @@ import io.netty.util.ReferenceCountUtil;
 public final class ChannelEventHandler extends SimpleChannelInboundHandler<Object> {
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+	protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
 		try {
 
 			PlayerSession session = ctx.channel().attr(NetworkConstants.SESSION_KEY).get();
@@ -84,4 +84,5 @@ public final class ChannelEventHandler extends SimpleChannelInboundHandler<Objec
 		} catch (Exception e) {
 		}
 	}
+
 }
