@@ -53,7 +53,7 @@ public enum Skillcape {
     QUEST_POINT(new int[]{9813, 9814, 10662},
             4945, 816, 19);
 
-    private static Map<Integer, Skillcape> dataMap = new HashMap<Integer, Skillcape>();
+    private static Map<Integer, Skillcape> dataMap = new HashMap<>();
 
     static {
         for (Skillcape data : Skillcape.values()) {

@@ -70,15 +70,9 @@ public class ChaosElementalCombatMethod extends CombatMethod {
         if (hit.getTarget() != null) {
 
             switch (combatType) {
-                case MELEE:
-                    hit.getTarget().performGraphic(MELEE_COMBAT_GFX);
-                    break;
-                case RANGED:
-                    hit.getTarget().performGraphic(RANGED_COMBAT_GFX);
-                    break;
-                case MAGIC:
-                    hit.getTarget().performGraphic(MAGIC_COMBAT_GFX);
-                    break;
+                case MELEE -> hit.getTarget().performGraphic(MELEE_COMBAT_GFX);
+                case RANGED -> hit.getTarget().performGraphic(RANGED_COMBAT_GFX);
+                case MAGIC -> hit.getTarget().performGraphic(MAGIC_COMBAT_GFX);
             }
 
             if (hit.getTarget().isPlayer()) {
@@ -101,8 +95,8 @@ public class ChaosElementalCombatMethod extends CombatMethod {
     
     public static void disarmAttack(Player player) {
         if (!player.getInventory().isFull()) {
-            final int randomSlot = Misc.getRandom(player.getEquipment().capacity() - 1);
-            final Item toDisarm = player.getEquipment().getItems()[randomSlot];
+            int randomSlot = Misc.getRandom(player.getEquipment().capacity() - 1);
+            Item toDisarm = player.getEquipment().getItems()[randomSlot];
             if (toDisarm.isValid()) {
                 player.getEquipment().set(randomSlot, new Item(-1, 0));
                 player.getInventory().add(toDisarm.clone());
@@ -114,14 +108,14 @@ public class ChaosElementalCombatMethod extends CombatMethod {
         }
     }
 
-    private static enum ChaosElementalAttackType {
+    private enum ChaosElementalAttackType {
         DEFAULT(558),
         DISARM(551),
         TELEPORT(554);
 
         private final int projectileId;
 
-        ChaosElementalAttackType(final int projectileId) {
+        ChaosElementalAttackType(int projectileId) {
             this.projectileId = projectileId;
         }
     }

@@ -940,8 +940,8 @@ public class PacketSender {
 		return this;
 	}
 
-	public PacketSender sendPosition(final Location position) {
-		final Location other = player.getLastKnownRegion();
+	public PacketSender sendPosition(Location position) {
+		Location other = player.getLastKnownRegion();
 		PacketBuilder out = new PacketBuilder(85);
 		out.put(position.getY() - 8 * other.getRegionY(), ValueType.C);
 		out.put(position.getX() - 8 * other.getRegionX(), ValueType.C);

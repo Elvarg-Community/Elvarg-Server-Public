@@ -59,7 +59,7 @@ public abstract class CombatSpell extends Spell {
 
     public int getAttackSpeed() {
         int speed = 5;
-        final CombatSpell spell = this;
+        CombatSpell spell = this;
         if (spell instanceof CombatAncientSpell) {
 
             if (spell == CombatSpells.SMOKE_RUSH.getSpell() || spell == CombatSpells.SHADOW_RUSH.getSpell()

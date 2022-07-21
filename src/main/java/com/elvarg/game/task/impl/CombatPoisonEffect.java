@@ -95,7 +95,7 @@ public class CombatPoisonEffect extends Task {
 		 * @param damage
 		 *            the starting damage for this poison type.
 		 */
-		private PoisonType(int damage) {
+        PoisonType(int damage) {
 			this.damage = damage;
 		}
 

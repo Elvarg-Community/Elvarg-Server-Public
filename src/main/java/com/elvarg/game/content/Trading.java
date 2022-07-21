@@ -87,7 +87,7 @@ public class Trading {
     public static String listItems(ItemContainer items) {
         String string = "";
         int item_counter = 0;
-        List<Item> list = new ArrayList<Item>();
+        List<Item> list = new ArrayList<>();
         loop1:
         for (Item item : items.getValidItems()) {
             // Make sure the item isn't already in the list.
@@ -195,7 +195,7 @@ public class Trading {
             }
 
             // The other players' current trade state.
-            final TradeState t_state = t_.getTrading().getState();
+            TradeState t_state = t_.getTrading().getState();
 
             // Should we initiate the trade or simply send a request?
             boolean initiateTrade = false;
@@ -250,7 +250,7 @@ public class Trading {
         if (state != TradeState.NONE) {
 
             // Cache the current interact
-            final Player interact_ = interact;
+            Player interact_ = interact;
 
             // Return all items...
             for (Item t : container.getValidItems()) {
@@ -293,10 +293,10 @@ public class Trading {
         }
 
         // Cache the interact...
-        final Player interact_ = interact;
+        Player interact_ = interact;
 
         // Interact's current trade state.
-        final TradeState t_state = interact_.getTrading().getState();
+        TradeState t_state = interact_.getTrading().getState();
 
         // Check which action to take..
         if (state == TradeState.TRADE_SCREEN) {
@@ -433,7 +433,7 @@ public class Trading {
                         return;
                     }
 
-                    final Item item = new Item(id, amount);
+                    Item item = new Item(id, amount);
 
                     // Do the switch!
                     if (item.getAmount() == 1) {

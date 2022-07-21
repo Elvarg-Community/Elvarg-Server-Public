@@ -13,22 +13,12 @@ public class CreationDate implements Command {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(player.getCreationDate().getTime());
 
-        String dateSuffix;
-
-        switch (calendar.get(Calendar.DATE) % 10) {
-            case 1:
-                dateSuffix = "st";
-                break;
-            case 2:
-                dateSuffix = "nd";
-                break;
-            case 3:
-                dateSuffix = "rd";
-                break;
-            default:
-                dateSuffix = "th";
-                break;
-        }
+        String dateSuffix = switch (calendar.get(Calendar.DATE) % 10) {
+            case 1 -> "st";
+            case 2 -> "nd";
+            case 3 -> "rd";
+            default -> "th";
+        };
 
         player.forceChat("I started playing on the " + calendar.get(Calendar.DATE) + dateSuffix + " of "
                 + new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)] + ", "

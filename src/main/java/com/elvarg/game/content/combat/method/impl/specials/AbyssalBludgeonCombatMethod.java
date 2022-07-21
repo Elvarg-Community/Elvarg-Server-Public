@@ -21,7 +21,7 @@ public class AbyssalBludgeonCombatMethod extends MeleeCombatMethod {
 
         if (character.isPlayer()) {
             Player player = character.getAsPlayer();
-            final int missingPrayer = player.getSkillManager().getMaxLevel(Skill.PRAYER) - player.getSkillManager().getCurrentLevel(Skill.PRAYER);
+            int missingPrayer = player.getSkillManager().getMaxLevel(Skill.PRAYER) - player.getSkillManager().getCurrentLevel(Skill.PRAYER);
             int extraDamage = (int) (missingPrayer * 0.5);
             hit.getHits()[0].incrementDamage(extraDamage);
             hit.updateTotalDamage();

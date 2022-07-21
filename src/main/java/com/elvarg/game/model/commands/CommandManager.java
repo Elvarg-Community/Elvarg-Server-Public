@@ -70,7 +70,7 @@ import com.elvarg.game.model.commands.impl.Yell;
 
 public class CommandManager {
 
-    public static final Map<String, Command> commands = new HashMap<String, Command>();
+    public static final Map<String, Command> commands = new HashMap<>();
     
     private static void put(Command command, String... keys) {
         for (String key : keys) {

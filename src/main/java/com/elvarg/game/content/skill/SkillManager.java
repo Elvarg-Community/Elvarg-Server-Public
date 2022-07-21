@@ -43,7 +43,7 @@ public class SkillManager {
 	 */
 	private static final int MAX_EXPERIENCE = 1000000000;
 	private static final int EXPERIENCE_FOR_99 = 13034431;
-	private static final int EXP_ARRAY[] = { 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
+	private static final int[] EXP_ARRAY = { 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,
 			16456, 18247, 20224, 22406, 24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983,
 			75127, 83014, 91721, 101333, 111945, 123660, 136594, 150872, 166636, 184040, 203254, 224466, 247886, 273742,
@@ -181,7 +181,7 @@ public class SkillManager {
 			return this;
 
 		// The skill's level before any experience is added
-		final int startingLevel = skills.maxLevel[skill.ordinal()];
+		int startingLevel = skills.maxLevel[skill.ordinal()];
 
 		// Add experience to the selected skill..
 		this.skills.experience[skill.ordinal()] = this.skills.experience[skill.ordinal()] + experience > MAX_EXPERIENCE
@@ -336,7 +336,7 @@ public class SkillManager {
 		player.getPacketSender().sendString(31200, "" + getTotalLevel());
 
 		// Send combat level
-		final String combatLevel = "Combat level: " + getCombatLevel();
+		String combatLevel = "Combat level: " + getCombatLevel();
 		player.getPacketSender().sendString(19000, combatLevel).sendString(5858, combatLevel);
 
 		// Send the skill
@@ -351,18 +351,18 @@ public class SkillManager {
 	 * @return The average of the player's combat skills.
 	 */
 	public int getCombatLevel() {
-		final int attack = skills.maxLevel[Skill.ATTACK.ordinal()];
-		final int defence = skills.maxLevel[Skill.DEFENCE.ordinal()];
-		final int strength = skills.maxLevel[Skill.STRENGTH.ordinal()];
-		final int hp = (int) (skills.maxLevel[Skill.HITPOINTS.ordinal()]);
-		final int prayer = (int) (skills.maxLevel[Skill.PRAYER.ordinal()]);
-		final int ranged = skills.maxLevel[Skill.RANGED.ordinal()];
-		final int magic = skills.maxLevel[Skill.MAGIC.ordinal()];
+		int attack = skills.maxLevel[Skill.ATTACK.ordinal()];
+		int defence = skills.maxLevel[Skill.DEFENCE.ordinal()];
+		int strength = skills.maxLevel[Skill.STRENGTH.ordinal()];
+		int hp = (int) (skills.maxLevel[Skill.HITPOINTS.ordinal()]);
+		int prayer = (int) (skills.maxLevel[Skill.PRAYER.ordinal()]);
+		int ranged = skills.maxLevel[Skill.RANGED.ordinal()];
+		int magic = skills.maxLevel[Skill.MAGIC.ordinal()];
 		int combatLevel = 3;
 		combatLevel = (int) ((defence + hp + Math.floor(prayer / 2)) * 0.2535) + 1;
-		final double melee = (attack + strength) * 0.325;
-		final double ranger = Math.floor(ranged * 1.5) * 0.325;
-		final double mage = Math.floor(magic * 1.5) * 0.325;
+		double melee = (attack + strength) * 0.325;
+		double ranger = Math.floor(ranged * 1.5) * 0.325;
+		double mage = Math.floor(magic * 1.5) * 0.325;
 		if (melee >= ranger && melee >= mage) {
 			combatLevel += melee;
 		} else if (ranger >= melee && ranger >= mage) {
@@ -563,7 +563,7 @@ public class SkillManager {
 	 * @param cap
 	 */
 	public void increaseCurrentLevel(Skill skill, int amount, int max) {
-		final int curr = getCurrentLevel(skill);
+		int curr = getCurrentLevel(skill);
 		if ((curr + amount) > max) {
 			setCurrentLevel(skill, max);
 			return;
@@ -578,7 +578,7 @@ public class SkillManager {
 	 *            the amount to decrease this level by.
 	 */
 	public void decreaseCurrentLevel(Skill skill, int amount, int minimum) {
-		final int curr = getCurrentLevel(skill);
+		int curr = getCurrentLevel(skill);
 		if ((curr - amount) < minimum) {
 			setCurrentLevel(skill, minimum);
 			return;

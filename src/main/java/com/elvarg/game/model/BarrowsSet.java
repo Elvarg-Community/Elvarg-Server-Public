@@ -14,7 +14,7 @@ public enum BarrowsSet {
     KARILS_SET(12883, 4732, 4734, 4736, 4738),
     DHAROKS_SET(12877, 4716, 4718, 4720, 4722);
 
-    private static Map<Integer, BarrowsSet> sets = new HashMap<Integer, BarrowsSet>();
+    private static Map<Integer, BarrowsSet> sets = new HashMap<>();
 
     static {
         for (BarrowsSet set : BarrowsSet.values()) {

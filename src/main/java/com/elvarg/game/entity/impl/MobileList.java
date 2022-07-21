@@ -116,10 +116,7 @@ public final class MobileList<E extends Mobile> implements Iterable<E> {
 	 *         otherwise.
 	 */
 	public boolean contains(E e) {
-		if (e == null) {
-			return false;
-		}
-		return characters[e.getIndex()] != null;
+		return e != null && characters[e.getIndex()] != null;
 	}
 
 	/**

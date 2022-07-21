@@ -12,9 +12,7 @@ public class TeleToPlayer implements Command {
     @Override
     public void execute(Player player, String command, String[] parts) {
         Optional<Player> plr = World.getPlayerByName(command.substring(parts[0].length() + 1));
-        if (plr.isPresent()) {
-            player.moveTo(plr.get().getLocation().clone());
-        }
+        plr.ifPresent(value -> player.moveTo(value.getLocation().clone()));
     }
 
     @Override

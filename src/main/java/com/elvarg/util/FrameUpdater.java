@@ -12,7 +12,7 @@ public class FrameUpdater {
      * UltimateScape
      * http://ultimatescape2.com
      */
-    public Map<Integer, Frame126> interfaceTextMap = new HashMap<Integer, Frame126>();
+    public Map<Integer, Frame126> interfaceTextMap = new HashMap<>();
 
     public boolean shouldUpdate(String text, int id) {
         if (!interfaceTextMap.containsKey(id)) {

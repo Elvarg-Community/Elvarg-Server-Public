@@ -60,7 +60,7 @@ public final class NpcAggression {
             if (CombatFactory.inCombat(npc)) {
                 if (AreaManager.inMulti(npc)) {
                     if (Misc.getRandom(9) <= 2) {
-                        if (player.getLocalPlayers().size() > 0) {
+                        if (!player.getLocalPlayers().isEmpty()) {
 
                             // Get a random player from the player's local players list.
                             Player randomPlayer = player.getLocalPlayers().get(Misc.getRandom(player.getLocalPlayers().size() - 1));
@@ -88,14 +88,14 @@ public final class NpcAggression {
             }
 
             // Make sure we have the proper distance to attack the player.
-            final int distanceToPlayer = npc.getSpawnPosition().getDistance(player.getLocation());
+            int distanceToPlayer = npc.getSpawnPosition().getDistance(player.getLocation());
 
             // Get the npc's combat method
-            final CombatMethod method = CombatFactory.getMethod(npc);
+            CombatMethod method = CombatFactory.getMethod(npc);
 
             // Get the max distance this npc can attack from.
             // We should always attack if we're at least 3 tiles from the player.
-            final int aggressionDistance = npc.aggressionDistance() < 3 ? 3 : npc.aggressionDistance();
+            int aggressionDistance = npc.aggressionDistance() < 3 ? 3 : npc.aggressionDistance();
 
             if (distanceToPlayer < npc.getDefinition().getCombatFollowDistance() && distanceToPlayer <= aggressionDistance) {
 

@@ -1,9 +1,6 @@
 package com.elvarg.game.content.skill.skillable.impl;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.elvarg.game.entity.impl.player.Player;
 import com.elvarg.game.model.Animation;
@@ -34,7 +31,7 @@ public class Crafting extends ItemIdentifiers {
         if (itemUsed == CHISEL || itemUsedWith == CHISEL) {
             CraftableGem gem = CraftableGem.map.get(itemUsed == CHISEL ? itemUsedWith : itemUsed);
             if (gem != null) {
-                player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to cut?", Arrays.asList(gem.getCut().getId()), (itemId, amount) -> {
+                player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to cut?", List.of(gem.getCut().getId()), (itemId, amount) -> {
                     player.getSkillManager().startSkillable(new ItemCreationSkillable(Arrays.asList(new RequiredItem(new Item(CHISEL), false), new RequiredItem(gem.getUncut(), true)), gem.getCut(), amount, Optional.of(gem.getAnimationLoop()), gem.getLevel(), gem.getExp(), Skill.CRAFTING));
                 }));
                 return true;
@@ -60,7 +57,7 @@ public class Crafting extends ItemIdentifiers {
         G9(new Item(ONYX), new Item(UNCUT_ONYX), 67, 168, new AnimationLoop(new Animation(885), 3)),
         G10(new Item(ZENYTE), new Item(UNCUT_ZENYTE), 89, 200, new AnimationLoop(new Animation(885), 3)),;
 
-        static Map<Integer, CraftableGem> map = new HashMap<Integer, CraftableGem>();
+        static Map<Integer, CraftableGem> map = new HashMap<>();
 
         static {
             for (CraftableGem c : CraftableGem.values()) {

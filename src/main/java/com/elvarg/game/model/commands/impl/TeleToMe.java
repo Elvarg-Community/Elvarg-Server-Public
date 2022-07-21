@@ -12,9 +12,7 @@ public class TeleToMe implements Command {
     @Override
     public void execute(Player player, String command, String[] parts) {
         Optional<Player> plr = World.getPlayerByName(command.substring(parts[0].length() + 1));
-        if (plr.isPresent()) {
-            plr.get().moveTo(player.getLocation());
-        }
+        plr.ifPresent(value -> value.moveTo(player.getLocation()));
     }
 
     @Override

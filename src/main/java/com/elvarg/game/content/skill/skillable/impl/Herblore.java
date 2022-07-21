@@ -1,9 +1,6 @@
 package com.elvarg.game.content.skill.skillable.impl;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.elvarg.game.entity.impl.player.Player;
 import com.elvarg.game.model.Animation;
@@ -76,7 +73,7 @@ public class Herblore extends ItemIdentifiers {
             int herb = itemUsed == VIAL_OF_WATER ? usedWith : itemUsed;
             UnfinishedPotion unfinished = UnfinishedPotion.potions.get(herb);
             if (unfinished != null) {                
-                player.getPacketSender().sendCreationMenu(new CreationMenu("How many potions would you like to make?", Arrays.asList(unfinished.getUnfPotion()), (itemId, amount) -> {
+                player.getPacketSender().sendCreationMenu(new CreationMenu("How many potions would you like to make?", List.of(unfinished.getUnfPotion()), (itemId, amount) -> {
                     ItemCreationSkillable skillable = new ItemCreationSkillable(Arrays.asList(new RequiredItem(new Item(VIAL_OF_WATER), true), new RequiredItem(new Item(unfinished.getHerbNeeded()), true)),
                             new Item(unfinished.getUnfPotion()), amount, Optional.of(new AnimationLoop(ANIMATION, 4)),
                             unfinished.getLevelReq(), 10, Skill.HERBLORE);
@@ -100,7 +97,7 @@ public class Herblore extends ItemIdentifiers {
         //Handle finished potions..
         Optional<FinishedPotion> finished = FinishedPotion.forId(itemUsed, usedWith);
         if (finished.isPresent()) {
-            player.getPacketSender().sendCreationMenu(new CreationMenu("How many potions would you like to make?", Arrays.asList(finished.get().getFinishedPotion()), (itemId, amount) -> {
+            player.getPacketSender().sendCreationMenu(new CreationMenu("How many potions would you like to make?", List.of(finished.get().getFinishedPotion()), (itemId, amount) -> {
                 ItemCreationSkillable skillable = new ItemCreationSkillable(Arrays.asList(new RequiredItem(new Item(finished.get().getItemNeeded()), true), new RequiredItem(new Item(finished.get().getUnfinishedPotion()), true)),
                         new Item(itemId), amount, Optional.of(new AnimationLoop(ANIMATION, 4)),
                         finished.get().getLevelReq(), finished.get().getExpGained(), Skill.HERBLORE);
@@ -146,7 +143,7 @@ public class Herblore extends ItemIdentifiers {
      *
      * @author Professor Oak
      */
-    public static enum CleanableHerb {
+    public enum CleanableHerb {
         GUAM(199, 249, 1, 2),
         MARRENTILL(201, 251, 5, 4),
         TARROMIN(203, 253, 11, 5),
@@ -164,7 +161,7 @@ public class Herblore extends ItemIdentifiers {
         DWARFWEED(217, 267, 70, 18),
         TORSTOL(219, 269, 75, 21);
 
-        static Map<Integer, CleanableHerb> herbs = new HashMap<Integer, CleanableHerb>();
+        static Map<Integer, CleanableHerb> herbs = new HashMap<>();
 
         static {
             for (CleanableHerb herb : CleanableHerb.values()) {
@@ -174,7 +171,7 @@ public class Herblore extends ItemIdentifiers {
 
         private int grimyHerb, cleanHerb, levelReq, cleaningExp;
 
-        private CleanableHerb(int grimyHerb, int cleanHerb, int levelReq, int cleaningExp) {
+        CleanableHerb(int grimyHerb, int cleanHerb, int levelReq, int cleaningExp) {
             this.grimyHerb = grimyHerb;
             this.cleanHerb = cleanHerb;
             this.levelReq = levelReq;
@@ -222,7 +219,7 @@ public class Herblore extends ItemIdentifiers {
         DWARF_WEED_POTION(109, 267, 72),
         TORSTOL_POTION(111, 269, 78);
 
-        private static Map<Integer, UnfinishedPotion> potions = new HashMap<Integer, UnfinishedPotion>();
+        private static Map<Integer, UnfinishedPotion> potions = new HashMap<>();
 
         static {
             for (UnfinishedPotion potion : UnfinishedPotion.values()) {
@@ -232,7 +229,7 @@ public class Herblore extends ItemIdentifiers {
 
         private int unfinishedPotion, herbNeeded, levelReq;
 
-        private UnfinishedPotion(int unfinishedPotion, int herbNeeded, int levelReq) {
+        UnfinishedPotion(int unfinishedPotion, int herbNeeded, int levelReq) {
             this.unfinishedPotion = unfinishedPotion;
             this.herbNeeded = herbNeeded;
             this.levelReq = levelReq;
@@ -289,7 +286,7 @@ public class Herblore extends ItemIdentifiers {
         FLETCHING_POTION(14848, 103, 11525, 58, 105),
         ANTIPOISON_PLUS(5945, 3002, 6049, 68, 154);
 
-        static Map<Integer, FinishedPotion> potions = new HashMap<Integer, FinishedPotion>();
+        static Map<Integer, FinishedPotion> potions = new HashMap<>();
 
         static {
             for (FinishedPotion potion : FinishedPotion.values()) {
@@ -300,7 +297,7 @@ public class Herblore extends ItemIdentifiers {
 
         private int finishedPotion, unfinishedPotion, itemNeeded, levelReq, expGained;
 
-        private FinishedPotion(int finishedPotion, int unfinishedPotion, int itemNeeded, int levelReq, int expGained) {
+        FinishedPotion(int finishedPotion, int unfinishedPotion, int itemNeeded, int levelReq, int expGained) {
             this.finishedPotion = finishedPotion;
             this.unfinishedPotion = unfinishedPotion;
             this.itemNeeded = itemNeeded;
@@ -384,7 +381,7 @@ public class Herblore extends ItemIdentifiers {
                 VIAL_OF_WATER, "Serum 207"), COMBAT(9745, 9743, 9741, 9739, VIAL_OF_WATER,
                 "Combat");
 
-        static Map<Integer, PotionDose> potions = new HashMap<Integer, PotionDose>();
+        static Map<Integer, PotionDose> potions = new HashMap<>();
 
         static {
             for (PotionDose potion : PotionDose.values()) {
@@ -399,9 +396,9 @@ public class Herblore extends ItemIdentifiers {
                 fourDosePotionID, vial;
         String potionName;
 
-        private PotionDose(int oneDosePotionID, int twoDosePotionID,
-                           int threeDosePotionID, int fourDosePotionID, int vial,
-                           String potionName) {
+        PotionDose(int oneDosePotionID, int twoDosePotionID,
+                   int threeDosePotionID, int fourDosePotionID, int vial,
+                   String potionName) {
             this.oneDosePotionID = oneDosePotionID;
             this.twoDosePotionID = twoDosePotionID;
             this.threeDosePotionID = threeDosePotionID;

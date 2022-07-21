@@ -68,7 +68,7 @@ public class ItemsKeptOnDeath {
      * @param player Player to set items for.
      */
     public static ArrayList<Item> getItemsToKeep(Player player) {
-        ArrayList<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<>();
         for (Item item : Misc.concat(player.getInventory().getItems(), player.getEquipment().getItems())) {
             if (item == null || item.getId() <= 0 || item.getAmount() <= 0 || !item.getDefinition().isTradeable()) {
                 continue;
@@ -90,7 +90,7 @@ public class ItemsKeptOnDeath {
 
             items.add(item);
         }
-        Collections.sort(items, new Comparator<Item>() {
+        Collections.sort(items, new Comparator<>() {
             @Override
             public int compare(Item item, Item item2) {
                 int value1 = item.getDefinition().getValue();
@@ -104,7 +104,7 @@ public class ItemsKeptOnDeath {
                 }
             }
         });
-        ArrayList<Item> toKeep = new ArrayList<Item>();
+        ArrayList<Item> toKeep = new ArrayList<>();
         int amountToKeep = getAmountToKeep(player);
         for (int i = 0; i < amountToKeep && i < items.size(); i++) {
             toKeep.add(items.get(i));

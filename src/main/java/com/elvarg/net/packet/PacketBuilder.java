@@ -152,7 +152,7 @@ public final class PacketBuilder {
         int bytes = (int) Math.ceil((double) numBits / 8D) + 1;
         buffer.ensureWritable((bitPosition + 7) / 8 + bytes);
 
-        final byte[] buffer = this.buffer.array();
+        byte[] buffer = this.buffer.array();
 
         int bytePos = bitPosition >> 3;
         int bitOffset = 8 - (bitPosition & 7);
@@ -181,12 +181,8 @@ public final class PacketBuilder {
      */
     public PacketBuilder initializeAccess(AccessType type) {
         switch (type) {
-            case BIT:
-                bitPosition = buffer.writerIndex() * 8;
-                break;
-            case BYTE:
-                buffer.writerIndex((bitPosition + 7) / 8);
-                break;
+            case BIT -> bitPosition = buffer.writerIndex() * 8;
+            case BYTE -> buffer.writerIndex((bitPosition + 7) / 8);
         }
         return this;
     }
@@ -249,20 +245,17 @@ public final class PacketBuilder {
      */
     public PacketBuilder putShort(int value, ValueType type, ByteOrder order) {
         switch (order) {
-            case BIG:
+            case BIG -> {
                 put(value >> 8);
                 put(value, type);
-                break;
-            case MIDDLE:
-                throw new IllegalArgumentException("Middle-endian short is " + "impossible!");
-            case INVERSE_MIDDLE:
-                throw new IllegalArgumentException("Inverse-middle-endian " + "short is impossible!");
-            case LITTLE:
+            }
+            case MIDDLE -> throw new IllegalArgumentException("Middle-endian short is " + "impossible!");
+            case INVERSE_MIDDLE -> throw new IllegalArgumentException("Inverse-middle-endian " + "short is impossible!");
+            case LITTLE -> {
                 put(value, type);
                 put(value >> 8);
-                break;
-            case TRIPLE_INT:
-                throw new IllegalArgumentException("TRIPLE_INT " + "short not added!");
+            }
+            case TRIPLE_INT -> throw new IllegalArgumentException("TRIPLE_INT " + "short not added!");
         }
         return this;
     }
@@ -312,35 +305,35 @@ public final class PacketBuilder {
      */
     public PacketBuilder putInt(int value, ValueType type, ByteOrder order) {
         switch (order) {
-            case BIG:
+            case BIG -> {
                 put(value >> 24);
                 put(value >> 16);
                 put(value >> 8);
                 put(value, type);
-                break;
-            case MIDDLE:
+            }
+            case MIDDLE -> {
                 put(value >> 8);
                 put(value, type);
                 put(value >> 24);
                 put(value >> 16);
-                break;
-            case INVERSE_MIDDLE:
+            }
+            case INVERSE_MIDDLE -> {
                 put(value >> 16);
                 put(value >> 24);
                 put(value, type);
                 put(value >> 8);
-                break;
-            case LITTLE:
+            }
+            case LITTLE -> {
                 put(value, type);
                 put(value >> 8);
                 put(value >> 16);
                 put(value >> 24);
-                break;
-            case TRIPLE_INT:
+            }
+            case TRIPLE_INT -> {
                 put((value >> 16));
                 put((value >> 8));
                 put(value);
-                break;
+            }
         }
         return this;
     }
@@ -391,7 +384,7 @@ public final class PacketBuilder {
      */
     public PacketBuilder putLong(long value, ValueType type, ByteOrder order) {
         switch (order) {
-            case BIG:
+            case BIG -> {
                 put((int) (value >> 56));
                 put((int) (value >> 48));
                 put((int) (value >> 40));
@@ -400,14 +393,11 @@ public final class PacketBuilder {
                 put((int) (value >> 16));
                 put((int) (value >> 8));
                 put((int) value, type);
-                break;
-            case MIDDLE:
-                throw new UnsupportedOperationException("Middle-endian long " + "is not implemented!");
-            case INVERSE_MIDDLE:
-                throw new UnsupportedOperationException("Inverse-middle-endian long is not implemented!");
-            case TRIPLE_INT:
-                throw new UnsupportedOperationException("triple-int long is not implemented!");
-            case LITTLE:
+            }
+            case MIDDLE -> throw new UnsupportedOperationException("Middle-endian long " + "is not implemented!");
+            case INVERSE_MIDDLE -> throw new UnsupportedOperationException("Inverse-middle-endian long is not implemented!");
+            case TRIPLE_INT -> throw new UnsupportedOperationException("triple-int long is not implemented!");
+            case LITTLE -> {
                 put((int) value, type);
                 put((int) (value >> 8));
                 put((int) (value >> 16));
@@ -416,7 +406,7 @@ public final class PacketBuilder {
                 put((int) (value >> 40));
                 put((int) (value >> 48));
                 put((int) (value >> 56));
-                break;
+            }
         }
         return this;
     }

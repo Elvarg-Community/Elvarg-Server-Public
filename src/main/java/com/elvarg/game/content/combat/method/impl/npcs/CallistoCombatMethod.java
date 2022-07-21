@@ -68,7 +68,7 @@ public class CallistoCombatMethod extends CombatMethod {
 			return;
 		}
 
-		final Player player = hit.getTarget().getAsPlayer();
+		Player player = hit.getTarget().getAsPlayer();
 
 		if (currentAttackType == CombatType.MAGIC) {
 			player.performGraphic(END_PROJECTILE_GRAPHIC);
@@ -77,7 +77,7 @@ public class CallistoCombatMethod extends CombatMethod {
 		// Stun player 15% chance
 		if (!player.getTimers().has(TimerKey.STUN) && Misc.getRandom(100) <= 10) {
 			player.performAnimation(new Animation(3131));
-			final Location toKnock = new Location(player.getLocation().getX() > 3325 ? -3 : 1 + Misc.getRandom(2),
+			Location toKnock = new Location(player.getLocation().getX() > 3325 ? -3 : 1 + Misc.getRandom(2),
 					player.getLocation().getY() > 3834 && player.getLocation().getY() < 3843 ? 3 : -3);
 			TaskManager.submit(new ForceMovementTask(player, 3,
 					new ForceMovement(player.getLocation().clone(), toKnock, 0, 15, 0, 0)));

@@ -171,7 +171,7 @@ public class Food {
 		 */
 		PURPLE_SWEETS(new Item(4561), 3);
 
-		static Map<Integer, Edible> types = new HashMap<Integer, Edible>();
+		static Map<Integer, Edible> types = new HashMap<>();
 
 		static {
 			for (Edible type : Edible.values()) {
@@ -183,7 +183,7 @@ public class Food {
 		private int heal;
 		private String name;
 
-		private Edible(Item item, int heal) {
+		Edible(Item item, int heal) {
 			this.item = item;
 			this.heal = heal;
 			this.name = (toString().toLowerCase().replaceAll("__", "-").replaceAll("_", " "));

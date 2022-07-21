@@ -19,17 +19,12 @@ public class PlayerSaving {
 		// Create the path and file objects.
 		Path path = Paths.get("./data/saves/characters/", player.getUsername() + ".json");
 		File file = path.toFile();
-		file.getParentFile().setWritable(true);
 
-		// Attempt to make the player save directory if it doesn't
-		// exist.
-		if (!file.getParentFile().exists()) {
-			try {
-				file.getParentFile().mkdirs();
-			} catch (SecurityException e) {
-				System.out.println("Unable to create directory for player data!");
-			}
+		// Attempt to make the player save directory if it doesn't exist.
+		if (!file.getParentFile().exists() && !file.getParentFile().mkdir()) {
+			System.out.println("Unable to create directory for player: " + file.getName());
 		}
+
 		try (FileWriter writer = new FileWriter(file)) {
 
 			Gson builder = new GsonBuilder().setPrettyPrinting().create();
@@ -97,7 +92,7 @@ public class PlayerSaving {
 			object.add("friends", builder.toJsonTree(player.getRelations().getFriendList().toArray()));
 			object.add("ignores", builder.toJsonTree(player.getRelations().getIgnoreList().toArray()));
 
-			/** BANK **/
+			/* BANK **/
 			for (int i = 0; i < player.getBanks().length; i++) {
 				if (i == Bank.BANK_SEARCH_TAB_INDEX) {
 					continue;
@@ -108,7 +103,6 @@ public class PlayerSaving {
 			}
 
 			writer.write(builder.toJson(object));
-			writer.close();
 
 		} catch (Exception e) {
 			// An error happened while saving.

@@ -26,7 +26,7 @@ public class CrazyArchaeologistCombatMethod extends CombatMethod {
             "No-one messes with Bellock's dig!", "These ruins are mine!", "Taste my knowledge!",
             "You belong in a museum!", };
 
-	private static enum Attack {
+	private enum Attack {
 		SPECIAL_ATTACK, DEFAULT_RANGED_ATTACK, DEFAULT_MELEE_ATTACK;
 	}
 

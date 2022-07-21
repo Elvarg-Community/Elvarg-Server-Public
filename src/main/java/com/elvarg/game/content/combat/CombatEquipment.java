@@ -47,7 +47,7 @@ public class CombatEquipment {
         int correctEquipment = 0;
         int helmet = attackType == CombatType.MAGIC ? MAGE_VOID_HELM :
                 attackType == CombatType.RANGED ? RANGED_VOID_HELM : MELEE_VOID_HELM;
-        for (int armour[] : VOID_ARMOUR) {
+        for (int[] armour : VOID_ARMOUR) {
             if (player.getEquipment().getItems()[armour[0]].getId() == armour[1]) {
                 correctEquipment++;
             }

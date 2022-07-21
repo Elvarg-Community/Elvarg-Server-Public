@@ -49,7 +49,7 @@ public enum DialogueExpression {
      * @param expression
      *            the identification for this expression.
      */
-    private DialogueExpression(int expression) {
+    DialogueExpression(int expression) {
         this.expression = expression;
     }
 

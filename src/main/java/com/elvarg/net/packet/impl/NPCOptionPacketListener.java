@@ -28,24 +28,12 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		}
 
 		switch (packet.getOpcode()) {
-		case PacketConstants.ATTACK_NPC_OPCODE:
-			attackNPC(player, packet);
-			break;
-		case PacketConstants.FIRST_CLICK_NPC_OPCODE:
-			firstClick(player, packet);
-			break;
-		case PacketConstants.SECOND_CLICK_NPC_OPCODE:
-			handleSecondClick(player, packet);
-			break;
-		case PacketConstants.THIRD_CLICK_NPC_OPCODE:
-			handleThirdClick(player, packet);
-			break;
-		case PacketConstants.FOURTH_CLICK_NPC_OPCODE:
-			handleFourthClick(player, packet);
-			break;
-		case PacketConstants.MAGE_NPC_OPCODE:
-			mageNpc(player, packet);
-			break;
+			case PacketConstants.ATTACK_NPC_OPCODE -> attackNPC(player, packet);
+			case PacketConstants.FIRST_CLICK_NPC_OPCODE -> firstClick(player, packet);
+			case PacketConstants.SECOND_CLICK_NPC_OPCODE -> handleSecondClick(player, packet);
+			case PacketConstants.THIRD_CLICK_NPC_OPCODE -> handleThirdClick(player, packet);
+			case PacketConstants.FOURTH_CLICK_NPC_OPCODE -> handleFourthClick(player, packet);
+			case PacketConstants.MAGE_NPC_OPCODE -> mageNpc(player, packet);
 		}
 	}
 
@@ -54,14 +42,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		if (index < 0 || index > World.getNpcs().capacity()) {
 			return;
 		}
-		final NPC npc = World.getNpcs().get(index);
+		NPC npc = World.getNpcs().get(index);
 		if (npc == null) {
 			return;
 		}
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"First click NPC: " + Integer.toString(npc.getId()) + ". " + npc.getLocation().toString());
+					"First click NPC: " + npc.getId() + ". " + npc.getLocation().toString());
 		}
 
         player.setMobileInteraction(npc);
@@ -232,14 +220,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		if (index < 0 || index > World.getNpcs().capacity()) {
 			return;
 		}
-		final NPC npc = World.getNpcs().get(index);
+		NPC npc = World.getNpcs().get(index);
 		if (npc == null) {
 			return;
 		}
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"Second click NPC: " + Integer.toString(npc.getId()) + ". " + npc.getLocation().toString());
+					"Second click NPC: " + npc.getId() + ". " + npc.getLocation().toString());
 		}
 
         player.setMobileInteraction(npc);
@@ -261,34 +249,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 				}
 
 				switch (npc.getId()) {
-				case NIEVE:
-                    player.getDialogueManager().start(new NieveDialogue(), 2);
-                    break;
-				case BANKER_2:
-				case BANKER_3:
-				case BANKER_4:
-				case BANKER_5:
-				case BANKER_6:
-				case BANKER_7:
-				case TZHAAR_KET_ZUH:
-					player.getBank(player.getCurrentBankTab()).open();
-					break;
-				case 1497: // Net and bait
-				case 1498: // Net and bait
-					player.getSkillManager().startSkillable(new Fishing(npc, FishingTool.FISHING_ROD));
-					break;
-				case RICHARD_2:
-					ShopManager.open(player, ShopIdentifiers.TEAMCAPE_SHOP);
-					break;
-				case EMBLEM_TRADER:
-				case EMBLEM_TRADER_2:
-				case EMBLEM_TRADER_3:
-					ShopManager.open(player, ShopIdentifiers.PVP_SHOP);
-					break;
-				case MAGIC_INSTRUCTOR:
-					ShopManager.open(player, ShopIdentifiers.MAGE_ARMOR_SHOP);
-					break;
-
+					case NIEVE -> player.getDialogueManager().start(new NieveDialogue(), 2);
+					case BANKER_2, BANKER_3, BANKER_4, BANKER_5, BANKER_6, BANKER_7, TZHAAR_KET_ZUH -> player.getBank(player.getCurrentBankTab()).open();
+					// Net and bait
+					case 1497, 1498 -> // Net and bait
+							player.getSkillManager().startSkillable(new Fishing(npc, FishingTool.FISHING_ROD));
+					case RICHARD_2 -> ShopManager.open(player, ShopIdentifiers.TEAMCAPE_SHOP);
+					case EMBLEM_TRADER, EMBLEM_TRADER_2, EMBLEM_TRADER_3 -> ShopManager.open(player, ShopIdentifiers.PVP_SHOP);
+					case MAGIC_INSTRUCTOR -> ShopManager.open(player, ShopIdentifiers.MAGE_ARMOR_SHOP);
 				}
 			}
 			
@@ -304,14 +272,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		if (index < 0 || index > World.getNpcs().capacity()) {
 			return;
 		}
-		final NPC npc = World.getNpcs().get(index);
+		NPC npc = World.getNpcs().get(index);
 		if (npc == null) {
 			return;
 		}
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"Third click NPC: " + Integer.toString(npc.getId()) + ". " + npc.getLocation().toString());
+					"Third click NPC: " + npc.getId() + ". " + npc.getLocation().toString());
 		}
 
         player.setMobileInteraction(npc);
@@ -369,14 +337,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		if (index < 0 || index > World.getNpcs().capacity()) {
 			return;
 		}
-		final NPC npc = World.getNpcs().get(index);
+		NPC npc = World.getNpcs().get(index);
 		if (npc == null) {
 			return;
 		}
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"Fourth click NPC: " + Integer.toString(npc.getId()) + ". " + npc.getLocation().toString());
+					"Fourth click NPC: " + npc.getId() + ". " + npc.getLocation().toString());
 		}
 
         player.setMobileInteraction(npc);
@@ -421,14 +389,14 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 		if (index < 0 || index > World.getNpcs().capacity()) {
 			return;
 		}
-		final NPC interact = World.getNpcs().get(index);
+		NPC interact = World.getNpcs().get(index);
 
 		if (interact == null || interact.getDefinition() == null) {
 			return;
 		}
 
         if (player.getRights() == PlayerRights.DEVELOPER) {
-            player.getPacketSender().sendMessage("Attack NPC: " + Integer.toString(interact.getId()) + ". " + interact.getLocation().toString());
+            player.getPacketSender().sendMessage("Attack NPC: " + interact.getId() + ". " + interact.getLocation().toString());
         }
 
 		if (!interact.getDefinition().isAttackable()) {
@@ -451,7 +419,7 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 			return;
 		}
 
-		final NPC interact = World.getNpcs().get(npcIndex);
+		NPC interact = World.getNpcs().get(npcIndex);
 
 		if (interact == null || interact.getDefinition() == null) {
 			return;
@@ -459,7 +427,7 @@ public class NPCOptionPacketListener extends NpcIdentifiers implements PacketExe
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"Magic on NPC: " + Integer.toString(interact.getId()) + ". " + interact.getLocation().toString());
+					"Magic on NPC: " + interact.getId() + ". " + interact.getLocation().toString());
 		}
 
 		if (!interact.getDefinition().isAttackable()) {

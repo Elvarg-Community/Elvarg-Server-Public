@@ -107,9 +107,7 @@ public class ItemOnGround {
                         //We make the item despawn for the owner..
                         if (getOwner().isPresent()) {
                             Optional<Player> o = World.getPlayerByName(getOwner().get());
-                            if (o.isPresent()) {
-                                ItemOnGroundManager.perform(o.get(), this, OperationType.DELETE);
-                            }
+                            o.ifPresent(player -> ItemOnGroundManager.perform(player, this, OperationType.DELETE));
                         }
 
                         //Check if we need to merge this ground item..

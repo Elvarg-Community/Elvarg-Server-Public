@@ -30,21 +30,19 @@ public class JadCombatMethod extends CombatMethod {
         if (character.calculateDistance(target) <= 1 && Misc.getRandom(1) == 0) {
             combatType = CombatType.MELEE;
         }
-		switch (combatType) {
-        case MELEE:
-            character.performAnimation(MELEE_ATTACK_ANIM);
-            break;
-        case RANGED:
-            character.performAnimation(RANGED_ATTACK_ANIM);
-            target.delayedGraphic(RANGED_ATTACK_GRAPHIC, 2);
-            break;
-        case MAGIC:
-            character.performAnimation(MAGIC_ATTACK_ANIM);
-            new Projectile(character, target, MAGIC_ATTACK_PROJECTILE, 25, 100, 110, 33).sendProjectile();
-            break;
-        default:
-            break;
-		}
+        switch (combatType) {
+            case MELEE -> character.performAnimation(MELEE_ATTACK_ANIM);
+            case RANGED -> {
+                character.performAnimation(RANGED_ATTACK_ANIM);
+                target.delayedGraphic(RANGED_ATTACK_GRAPHIC, 2);
+            }
+            case MAGIC -> {
+                character.performAnimation(MAGIC_ATTACK_ANIM);
+                new Projectile(character, target, MAGIC_ATTACK_PROJECTILE, 25, 100, 110, 33).sendProjectile();
+            }
+            default -> {
+            }
+        }
 	}
 
 	@Override

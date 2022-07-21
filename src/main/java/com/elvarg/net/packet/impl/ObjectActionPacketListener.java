@@ -104,7 +104,7 @@ public class ObjectActionPacketListener extends ObjectIdentifiers implements Pac
         case WILDERNESS_DITCH:
             player.getMovementQueue().reset();
             if (player.getForceMovement() == null && player.getClickDelay().elapsed(2000)) {
-                final Location crossDitch = new Location(0, player.getLocation().getY() < 3522 ? 3 : -3);
+                Location crossDitch = new Location(0, player.getLocation().getY() < 3522 ? 3 : -3);
                 TaskManager.submit(new ForceMovementTask(player, 3, new ForceMovement(player.getLocation().clone(),
                         crossDitch, 0, 70, crossDitch.getY() == 3 ? 0 : 2, 6132)));
                 player.getClickDelay().reset();
@@ -226,19 +226,19 @@ public class ObjectActionPacketListener extends ObjectIdentifiers implements Pac
 	}
 
     private static void objectInteract(Player player, int id, int x, int y, int clickType) {
-        final Location location = new Location(x, y, player.getLocation().getZ());
+        Location location = new Location(x, y, player.getLocation().getZ());
         
         if (player.getRights() == PlayerRights.DEVELOPER) {
-            player.getPacketSender().sendMessage("" + clickType + "-click object: " + id + ". " + location.toString());
+            player.getPacketSender().sendMessage(clickType + "-click object: " + id + ". " + location);
         }
         
-        final GameObject object = MapObjects.get(player, id, location);
+        GameObject object = MapObjects.get(player, id, location);
         if (object == null) {
             return;
         }
 
         // Get object definition
-        final ObjectDefinition def = ObjectDefinition.forId(id);
+        ObjectDefinition def = ObjectDefinition.forId(id);
         if (def == null) {
             Server.getLogger().info("ObjectDefinition for object " + id + " is null.");
             return;
@@ -257,20 +257,12 @@ public class ObjectActionPacketListener extends ObjectIdentifiers implements Pac
                         return;
                     }
                 }
-                
+
                 switch (clickType) {
-                case 1:
-                    firstClick(player, object);
-                    break;
-                case 2:
-                    secondClick(player, object);
-                    break;
-                case 3:
-                    thirdClick(player, object);
-                    break;
-                case 4:
-                    fourthClick(player, object);
-                    break;
+                    case 1 -> firstClick(player, object);
+                    case 2 -> secondClick(player, object);
+                    case 3 -> thirdClick(player, object);
+                    case 4 -> fourthClick(player, object);
                 }
             }
             
@@ -306,16 +298,12 @@ public class ObjectActionPacketListener extends ObjectIdentifiers implements Pac
         int maxY = (finalY + height) - 1;
         if (x >= finalX && x <= maxX && y >= finalY && y <= maxY)
             return true;
-        if (x == finalX - 1 && y >= finalY && y <= maxY && (RegionManager.getClipping(x, y, height, privateArea) & 8) == 0
-                && (rotation & 8) == 0)
-            return true;
-        if (x == maxX + 1 && y >= finalY && y <= maxY && (RegionManager.getClipping(x, y, height, privateArea) & 0x80) == 0
-                && (rotation & 2) == 0)
-            return true;
-        return y == finalY - 1 && x >= finalX && x <= maxX && (RegionManager.getClipping(x, y, height, privateArea) & 2) == 0
+        return x == finalX - 1 && y >= finalY && y <= maxY && (RegionManager.getClipping(x, y, height, privateArea) & 8) == 0
+                && (rotation & 8) == 0 || x == maxX + 1 && y >= finalY && y <= maxY && (RegionManager.getClipping(x, y, height, privateArea) & 0x80) == 0
+                && (rotation & 2) == 0 || y == finalY - 1 && x >= finalX && x <= maxX && (RegionManager.getClipping(x, y, height, privateArea) & 2) == 0
                 && (rotation & 4) == 0
                 || y == maxY + 1 && x >= finalX && x <= maxX && (RegionManager.getClipping(x, y, height, privateArea) & 0x20) == 0
-                        && (rotation & 1) == 0;
+                && (rotation & 1) == 0;
     }
 
 	@Override

@@ -35,7 +35,7 @@ public enum EquipmentType {
 
     private final int slot;
 
-    private EquipmentType(int slot) {
+    EquipmentType(int slot) {
         this.slot = slot;
     }
 

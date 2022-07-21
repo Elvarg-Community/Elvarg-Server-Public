@@ -15,15 +15,14 @@ public class EffectSpells {
 
     public static boolean handleSpell(Player player, int button) {
         Optional<EffectSpell> spell = EffectSpell.forSpellId(button);
-        if (!spell.isPresent()) {
+        if (spell.isEmpty()) {
             return false;
         }
         if (!spell.get().getSpell().canCast(player, false)) {
             return true;
         }
         switch (spell.get()) {
-            case BONES_TO_PEACHES:
-            case BONES_TO_BANANAS:
+            case BONES_TO_PEACHES, BONES_TO_BANANAS -> {
                 if (!player.getClickDelay().elapsed(500)) {
                     return true;
                 }
@@ -43,8 +42,8 @@ public class EffectSpells {
                 player.performAnimation(new Animation(722));
                 player.getSkillManager().addExperience(Skill.MAGIC, spell.get().getSpell().baseExperience() * i);
                 player.getClickDelay().reset();
-                break;
-            case VENGEANCE:
+            }
+            case VENGEANCE -> {
                 if (player.getDueling().inDuel()) {
                     player.getPacketSender().sendMessage("You cannot cast Vengeance during a duel!");
                     return true;
@@ -53,13 +52,10 @@ public class EffectSpells {
                     player.getPacketSender().sendMessage("You need at least level 40 Defence to cast this spell.");
                     return true;
                 }
-
                 if (player.hasVengeance()) {
                     player.getPacketSender().sendMessage("You already have Vengeance's effect.");
                     return true;
                 }
-
-
                 if (!player.getVengeanceTimer().finished()) {
                     player.getPacketSender().sendMessage("You must wait another " + player.getVengeanceTimer().secondsRemaining() + " seconds before you can cast that again.");
                     return true;
@@ -74,12 +70,12 @@ public class EffectSpells {
                 player.getInventory().deleteItemSet(EffectSpell.VENGEANCE.getSpell().itemsRequired(player));
                 player.performAnimation(new Animation(4410));
                 player.performGraphic(new Graphic(726, GraphicHeight.HIGH));
-                break;
+            }
         }
         return true;
     }
 
-    public static enum EffectSpell {
+    public enum EffectSpell {
         BONES_TO_BANANAS(new Spell() {
 
             @Override
@@ -398,7 +394,7 @@ public class EffectSpells {
             }
         });
 
-        private static final Map<Integer, EffectSpell> map = new HashMap<Integer, EffectSpell>();
+        private static final Map<Integer, EffectSpell> map = new HashMap<>();
 
         static {
             for (EffectSpell spell : EffectSpell.values()) {

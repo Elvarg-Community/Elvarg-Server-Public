@@ -115,10 +115,10 @@ public class SecondsTimer {
         secondsRemaining -= (minutesRemaining * 60);
 
         if (minutesRemaining > 0) {
-            builder.append(Integer.toString(minutesRemaining) + " " + (minutesRemaining > 1 ? "minutes" : "minute") + " and ");
+            builder.append(minutesRemaining).append(" ").append(minutesRemaining > 1 ? "minutes" : "minute").append(" and ");
         }
 
-        builder.append(Integer.toString(secondsRemaining) + " seconds");
+        builder.append(secondsRemaining).append(" seconds");
 
         return builder.toString();
     }

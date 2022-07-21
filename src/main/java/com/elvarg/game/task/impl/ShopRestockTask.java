@@ -30,7 +30,7 @@ public class ShopRestockTask extends Task {
     @Override
     protected void execute() {
 
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         for (Item item : Misc.concat(shop.getCurrentStock(), shop.getOriginalStock())) {
             if (item == null)
                 continue;

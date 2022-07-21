@@ -80,10 +80,7 @@ public class AreaManager {
      * @return
      */
     public static boolean inMulti(Mobile c) {
-        if (c.getArea() != null) {
-            return c.getArea().isMulti(c);
-        }
-        return false;
+        return c.getArea() != null && c.getArea().isMulti(c);
     }
 
     /**

@@ -131,8 +131,8 @@ public enum CombatSpecial {
 	 * @param weaponType
 	 *            the weapon interface used by the identifiers.
 	 */
-	private CombatSpecial(int[] identifiers, int drainAmount, double strengthBonus, double accuracyBonus,
-			CombatMethod combatMethod, WeaponInterface weaponType) {
+	CombatSpecial(int[] identifiers, int drainAmount, double strengthBonus, double accuracyBonus,
+				  CombatMethod combatMethod, WeaponInterface weaponType) {
 		this.identifiers = identifiers;
 		this.drainAmount = drainAmount;
 		this.strengthBonus = strengthBonus;
@@ -260,7 +260,7 @@ public enum CombatSpecial {
 		} else {
 
 			// Get the special attack..
-			final CombatSpecial spec = player.getCombatSpecial();
+			CombatSpecial spec = player.getCombatSpecial();
 
 			// Set special attack activated
 			player.setSpecialActivated(true);

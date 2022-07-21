@@ -41,7 +41,7 @@ public class PriceChecker extends ItemContainer {
 
 		List<Item> items_ = getValidItems();
 
-		if (items_.size() > 0) {
+		if (!items_.isEmpty()) {
 			getPlayer().getPacketSender().sendString(18355, "").sendString(18351,
 					"" + Misc.insertCommasToNumber(getTotalValue())); // TOTAL VALUE
 
@@ -61,7 +61,7 @@ public class PriceChecker extends ItemContainer {
 						totalPrice = " = " + Misc.insertCommasToNumber(Long.toString(total_price));
 					}
 
-					itemPrice = "" + Misc.insertCommasToNumber(Long.toString(value)) + " x" + Long.toString(amount);
+					itemPrice = "" + Misc.insertCommasToNumber(Long.toString(value)) + " x" + amount;
 				}
 
 				getPlayer().getPacketSender().sendString(TEXT_START_ROW_1 + i, itemPrice);
@@ -120,7 +120,7 @@ public class PriceChecker extends ItemContainer {
 			if (getPlayer().getInventory().getItems()[slot].getId() == id) {
 
 				// Perform switch
-				final Item item = new Item(id, amount);
+				Item item = new Item(id, amount);
 				if (!item.getDefinition().isSellable()) {
 					getPlayer().getPacketSender()
 							.sendMessage("That item cannot be pricechecked because it isn't sellable.");
@@ -150,7 +150,7 @@ public class PriceChecker extends ItemContainer {
 			if (getItems()[slot].getId() == id) {
 
 				// Perform switch
-				final Item item = new Item(id, amount);
+				Item item = new Item(id, amount);
 				if (item.getAmount() == 1) {
 					switchItem(getPlayer().getInventory(), item, slot, false, true);
 				} else {

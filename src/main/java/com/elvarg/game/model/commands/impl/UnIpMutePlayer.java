@@ -15,7 +15,7 @@ public class UnIpMutePlayer implements Command {
         String player2 = command.substring(parts[0].length() + 1);
         Optional<Player> plr = World.getPlayerByName(player2);
 
-        if (!plr.isPresent()) {
+        if (plr.isEmpty()) {
             player.getPacketSender().sendMessage("Player " + player2 + " is not online.");
             return;
         }

@@ -24,7 +24,7 @@ public abstract class DefaultSkillable implements Skillable {
      * The {@link Task}s which is used to process
      * the skill.
      */
-    private List<Task> tasks = new ArrayList<Task>();
+    private List<Task> tasks = new ArrayList<>();
 
     @Override
     public void start(Player player) {

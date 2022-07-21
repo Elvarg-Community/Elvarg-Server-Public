@@ -127,7 +127,7 @@ public class Woodcutting extends DefaultSkillable {
         }
 
         //Check if we found one..
-        if (!axe.isPresent()) {
+        if (axe.isEmpty()) {
             player.getPacketSender().sendMessage("You don't have an axe which you can use.");
             return false;
         }
@@ -146,11 +146,8 @@ public class Woodcutting extends DefaultSkillable {
 
         //Finally, check if the tree object remains there.
         //Another player may have cut it down already.
-        if (!MapObjects.exists(treeObject)) {
-            return false;
-        }
+        return MapObjects.exists(treeObject) && super.hasRequirements(player);
 
-        return super.hasRequirements(player);
     }
 
     @Override
@@ -171,7 +168,7 @@ public class Woodcutting extends DefaultSkillable {
      * Holds data related to the axes
      * that can be used for this skill.
      */
-    public static enum Axe {
+    public enum Axe {
         BRONZE_AXE(1351, 1, 0.03, new Animation(879)),
         IRON_AXE(1349, 1, 0.05, new Animation(877)),
         STEEL_AXE(1353, 6, 0.09, new Animation(875)),
@@ -187,7 +184,7 @@ public class Woodcutting extends DefaultSkillable {
         private final double speed;
         private final Animation animation;
 
-        private Axe(int id, int level, double speed, Animation animation) {
+        Axe(int id, int level, double speed, Animation animation) {
             this.id = id;
             this.requiredLevel = level;
             this.speed = speed;
@@ -215,7 +212,7 @@ public class Woodcutting extends DefaultSkillable {
      * Holds data related to the trees
      * which can be used to train this skill.
      */
-    public static enum Tree {
+    public enum Tree {
         NORMAL(1, 25, 1511, new int[]{1276, 1277, 1278, 1279, 1280, 1282, 1283, 1284, 1285, 1286, 1289, 1290, 1291, 1315, 1316, 1318, 1319, 1330, 1331, 1332, 1365, 1383, 1384, 3033, 3034, 3035, 3036, 3881, 3882, 3883, 5902, 5903, 5904}, 10, 8, false),
         ACHEY(1, 25, 2862, new int[]{2023}, 13, 9, false),
         OAK(15, 38, 1521, new int[]{1281, 3037}, 14, 11, true),
@@ -228,7 +225,7 @@ public class Woodcutting extends DefaultSkillable {
         MAGIC(75, 250, 1513, new int[]{1306}, 20, 40, true),
         REDWOOD(90, 380, 19669, new int[]{}, 22, 43, true);
 
-        private static final Map<Integer, Tree> trees = new HashMap<Integer, Tree>();
+        private static final Map<Integer, Tree> trees = new HashMap<>();
 
         static {
             for (Tree t : Tree.values()) {

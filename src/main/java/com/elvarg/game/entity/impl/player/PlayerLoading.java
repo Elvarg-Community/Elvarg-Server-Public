@@ -39,9 +39,8 @@ public class PlayerLoading {
 
         // Now read the properties from the json parser.
         try (FileReader fileReader = new FileReader(file)) {
-            JsonParser fileParser = new JsonParser();
             Gson builder = new GsonBuilder().create();
-            JsonObject reader = (JsonObject) fileParser.parse(fileReader);
+            JsonObject reader = (JsonObject) JsonParser.parseReader(fileReader);
 
             if (reader.has("username")) {
                 player.setUsername(reader.get("username").getAsString());
@@ -271,7 +270,7 @@ public class PlayerLoading {
                 }
             }
 
-            /** BANKS **/
+            /* BANKS **/
             for (int i = 0; i < player.getBanks().length; i++) {
                 if (i == Bank.BANK_SEARCH_TAB_INDEX) {
                     continue;

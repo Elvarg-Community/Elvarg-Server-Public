@@ -62,7 +62,7 @@ public final class GameSyncExecutor {
             if (!syncTask.checkIndex(index)) {
                 continue;
             }
-            final int finalIndex = index;
+            int finalIndex = index;
             service.execute(new Runnable() {
                 @Override
                 public void run() {

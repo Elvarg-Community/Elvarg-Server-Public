@@ -56,7 +56,7 @@ public class BountyHunter {
 
 			// Check if the player has a target.
 			// If not, search for a new one.
-			if (!target.isPresent()) {
+			if (target.isEmpty()) {
 
 				// Only search for a target every {@code TARGET_DELAY_SECONDS}.
 				if (player.getTargetSearchTimer().finished()) {
@@ -67,7 +67,7 @@ public class BountyHunter {
 					}
 
 					// Search for a new target for the player..
-					for (final Player player2 : PLAYERS_IN_WILD) {
+					for (Player player2 : PLAYERS_IN_WILD) {
 
 						// Check if player2 is a valid target..
 						if (validTargetContester(player2)) {
@@ -105,7 +105,7 @@ public class BountyHunter {
 			// If player stays out of wild too long - reset their target
 			// in case they have one.
 			if (target.isPresent()) {
-				final int safeTimer = player.decrementAndGetSafeTimer();
+				int safeTimer = player.decrementAndGetSafeTimer();
 
 				// Let the player know how much time they have left before losing their target.
 				if (safeTimer == 180 || safeTimer == 120 || safeTimer == 60) {
@@ -139,10 +139,10 @@ public class BountyHunter {
 	 * @param player2
 	 */
 	public static void assign(Player player1, Player player2) {
-		if (!getPairFor(player1).isPresent() && !getPairFor(player2).isPresent()) {
+		if (getPairFor(player1).isEmpty() && getPairFor(player2).isEmpty()) {
 
 			// Create a new pair..
-			final TargetPair pair = new TargetPair(player1, player2);
+			TargetPair pair = new TargetPair(player1, player2);
 
 			// Add the pair to our list..
 			TARGET_PAIRS.add(pair);
@@ -171,13 +171,13 @@ public class BountyHunter {
 	 * @param player
 	 */
 	public static void unassign(Player player) {
-		final Optional<TargetPair> pair = getPairFor(player);
+		Optional<TargetPair> pair = getPairFor(player);
 		if (pair.isPresent()) {
 
 			TARGET_PAIRS.remove(pair.get());
 
-			final Player p1 = pair.get().getPlayer1();
-			final Player p2 = pair.get().getPlayer2();
+			Player p1 = pair.get().getPlayer1();
+			Player p2 = pair.get().getPlayer2();
 
 			// Reset hints..
 			p1.getPacketSender().sendEntityHintRemoval(true);
@@ -224,7 +224,7 @@ public class BountyHunter {
 	 * @param p
 	 * @return
 	 */
-	public static Optional<TargetPair> getPairFor(final Player p) {
+	public static Optional<TargetPair> getPairFor(Player p) {
 		for (TargetPair pair : TARGET_PAIRS) {
 			if (p.equals(pair.getPlayer1()) || p.equals(pair.getPlayer2())) {
 				return Optional.of(pair);
@@ -241,7 +241,7 @@ public class BountyHunter {
 	 */
 	public static void onDeath(Player killer, Player killed) {
 		// Cache the killed player's killstreak
-		final int enemyKillstreak = killed.getKillstreak();
+		int enemyKillstreak = killed.getKillstreak();
 
 		// Reset killed player's killstreak
 		if (killed.getKillstreak() > 0) {
@@ -449,7 +449,7 @@ public class BountyHunter {
 	 * @return
 	 */
 	public static int getValueForEmblems(Player player, boolean performSale) {
-		ArrayList<Emblem> list = new ArrayList<Emblem>();
+		ArrayList<Emblem> list = new ArrayList<>();
 		for (Emblem emblem : Emblem.values()) {
 			if (player.getInventory().contains(emblem.id)) {
 				list.add(emblem);

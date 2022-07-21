@@ -30,9 +30,9 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet packet, ByteBuf out) throws Exception {
-        final int opcode = (packet.getOpcode() + encoder.nextInt()) & 0xFF;
+        int opcode = (packet.getOpcode() + encoder.nextInt()) & 0xFF;
         PacketType type = packet.getType();
-        final int size = packet.getSize();
+        int size = packet.getSize();
 
         // Used for finding incorrect client pkt sizes
         if (type == PacketType.FIXED) {
@@ -57,21 +57,20 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
         
         int finalSize = size + 1;
         switch (type) {
-        case VARIABLE:
-            
-            if (size > 255) { // trying to send more data then we can represent with 8 bits!
-                throw new IllegalArgumentException("Tried to send packet length " + size + " in variable-byte packet");
+            case VARIABLE -> {
+                if (size > 255) { // trying to send more data then we can represent with 8 bits!
+                    throw new IllegalArgumentException("Tried to send packet length " + size + " in variable-byte packet");
+                }
+                finalSize++;
             }
-            finalSize++;
-            break;
-        case VARIABLE_SHORT:
-            if (size > 65535) { // trying to send more data then we can represent with 8 bits!
-                throw new IllegalArgumentException("Tried to send packet length " + size + " in variable-short packet");
+            case VARIABLE_SHORT -> {
+                if (size > 65535) { // trying to send more data then we can represent with 8 bits!
+                    throw new IllegalArgumentException("Tried to send packet length " + size + " in variable-short packet");
+                }
+                finalSize += 2;
             }
-            finalSize += 2;
-            break;
-        default:
-            break;
+            default -> {
+            }
         }
 
         // Create a new buffer
@@ -82,14 +81,10 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
         
         // Write packet size
         switch (type) {
-        case VARIABLE:
-            buffer.writeByte((byte) size);
-            break;
-        case VARIABLE_SHORT:
-            buffer.writeShort((short) size);
-            break;
-        default:
-            break;
+            case VARIABLE -> buffer.writeByte((byte) size);
+            case VARIABLE_SHORT -> buffer.writeShort((short) size);
+            default -> {
+            }
         }
         
         // Write packet

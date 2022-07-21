@@ -1,6 +1,7 @@
 package com.elvarg.net.packet.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.elvarg.Server;
@@ -90,7 +91,7 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
         else if (used.getId() == TOXIC_BLOWPIPE || usedWith.getId() == TOXIC_BLOWPIPE) {
             int reload = used.getId() == TOXIC_BLOWPIPE ? usedWith.getId() : used.getId();
             if (reload == ZULRAHS_SCALES) {
-                final int amount = player.getInventory().getAmount(12934);
+                int amount = player.getInventory().getAmount(12934);
                 player.incrementBlowpipeScales(amount);
                 player.getInventory().delete(ZULRAHS_SCALES, amount);
                 player.getPacketSender().sendMessage("You now have " + player.getBlowpipeScales() + " Zulrah scales in your blowpipe.");
@@ -100,10 +101,10 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
         }
     }
 
-    private static void itemOnNpc(final Player player, Packet packet) {
-        final int id = packet.readShortA();
-        final int index = packet.readShortA();
-        final int slot = packet.readLEShort();
+    private static void itemOnNpc(Player player, Packet packet) {
+        int id = packet.readShortA();
+        int index = packet.readShortA();
+        int slot = packet.readLEShort();
         if (index < 0 || index > World.getNpcs().capacity()) {
             return;
         }
@@ -125,19 +126,19 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
     @SuppressWarnings("unused")
     private static void itemOnObject(Player player, Packet packet) {
         int interfaceType = packet.readShort();
-        final int objectId = packet.readInt();
-        final int objectY = packet.readLEShortA();
-        final int itemSlot = packet.readLEShort();
-        final int objectX = packet.readLEShortA();
-        final int itemId = packet.readShort();
+        int objectId = packet.readInt();
+        int objectY = packet.readLEShortA();
+        int itemSlot = packet.readLEShort();
+        int objectX = packet.readLEShortA();
+        int itemId = packet.readShort();
 
         if (itemSlot < 0 || itemSlot >= player.getInventory().capacity())
             return;
-        final Item item = player.getInventory().getItems()[itemSlot];
+        Item item = player.getInventory().getItems()[itemSlot];
         if (item == null || item.getId() != itemId)
             return;
-        final Location position = new Location(objectX, objectY, player.getLocation().getZ());
-        final GameObject object = MapObjects.get(player, objectId, position);
+        Location position = new Location(objectX, objectY, player.getLocation().getZ());
+        GameObject object = MapObjects.get(player, objectId, position);
 
         // Make sure the object actually exists in the region...
         if (object == null) {
@@ -148,14 +149,13 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
         player.setPositionToFace(position);
 
         //Handle object..
-        switch (object.getId()) {
-            case ObjectIdentifiers.STOVE_4: //Edgeville Stove
-            case ObjectIdentifiers.FIRE_5: //Player-made Fire
-            case ObjectIdentifiers.FIRE_23: //Barb village fire
+        switch (object.getId()) { //Edgeville Stove
+            //Player-made Fire
+            case ObjectIdentifiers.STOVE_4, ObjectIdentifiers.FIRE_5, ObjectIdentifiers.FIRE_23 -> { //Barb village fire
                 //Handle cooking on objects..
                 Optional<Cookable> cookable = Cookable.getForItem(item.getId());
-                if (cookable.isPresent()) {                    
-                    player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to cook?", Arrays.asList(cookable.get().getCookedItem()), (productId, amount) -> {
+                if (cookable.isPresent()) {
+                    player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to cook?", List.of(cookable.get().getCookedItem()), (productId, amount) -> {
                         player.getSkillManager().startSkillable(new Cooking(object, cookable.get(), amount));
                     }));
                     return;
@@ -163,22 +163,20 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
                 //Handle bonfires..
                 if (object.getId() == ObjectIdentifiers.FIRE_5) {
                     Optional<LightableLog> log = LightableLog.getForItem(item.getId());
-                    if (log.isPresent()) {                        
-                        player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to burn?", Arrays.asList(log.get().getLogId()), (productId, amount) -> {
+                    if (log.isPresent()) {
+                        player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to burn?", List.of(log.get().getLogId()), (productId, amount) -> {
                             player.getSkillManager().startSkillable(new Firemaking(log.get(), object, amount));
                         }));
                         return;
                     }
                 }
-                break;
-            case 409: //Bone on Altar
+            }
+            case 409 -> { //Bone on Altar
                 Optional<BuriableBone> b = BuriableBone.forId(item.getId());
-                if (b.isPresent()) {                    
-                    player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to offer?", Arrays.asList(itemId), (productId, amount) -> {
-                        player.getSkillManager().startSkillable(new AltarOffering(b.get(), object, amount));
-                    }));
-                }
-                break;
+                b.ifPresent(buriableBone -> player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to offer?", List.of(itemId), (productId, amount) -> {
+                    player.getSkillManager().startSkillable(new AltarOffering(buriableBone, object, amount));
+                })));
+            }
         }
     }
 
@@ -212,7 +210,7 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
 
         //Verify ground item..
         Optional<ItemOnGround> groundItem = ItemOnGroundManager.getGroundItem(Optional.of(player.getUsername()), groundItemId, new Location(x, y));
-        if (!groundItem.isPresent()) {
+        if (groundItem.isEmpty()) {
             return;
         }
 
@@ -224,13 +222,13 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
 
                 //Handle used item..
                 switch (usedItemId) {
-                    case TINDERBOX: //Lighting a fire..
+                    case TINDERBOX -> { //Lighting a fire..
                         Optional<LightableLog> log = LightableLog.getForItem(groundItemId);
                         if (log.isPresent()) {
                             player.getSkillManager().startSkillable(new Firemaking(log.get(), groundItem.get()));
                             return;
                         }
-                        break;
+                    }
                 }
             }
             
@@ -247,21 +245,11 @@ public class UseItemPacketListener extends ItemIdentifiers implements PacketExec
         if (player.getHitpoints() <= 0)
             return;
         switch (packet.getOpcode()) {
-            case PacketConstants.ITEM_ON_ITEM:
-                itemOnItem(player, packet);
-                break;
-            case PacketConstants.ITEM_ON_OBJECT:
-                itemOnObject(player, packet);
-                break;
-            case PacketConstants.ITEM_ON_GROUND_ITEM:
-                itemOnGroundItem(player, packet);
-                break;
-            case PacketConstants.ITEM_ON_NPC:
-                itemOnNpc(player, packet);
-                break;
-            case PacketConstants.ITEM_ON_PLAYER:
-                itemOnPlayer(player, packet);
-                break;
+            case PacketConstants.ITEM_ON_ITEM -> itemOnItem(player, packet);
+            case PacketConstants.ITEM_ON_OBJECT -> itemOnObject(player, packet);
+            case PacketConstants.ITEM_ON_GROUND_ITEM -> itemOnGroundItem(player, packet);
+            case PacketConstants.ITEM_ON_NPC -> itemOnNpc(player, packet);
+            case PacketConstants.ITEM_ON_PLAYER -> itemOnPlayer(player, packet);
         }
     }
 }

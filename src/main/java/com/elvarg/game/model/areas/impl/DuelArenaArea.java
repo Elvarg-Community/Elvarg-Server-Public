@@ -1,6 +1,7 @@
 package com.elvarg.game.model.areas.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.elvarg.game.content.Dueling.DuelRule;
@@ -13,7 +14,7 @@ import com.elvarg.game.model.areas.Area;
 public class DuelArenaArea extends Area {
 
     public DuelArenaArea() {
-        super(Arrays.asList(new Boundary(3326, 3383, 3197, 3295)));
+        super(List.of(new Boundary(3326, 3383, 3197, 3295)));
     }
 
     @Override

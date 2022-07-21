@@ -63,7 +63,7 @@ public class DropItemPacketListener implements PacketExecutor {
         }
 
         if (player.getRights() == PlayerRights.DEVELOPER) {
-            player.getPacketSender().sendMessage("Drop item: " + Integer.toString(item.getId()) + ".");
+            player.getPacketSender().sendMessage("Drop item: " + item.getId() + ".");
         }
 
         player.getPacketSender().sendInterfaceRemoval();

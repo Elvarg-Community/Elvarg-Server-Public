@@ -19,7 +19,7 @@ public class MagicOnItemPacketListener implements PacketExecutor {
     @Override
     public void execute(Player player, Packet packet) {
         switch (packet.getOpcode()) {
-            case PacketConstants.MAGIC_ON_ITEM_OPCODE:
+            case PacketConstants.MAGIC_ON_ITEM_OPCODE -> {
                 int slot = packet.readShort();
                 int itemId = packet.readShortA();
                 int childId = packet.readShort();
@@ -31,13 +31,12 @@ public class MagicOnItemPacketListener implements PacketExecutor {
                 if (player.getInventory().getItems()[slot].getId() != itemId)
                     return;
                 Optional<EffectSpell> spell = EffectSpell.forSpellId(spellId);
-                if (!spell.isPresent()) {
+                if (spell.isEmpty()) {
                     return;
                 }
                 Item item = player.getInventory().getItems()[slot];
                 switch (spell.get()) {
-                    case LOW_ALCHEMY:
-                    case HIGH_ALCHEMY:
+                    case LOW_ALCHEMY, HIGH_ALCHEMY -> {
                         if (!item.getDefinition().isTradeable() || !item.getDefinition().isSellable() || item.getId() == 995
                                 || item.getDefinition().getHighAlchValue() <= 0 || item.getDefinition().getLowAlchValue() <= 0) {
                             player.getPacketSender().sendMessage("This spell can not be cast on this item.");
@@ -56,10 +55,11 @@ public class MagicOnItemPacketListener implements PacketExecutor {
                         player.performGraphic(new Graphic(112, GraphicHeight.HIGH));
                         player.getSkillManager().addExperience(Skill.MAGIC, spell.get().getSpell().baseExperience());
                         player.getPacketSender().sendTab(6);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                    }
                 }
+            }
         }
     }
 }

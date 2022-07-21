@@ -13,7 +13,7 @@ public class IpMutePlayer implements Command {
     public void execute(Player player, String command, String[] parts) {
         Optional<Player> player2 = World.getPlayerByName(command.substring(parts[0].length() + 1));
 
-        if (!player2.isPresent()) {
+        if (player2.isEmpty()) {
             player.getPacketSender().sendMessage("Player " + player2 + " is not online.");
             return;
         }

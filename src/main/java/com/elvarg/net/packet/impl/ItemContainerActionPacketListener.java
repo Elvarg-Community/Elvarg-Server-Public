@@ -384,24 +384,12 @@ public class ItemContainerActionPacketListener implements PacketExecutor {
         }
 
         switch (packet.getOpcode()) {
-            case PacketConstants.FIRST_ITEM_CONTAINER_ACTION_OPCODE:
-                firstAction(player, packet);
-                break;
-            case PacketConstants.SECOND_ITEM_CONTAINER_ACTION_OPCODE:
-                secondAction(player, packet);
-                break;
-            case PacketConstants.THIRD_ITEM_CONTAINER_ACTION_OPCODE:
-                thirdAction(player, packet);
-                break;
-            case PacketConstants.FOURTH_ITEM_CONTAINER_ACTION_OPCODE:
-                fourthAction(player, packet);
-                break;
-            case PacketConstants.FIFTH_ITEM_CONTAINER_ACTION_OPCODE:
-                fifthAction(player, packet);
-                break;
-            case PacketConstants.SIXTH_ITEM_CONTAINER_ACTION_OPCODE:
-                sixthAction(player, packet);
-                break;
+            case PacketConstants.FIRST_ITEM_CONTAINER_ACTION_OPCODE -> firstAction(player, packet);
+            case PacketConstants.SECOND_ITEM_CONTAINER_ACTION_OPCODE -> secondAction(player, packet);
+            case PacketConstants.THIRD_ITEM_CONTAINER_ACTION_OPCODE -> thirdAction(player, packet);
+            case PacketConstants.FOURTH_ITEM_CONTAINER_ACTION_OPCODE -> fourthAction(player, packet);
+            case PacketConstants.FIFTH_ITEM_CONTAINER_ACTION_OPCODE -> fifthAction(player, packet);
+            case PacketConstants.SIXTH_ITEM_CONTAINER_ACTION_OPCODE -> sixthAction(player, packet);
         }
     }
 }

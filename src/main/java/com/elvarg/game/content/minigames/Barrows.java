@@ -106,7 +106,7 @@ public class Barrows {
 
             if (getKillcount(player) >= 5) {
 
-                final Optional<Brother> boss = getBrotherForCrypt(player.getBarrowsCrypt());
+                Optional<Brother> boss = getBrotherForCrypt(player.getBarrowsCrypt());
                 if (boss.isPresent()) {
 
                     /** They might have already spawned the boss **/
@@ -167,7 +167,7 @@ public class Barrows {
     }
 
     public static void brotherDespawn(Player player) {
-        final NPC brother = player.getCurrentBrother();
+        NPC brother = player.getCurrentBrother();
         if (brother != null && brother.isRegistered() && !brother.isDying()) {
             World.getRemoveNPCQueue().add(brother);
             player.setCurrentBrother(null);
@@ -252,8 +252,8 @@ public class Barrows {
         private Location spawn, digSpawn, stairSpawn;
         private Boundary boundary;
 
-        private Brother(final int npcId, final int coffin, final Location brotherSpawn, final Boundary boundary,
-                        final Location digSpawn, final int stairs, final Location stairSpawn) {
+        Brother(int npcId, int coffin, Location brotherSpawn, Boundary boundary,
+                Location digSpawn, int stairs, Location stairSpawn) {
             this.npcId = npcId;
             this.coffinId = coffin;
             this.spawn = brotherSpawn;

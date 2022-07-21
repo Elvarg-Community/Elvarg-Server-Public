@@ -23,20 +23,12 @@ public class KingBlackDragonMethod extends CombatMethod {
         if (currentAttackType == CombatType.MAGIC) {
             character.performAnimation(new Animation(84));
             switch (currentBreath) {
-                case DRAGON:
-                    new Projectile(character, target, 393, 40, 55, 31, 43).sendProjectile();
-                    break;
-                case ICE:
-                    new Projectile(character, target, 396, 40, 55, 31, 43).sendProjectile();
-                    break;
-                case POISON:
-                    new Projectile(character, target, 394, 40, 55, 31, 43).sendProjectile();
-                    break;
-                case SHOCK:
-                    new Projectile(character, target, 395, 40, 55, 31, 43).sendProjectile();
-                    break;
-                default:
-                    break;
+                case DRAGON -> new Projectile(character, target, 393, 40, 55, 31, 43).sendProjectile();
+                case ICE -> new Projectile(character, target, 396, 40, 55, 31, 43).sendProjectile();
+                case POISON -> new Projectile(character, target, 394, 40, 55, 31, 43).sendProjectile();
+                case SHOCK -> new Projectile(character, target, 395, 40, 55, 31, 43).sendProjectile();
+                default -> {
+                }
             }
         } else if (currentAttackType == CombatType.MELEE) {
             character.performAnimation(new Animation(91));
@@ -83,15 +75,10 @@ public class KingBlackDragonMethod extends CombatMethod {
             }
             if (currentAttackType == CombatType.MAGIC) {
                 switch (currentBreath) {
-                    case ICE:
-                        CombatFactory.freeze(hit.getTarget().getAsPlayer(), 5);
-                        break;
-                    case POISON:
-                        CombatFactory.poisonEntity(hit.getTarget().getAsPlayer(), PoisonType.SUPER);
-                        break;
-                    default:
-                        break;
-
+                    case ICE -> CombatFactory.freeze(hit.getTarget().getAsPlayer(), 5);
+                    case POISON -> CombatFactory.poisonEntity(hit.getTarget().getAsPlayer(), PoisonType.SUPER);
+                    default -> {
+                    }
                 }
             }
         }

@@ -120,7 +120,7 @@ public class ClanChatManager {
 	}
 
 	public static void join(Player player, String channel) {
-		if (channel == null || channel.equals("") || channel.equals("null")) {
+		if (channel == null || channel.isEmpty() || channel.equals("null")) {
 			return;
 		}
 		if (player.getCurrentClanChat() != null) {
@@ -142,7 +142,7 @@ public class ClanChatManager {
 	}
 
 	public static void updateList(ClanChat clan) {
-		Collections.sort(clan.getMembers(), new Comparator<Player>() {
+		Collections.sort(clan.getMembers(), new Comparator<>() {
 			@Override
 			public int compare(Player o1, Player o2) {
 				ClanChatRank rank1 = clan.getRank(o1);
@@ -260,7 +260,7 @@ public class ClanChatManager {
 	}
 
 	public static void leave(Player player, boolean kicked) {
-		final ClanChat clan = player.getCurrentClanChat();
+		ClanChat clan = player.getCurrentClanChat();
 		if (clan == null) {
 			return;
 		}
@@ -425,7 +425,7 @@ public class ClanChatManager {
 			player.getPacketSender().sendMessage("You're not in a clan channel.");
 			return;
 		}
-		final ClanChatRank rank = clan.getRank(player);
+		ClanChatRank rank = clan.getRank(player);
 		if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK] != null) {
 			if (rank == null || rank.ordinal() < clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK].ordinal()) {
 				player.getPacketSender().sendMessage("You do not have the required rank to kick this player.");
@@ -526,95 +526,93 @@ public class ClanChatManager {
 		if (player.getInterfaceId() == CLAN_CHAT_SETUP_INTERFACE_ID) {
 			ClanChat clan = getClanChat(player);
 			switch (button) {
-			case 38319:
-				if (menuId == 0) {
-					player.setEnteredSyntaxAction((input) -> {
-					    if (input.length() > 12) {
-				            input = input.substring(0, 11);
-				        }
-				        if (!Misc.isValidName(input)) {
-				            player.getPacketSender().sendMessage("Invalid syntax entered. Please set a valid name.");
-				            return;
-				        }
-				        ClanChatManager.setName(player, input);
-					});
-					player.getPacketSender().sendEnterInputPrompt("What should your clanchat channel's name be?");
-				} else if (menuId == 1) {
-					delete(player);
-				}
-				return true;
-			case 38322:
-			case 38325:
-			case 38328:
-				if (clan == null) {
-					player.getPacketSender().sendMessage("Please enable your clanchat before changing this.");
+				case 38319 -> {
+					if (menuId == 0) {
+						player.setEnteredSyntaxAction((input) -> {
+							if (input.length() > 12) {
+								input = input.substring(0, 11);
+							}
+							if (!Misc.isValidName(input)) {
+								player.getPacketSender().sendMessage("Invalid syntax entered. Please set a valid name.");
+								return;
+							}
+							ClanChatManager.setName(player, input);
+						});
+						player.getPacketSender().sendEnterInputPrompt("What should your clanchat channel's name be?");
+					} else if (menuId == 1) {
+						delete(player);
+					}
 					return true;
 				}
-				ClanChatRank rank = null;
-				if (menuId == 0) {
-					rank = ClanChatRank.OWNER;
-				} else if (menuId == 1) {
-					rank = ClanChatRank.GENERAL;
-				} else if (menuId == 2) {
-					rank = ClanChatRank.CAPTAIN;
-				} else if (menuId == 3) {
-					rank = ClanChatRank.LIEUTENANT;
-				} else if (menuId == 4) {
-					rank = ClanChatRank.SERGEANT;
-				} else if (menuId == 5) {
-					rank = ClanChatRank.CORPORAL;
-				} else if (menuId == 6) {
-					rank = ClanChatRank.RECRUIT;
-				} else if (menuId == 7) {
-					rank = ClanChatRank.FRIEND;
-				}
-
-				if (button == 38322) {
-					if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] != null
-							&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] == rank) {
+				case 38322, 38325, 38328 -> {
+					if (clan == null) {
+						player.getPacketSender().sendMessage("Please enable your clanchat before changing this.");
 						return true;
 					}
-					clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_ENTER, rank);
-					player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
-					if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] != null) {
-						for (Player member : clan.getMembers()) {
-							if (member == null)
-								continue;
-							ClanChatRank memberRank = clan.getRank(member);
-							if (memberRank == null || clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER]
-									.ordinal() > memberRank.ordinal()) {
-								member.getPacketSender()
-										.sendMessage("Your rank is not high enough to be in this channel.");
-								leave(member, false);
-								player.getPacketSender()
-										.sendMessage("@red@Warning! Changing that setting kicked the player "
-												+ member.getUsername() + " from the chat because")
-										.sendMessage("@red@they do not have the required rank to be in the chat.");
-								;
+					ClanChatRank rank = null;
+					if (menuId == 0) {
+						rank = ClanChatRank.OWNER;
+					} else if (menuId == 1) {
+						rank = ClanChatRank.GENERAL;
+					} else if (menuId == 2) {
+						rank = ClanChatRank.CAPTAIN;
+					} else if (menuId == 3) {
+						rank = ClanChatRank.LIEUTENANT;
+					} else if (menuId == 4) {
+						rank = ClanChatRank.SERGEANT;
+					} else if (menuId == 5) {
+						rank = ClanChatRank.CORPORAL;
+					} else if (menuId == 6) {
+						rank = ClanChatRank.RECRUIT;
+					} else if (menuId == 7) {
+						rank = ClanChatRank.FRIEND;
+					}
+					if (button == 38322) {
+						if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] != null
+								&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] == rank) {
+							return true;
+						}
+						clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_ENTER, rank);
+						player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
+						if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER] != null) {
+							for (Player member : clan.getMembers()) {
+								if (member == null)
+									continue;
+								ClanChatRank memberRank = clan.getRank(member);
+								if (memberRank == null || clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_ENTER]
+										.ordinal() > memberRank.ordinal()) {
+									member.getPacketSender()
+											.sendMessage("Your rank is not high enough to be in this channel.");
+									leave(member, false);
+									player.getPacketSender()
+											.sendMessage("@red@Warning! Changing that setting kicked the player "
+													+ member.getUsername() + " from the chat because")
+											.sendMessage("@red@they do not have the required rank to be in the chat.");
+									;
+								}
 							}
 						}
+						clanChatSetupInterface(player);
+					} else if (button == 38325) {
+						if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_TALK] != null
+								&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_TALK] == rank) {
+							return true;
+						}
+						clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_TALK, rank);
+						player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
+						clanChatSetupInterface(player);
+					} else if (button == 38328) {
+						if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK] != null
+								&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK] == rank) {
+							return true;
+						}
+						clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_KICK, rank);
+						player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
+						clanChatSetupInterface(player);
+						updateList(clan);
 					}
-					clanChatSetupInterface(player);
-				} else if (button == 38325) {
-					if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_TALK] != null
-							&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_TALK] == rank) {
-						return true;
-					}
-					clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_TALK, rank);
-					player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
-					clanChatSetupInterface(player);
-				} else if (button == 38328) {
-					if (clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK] != null
-							&& clan.getRankRequirement()[ClanChat.RANK_REQUIRED_TO_KICK] == rank) {
-						return true;
-					}
-					clan.setRankRequirements(ClanChat.RANK_REQUIRED_TO_KICK, rank);
-					player.getPacketSender().sendMessage("You have changed your clanchat channel's settings.");
-					clanChatSetupInterface(player);
-					updateList(clan);
+					return true;
 				}
-
-				return true;
 			}
 		}
 
@@ -729,23 +727,25 @@ public class ClanChatManager {
 
 		// Other buttons..
 		switch (button) {
-		case 37132: // CC Setup
-			if (player.busy()) {
-				player.getPacketSender().sendInterfaceRemoval();
+			case 37132 -> { // CC Setup
+				if (player.busy()) {
+					player.getPacketSender().sendInterfaceRemoval();
+				}
+				clanChatSetupInterface(player);
+				return true;
 			}
-			clanChatSetupInterface(player);
-			return true;
-		case 37129: // Join / Leave clan
-			if (player.getCurrentClanChat() == null) {
-				player.setEnteredSyntaxAction((input) -> {
-				    ClanChatManager.join(player, input);
-				});
-				player.getPacketSender().sendEnterInputPrompt("Which clanchat channel would you like to join?");
-			} else {
-				leave(player, false);
-				player.setClanChatName("");
+			case 37129 -> { // Join / Leave clan
+				if (player.getCurrentClanChat() == null) {
+					player.setEnteredSyntaxAction((input) -> {
+						ClanChatManager.join(player, input);
+					});
+					player.getPacketSender().sendEnterInputPrompt("Which clanchat channel would you like to join?");
+				} else {
+					leave(player, false);
+					player.setClanChatName("");
+				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

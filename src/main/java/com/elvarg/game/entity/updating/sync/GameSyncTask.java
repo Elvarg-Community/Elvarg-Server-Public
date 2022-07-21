@@ -23,7 +23,7 @@ public abstract class GameSyncTask {
         this(players, true);
     }
     
-    public abstract void execute(final int index);
+    public abstract void execute(int index);
 
     public boolean checkIndex(int index) {
         return (players ? World.getPlayers().get(index) != null : World.getNpcs().get(index) != null);

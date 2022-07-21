@@ -22,15 +22,15 @@ import com.elvarg.net.packet.PacketExecutor;
 public class PickupItemPacketListener implements PacketExecutor {
 
 	@Override
-	public void execute(final Player player, Packet packet) {
-		final int y = packet.readLEShort();
-		final int itemId = packet.readShort();
-		final int x = packet.readLEShort();
-		final Location position = new Location(x, y, player.getLocation().getZ());
+	public void execute(Player player, Packet packet) {
+		int y = packet.readLEShort();
+		int itemId = packet.readShort();
+		int x = packet.readLEShort();
+		Location position = new Location(x, y, player.getLocation().getZ());
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender()
-					.sendMessage("Pick up item: " + Integer.toString(itemId) + ". " + position.toString());
+					.sendMessage("Pick up item: " + itemId + ". " + position);
 		}
 
         if (player.busy()) {

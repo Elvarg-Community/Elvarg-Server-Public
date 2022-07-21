@@ -75,7 +75,7 @@ public class GameConstants {
 	/**
 	 * The gameframe's tab interface ids.
 	 */
-	public static final int TAB_INTERFACES[] = { 2423, 3917, 31000, 3213, 1644, 5608, -1, 37128, 5065, 5715, 2449,
+	public static final int[] TAB_INTERFACES = { 2423, 3917, 31000, 3213, 1644, 5608, -1, 37128, 5065, 5715, 2449,
 			42500, 147, 32000 };
 
 	/**

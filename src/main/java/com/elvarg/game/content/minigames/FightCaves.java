@@ -16,7 +16,7 @@ public class FightCaves {
     private static final int JAD_NPC_ID = 3127;
 
     public static void start(Player player) {
-        final FightCavesArea area = new FightCavesArea();
+        FightCavesArea area = new FightCavesArea();
         area.add(player);
     //    DialogueManager.start(player, 23);
         TaskManager.submit(new Task(14, player, false) {

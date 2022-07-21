@@ -36,7 +36,7 @@ public class PlayerUpdating {
 	 * @return The PlayerUpdating instance.
 	 */
 
-	public static void update(final Player player) {
+	public static void update(Player player) {
 		PacketBuilder update = new PacketBuilder();
 		PacketBuilder packet = new PacketBuilder(81, PacketType.VARIABLE_SHORT);
 		packet.initializeAccess(AccessType.BIT);
@@ -339,7 +339,7 @@ public class PlayerUpdating {
 		 * builder.putBytes(player.getCachedUpdateBlock()); return; }
 		 */
 
-		final UpdateFlag flag = target.getUpdateFlag();
+		UpdateFlag flag = target.getUpdateFlag();
 		int mask = 0;
 		if (flag.flagged(Flag.GRAPHIC) && target.getGraphic() != null) {
 			mask |= 0x100;
@@ -544,7 +544,7 @@ public class PlayerUpdating {
 	 * @return The PlayerUpdating instance.
 	 */
 	private static void updateFacingPosition(PacketBuilder builder, Player target) {
-		final Location position = target.getPositionToFace();
+		Location position = target.getPositionToFace();
 		builder.putShort(position.getX() * 2 + 1, ValueType.A, ByteOrder.LITTLE);
 		builder.putShort(position.getY() * 2 + 1, ByteOrder.LITTLE);
 	}
@@ -563,7 +563,7 @@ public class PlayerUpdating {
 		if (entity != null) {
 			int index = entity.getIndex();
 			if (entity instanceof Player)
-				index += +32768;
+				index += 32768;
 			builder.putShort(index, ByteOrder.LITTLE);
 		} else {
 			builder.putShort(-1, ByteOrder.LITTLE);

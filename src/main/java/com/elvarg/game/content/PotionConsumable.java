@@ -144,7 +144,7 @@ public enum PotionConsumable {
 	 * @param ids
 	 *            the identifiers which represent this potion type.
 	 */
-	private PotionConsumable(int... ids) {
+    PotionConsumable(int... ids) {
 		this.ids = ids;
 	}
 
@@ -161,7 +161,7 @@ public enum PotionConsumable {
 	 */
 	public static boolean drink(Player player, int item, int slot) {
 		Optional<PotionConsumable> potion = forId(item);
-		if (!potion.isPresent()) {
+		if (potion.isEmpty()) {
 			return false;
 		}
 
@@ -406,7 +406,7 @@ public enum PotionConsumable {
 		 * @param boostAmount
 		 *            the amount this type will boost by.
 		 */
-		private BoostType(float boostAmount) {
+        BoostType(float boostAmount) {
 			this.amount = boostAmount;
 		}
 

@@ -26,7 +26,7 @@ public class ChaosFanaticCombatMethod extends CombatMethod {
             "All your wilderness are belong to them!", "AhehHeheuhHhahueHuUEehEahAH",
             "I shall call him squidgy and he shall be my squidgy!", };
 
-    private static enum Attack {
+    private enum Attack {
         SPECIAL_ATTACK, DEFAULT_MAGIC_ATTACK;
     }
 

@@ -11,7 +11,7 @@ public final class Buffer {
             0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
             0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
             0x7fffffff, -1};
-    public byte payload[];
+    public byte[] payload;
     public int currentPosition;
     public int bitPosition;
     public IsaacRandom encryption;
@@ -106,7 +106,7 @@ public final class Buffer {
             payload[currentPosition++] = (byte) (int) value;
         } catch (RuntimeException runtimeexception) {
             System.err.println("14395, " + 5 + ", " + value + ", "
-                    + runtimeexception.toString());
+                    + runtimeexception);
             throw new RuntimeException();
         }
     }
@@ -118,7 +118,7 @@ public final class Buffer {
         payload[currentPosition++] = 10;
     }
 
-    public void writeBytes(byte data[], int offset, int length) {
+    public void writeBytes(byte[] data, int offset, int length) {
         for (int index = length; index < length + offset; index++)
             payload[currentPosition++] = data[index];
     }
@@ -197,12 +197,12 @@ public final class Buffer {
         int index = currentPosition;
         while (payload[currentPosition++] != 10)
             ;
-        byte data[] = new byte[currentPosition - index - 1];
+        byte[] data = new byte[currentPosition - index - 1];
         System.arraycopy(payload, index, data, index - index, currentPosition - 1 - index);
         return data;
     }
 
-    public void readBytes(int offset, int length, byte data[]) {
+    public void readBytes(int offset, int length, byte[] data) {
         for (int index = length; index < length + offset; index++)
             data[index] = payload[currentPosition++];
     }
@@ -271,10 +271,10 @@ public final class Buffer {
     public void encodeRSA(BigInteger exponent, BigInteger modulus) {
         int length = currentPosition;
         currentPosition = 0;
-        byte buffer[] = new byte[length];
+        byte[] buffer = new byte[length];
         readBytes(length, 0, buffer);
 
-        byte rsa[] = buffer;
+        byte[] rsa = buffer;
 
         //if (Configuration.ENABLE_RSA) {
         rsa = new BigInteger(buffer).modPow(exponent, modulus)
@@ -388,13 +388,13 @@ public final class Buffer {
                 + (payload[currentPosition - 2] & 0xff);
     }
 
-    public void writeReverseDataA(byte data[], int length, int offset) {
+    public void writeReverseDataA(byte[] data, int length, int offset) {
         for (int index = (length + offset) - 1; index >= length; index--) {
             payload[currentPosition++] = (byte) (data[index] + 128);
         }
     }
 
-    public void readReverseData(byte data[], int offset, int length) {
+    public void readReverseData(byte[] data, int offset, int length) {
         for (int index = (length + offset) - 1; index >= length; index--) {
             data[index] = payload[currentPosition++];
         }

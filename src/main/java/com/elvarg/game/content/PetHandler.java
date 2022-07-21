@@ -127,7 +127,7 @@ public class PetHandler {
         }
         // Make sure npc is a pet..
         Optional<Pet> pet = Pet.getPet(npc.getId());
-        if (!pet.isPresent()) {
+        if (pet.isEmpty()) {
             return false;
         }
 
@@ -175,7 +175,7 @@ public class PetHandler {
 
         // Make sure npc is a pet..
         Optional<Pet> pet = Pet.getPet(npc.getId());
-        if (!pet.isPresent()) {
+        if (pet.isEmpty()) {
             return false;
         }
 
@@ -206,7 +206,7 @@ public class PetHandler {
 
         // Make sure npc is a pet..
         Optional<Pet> pet = Pet.getPet(npc.getId());
-        if (!pet.isPresent() || pet.get().getDialogue(player) == -1) {
+        if (pet.isEmpty() || pet.get().getDialogue(player) == -1) {
             return false;
         }
 
@@ -252,7 +252,7 @@ public class PetHandler {
                 130), HELLPUPPY(964, 0, 13247, 138) {
             @Override
             public int getDialogue(Player player) {
-                int[] dialogueIds = new int[]{138, 143, 145, 150, 154};
+                int[] dialogueIds = {138, 143, 145, 150, 154};
                 return dialogueIds[Misc.getRandom(dialogueIds.length - 1)];
             }
         },
@@ -265,7 +265,7 @@ public class PetHandler {
                 if (!player.getAppearance().isMale()) {
                     return 206;
                 } else {
-                    int[] dialogueIds = new int[]{202, 209};
+                    int[] dialogueIds = {202, 209};
                     return dialogueIds[Misc.getRandom(dialogueIds.length - 1)];
                 }
             }
@@ -273,7 +273,7 @@ public class PetHandler {
         TZREK_JAD(5892, 0, 13225, 212) {
             @Override
             public int getDialogue(Player player) {
-                int[] dialogueIds = new int[]{212, 217};
+                int[] dialogueIds = {212, 217};
                 return dialogueIds[Misc.getRandom(dialogueIds.length - 1)];
             }
         },
@@ -329,14 +329,14 @@ public class PetHandler {
         public Optional<Skill> skill = Optional.empty();
         private int chance;
 
-        private Pet(int petNpcId, int morphId, int itemId, int dialogue) {
+        Pet(int petNpcId, int morphId, int itemId, int dialogue) {
             this.petId = petNpcId;
             this.morphId = morphId;
             this.itemId = itemId;
             this.dialogue = dialogue;
         }
 
-        private Pet(int petNpcId, int morphId, int itemId, int dialogue, Skill skill, int chance) {
+        Pet(int petNpcId, int morphId, int itemId, int dialogue, Skill skill, int chance) {
             this(petNpcId, morphId, itemId, dialogue);
             this.skill = Optional.of(skill);
             this.chance = chance;

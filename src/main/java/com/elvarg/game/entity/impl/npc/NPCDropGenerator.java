@@ -73,7 +73,7 @@ public class NPCDropGenerator {
         List<Item> items = new LinkedList<>();
 
         // The list containing the drop tables which we've gone through.
-        List<DropTable> parsedTables = new ArrayList<DropTable>();
+        List<DropTable> parsedTables = new ArrayList<>();
 
         // Drop "always" items..
         if (def.getAlwaysDrops() != null) {
@@ -119,7 +119,7 @@ public class NPCDropGenerator {
             }
 
             // If we didn't get a special drop, attempt to find a different table..
-            if (!table.isPresent()) {
+            if (table.isEmpty()) {
                 double chance = random.get().nextDouble(100);
                 if ((table = getDropTable(chance)).isPresent()) {
                     // Make sure we haven't already parsed this table.
@@ -152,7 +152,7 @@ public class NPCDropGenerator {
                         default:
                             break;
                     }
-                    if (!dropTableItems.isPresent()) {
+                    if (dropTableItems.isEmpty()) {
                         continue;
                     }
                     // Get a random drop from the table..

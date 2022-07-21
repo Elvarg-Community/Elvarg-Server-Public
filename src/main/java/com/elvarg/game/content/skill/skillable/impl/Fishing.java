@@ -174,7 +174,7 @@ public class Fishing extends DefaultSkillable {
      * @param tool   the tool this player is fishing with.
      */
     private Fish determineFish(Player player, FishingTool tool) {
-        List<Fish> fishList = new ArrayList<Fish>();
+        List<Fish> fishList = new ArrayList<>();
 
         /** Determine which fish are able to be caught. */
         for (Fish fish : tool.getFish()) {
@@ -255,7 +255,7 @@ public class Fishing extends DefaultSkillable {
          * @param animation the animation performed when using this tool.
          * @param fish      the fish you can catch with this tool.
          */
-        private FishingTool(int id, int level, int needed, int speed, int animation, Fish... fish) {
+        FishingTool(int id, int level, int needed, int speed, int animation, Fish... fish) {
             this.id = id;
             this.level = level;
             this.needed = needed;
@@ -374,7 +374,7 @@ public class Fishing extends DefaultSkillable {
          *                   fishes).
          * @param experience the experience gained from catching this fish.
          */
-        private Fish(int id, int level, Chance chance, int experience) {
+        Fish(int id, int level, Chance chance, int experience) {
             this.id = id;
             this.level = level;
             this.chance = chance;

@@ -66,171 +66,161 @@ public class PlayerDeathTask extends Task {
 			return;
 		}
 		try {
-			switch (ticks) {
-			case 2:
-				// Reset combat..
-				player.getCombat().reset();
+            switch (ticks) {
+                case 2 -> {
+                    // Reset combat..
+                    player.getCombat().reset();
 
-				// Reset movement queue and disable it..
-				player.getMovementQueue().setBlockMovement(true).reset();
+                    // Reset movement queue and disable it..
+                    player.getMovementQueue().setBlockMovement(true).reset();
 
-				// Mark us as untargetable..
-				player.setUntargetable(true);
+                    // Mark us as untargetable..
+                    player.setUntargetable(true);
 
-				// Close all open interfaces..
-				player.getPacketSender().sendInterfaceRemoval();
+                    // Close all open interfaces..
+                    player.getPacketSender().sendInterfaceRemoval();
 
-				// Send death message..
-				player.getPacketSender().sendMessage("Oh dear, you are dead!");
+                    // Send death message..
+                    player.getPacketSender().sendMessage("Oh dear, you are dead!");
 
-				// Perform death animation..
-				player.performAnimation(new Animation(836, Priority.HIGH));
+                    // Perform death animation..
+                    player.performAnimation(new Animation(836, Priority.HIGH));
 
-				// Handle retribution prayer effect on our killer, if present..
-				if (PrayerHandler.isActivated(player, PrayerHandler.RETRIBUTION)) {
-					if (killer.isPresent()) {
-						CombatFactory.handleRetribution(player, killer.get());
-					}
-				}
-				break;
-			case 0:
+                    // Handle retribution prayer effect on our killer, if present..
+                    if (PrayerHandler.isActivated(player, PrayerHandler.RETRIBUTION)) {
+                        killer.ifPresent(value -> CombatFactory.handleRetribution(player, value));
+                    }
+                }
+                case 0 -> {
+                    if (player.getArea() != null) {
+                        loseItems = player.getArea().dropItemsOnDeath(player, killer);
+                    }
+                    List<Item> droppedItems = new ArrayList<>();
 
-				if (player.getArea() != null) {
-					loseItems = player.getArea().dropItemsOnDeath(player, killer);
-				}
+                    // Handle the loss of items..
+                    if (loseItems) {
 
-				final List<Item> droppedItems = new ArrayList<Item>();
+                        // Get items to keep
+                        itemsToKeep = Optional.of(ItemsKeptOnDeath.getItemsToKeep(player));
 
-				// Handle the loss of items..
-				if (loseItems) {
-					
-					// Get items to keep
-					itemsToKeep = Optional.of(ItemsKeptOnDeath.getItemsToKeep(player));
+                        // Fetch player's items
+                        List<Item> playerItems = new ArrayList<>();
+                        playerItems.addAll(player.getInventory().getValidItems());
+                        playerItems.addAll(player.getEquipment().getValidItems());
 
-					// Fetch player's items
-					final List<Item> playerItems = new ArrayList<Item>();
-					playerItems.addAll(player.getInventory().getValidItems());
-					playerItems.addAll(player.getEquipment().getValidItems());
+                        // The position the items will be dropped at
+                        Location position = player.getLocation();
 
-					// The position the items will be dropped at
-					final Location position = player.getLocation();
+                        // Go through player items, drop them to killer
+                        boolean dropped = false;
 
-					// Go through player items, drop them to killer
-					boolean dropped = false;
+                        for (Item item : playerItems) {
 
-					for (Item item : playerItems) {
+                            // Keep tradeable items
+                            if (!item.getDefinition().isTradeable() || itemsToKeep.get().contains(item)) {
+                                if (!itemsToKeep.get().contains(item)) {
+                                    itemsToKeep.get().add(item);
+                                }
+                                continue;
+                            }
 
-						// Keep tradeable items
-						if (!item.getDefinition().isTradeable() || itemsToKeep.get().contains(item)) {
-							if (!itemsToKeep.get().contains(item)) {
-								itemsToKeep.get().add(item);
-							}
-							continue;
-						}
+                            // Don't drop items if we're owner or dev
+                            if (player.getRights() == PlayerRights.OWNER
+                                    || player.getRights() == PlayerRights.DEVELOPER) {
+                                break;
+                            }
 
-						// Don't drop items if we're owner or dev
-						if (player.getRights().equals(PlayerRights.OWNER)
-								|| player.getRights().equals(PlayerRights.DEVELOPER)) {
-							break;
-						}
+                            // Drop emblems but downgrade them a tier.
+                            if (item.getId() == Emblem.MYSTERIOUS_EMBLEM_1.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_2.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_3.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_4.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_5.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_6.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_7.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_8.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_9.id
+                                    || item.getId() == Emblem.MYSTERIOUS_EMBLEM_10.id) {
 
-						// Drop emblems but downgrade them a tier.
-						if (item.getId() == Emblem.MYSTERIOUS_EMBLEM_1.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_2.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_3.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_4.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_5.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_6.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_7.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_8.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_9.id
-								|| item.getId() == Emblem.MYSTERIOUS_EMBLEM_10.id) {
+                                // Tier 1 shouldnt be dropped cause it cant be downgraded
+                                if (item.getId() == Emblem.MYSTERIOUS_EMBLEM_1.id) {
+                                    continue;
+                                }
 
-							// Tier 1 shouldnt be dropped cause it cant be downgraded
-							if (item.getId() == Emblem.MYSTERIOUS_EMBLEM_1.id) {
-								continue;
-							}
+                                if (killer.isPresent()) {
+                                    int lowerEmblem = item.getId() == Emblem.MYSTERIOUS_EMBLEM_2.id ? item.getId() - 2
+                                            : item.getId() - 1;
+                                    ItemOnGroundManager.registerNonGlobal(killer.get(), new Item(lowerEmblem), position);
+                                    killer.get().getPacketSender().sendMessage("@red@" + player.getUsername()
+                                            + " dropped a " + ItemDefinition.forId(lowerEmblem).getName() + "!");
+                                    dropped = true;
+                                }
 
-							if (killer.isPresent()) {
-								final int lowerEmblem = item.getId() == Emblem.MYSTERIOUS_EMBLEM_2.id ? item.getId() - 2
-										: item.getId() - 1;
-								ItemOnGroundManager.registerNonGlobal(killer.get(), new Item(lowerEmblem), position);
-								killer.get().getPacketSender().sendMessage("@red@" + player.getUsername()
-										+ " dropped a " + ItemDefinition.forId(lowerEmblem).getName() + "!");
-								dropped = true;
-							}
+                                continue;
+                            }
 
-							continue;
-						}
+                            droppedItems.add(item);
 
-						droppedItems.add(item);
+                            // Drop item
+                            ItemOnGroundManager.register(killer.orElse(player), item, position);
+                            dropped = true;
+                        }
 
-						// Drop item
-						ItemOnGroundManager.register(killer.isPresent() ? killer.get() : player, item, position);
-						dropped = true;
-					}
+                        // Handle defeat..
+                        if (killer.isPresent()) {
+                            Player k = killer.get();
+                            if (k.getArea() != null) {
+                                k.getArea().defeated(k, player);
+                            }
+                            if (!dropped) {
+                                killer.get().getPacketSender()
+                                        .sendMessage("" + player.getUsername() + " had no valuable items to be dropped.");
+                            }
+                        }
 
-					// Handle defeat..
-					if (killer.isPresent()) {
-						Player k = killer.get();
-						if (k.getArea() != null) {
-							k.getArea().defeated(k, player);
-						}
-						if (!dropped) {
-							killer.get().getPacketSender()
-									.sendMessage("" + player.getUsername() + " had no valuable items to be dropped.");
-						}
-					}
+                        // Reset items
+                        player.getInventory().resetItems().refreshItems();
+                        player.getEquipment().resetItems().refreshItems();
+                    }
 
-					// Reset items
-					player.getInventory().resetItems().refreshItems();
-					player.getEquipment().resetItems().refreshItems();
-				}
+                    // Restore the player's default attributes (such as stats)..
+                    player.resetAttributes();
 
-				// Restore the player's default attributes (such as stats)..
-				player.resetAttributes();
+                    // If the player lost items..
+                    if (loseItems) {
+                        // Handle items kept on death..
+                        if (itemsToKeep.isPresent()) {
+                            for (Item it : itemsToKeep.get()) {
+                                int id = it.getId();
 
-				// If the player lost items..
-				if (loseItems) {
-					// Handle items kept on death..
-					if (itemsToKeep.isPresent()) {
-						for (Item it : itemsToKeep.get()) {
-							int id = it.getId();
+                                // Handle item breaking..
+                                BrokenItem brokenItem = BrokenItem.get(id);
+                                if (brokenItem != null) {
+                                    id = brokenItem.getBrokenItem();
+                                    player.getPacketSender()
+                                            .sendMessage("Your " + ItemDefinition.forId(it.getId()).getName()
+                                                    + " has been broken. You can fix it by talking to Perdu.");
+                                }
 
-							// Handle item breaking..
-							BrokenItem brokenItem = BrokenItem.get(id);
-							if (brokenItem != null) {
-								id = brokenItem.getBrokenItem();
-								player.getPacketSender()
-										.sendMessage("Your " + ItemDefinition.forId(it.getId()).getName()
-												+ " has been broken. You can fix it by talking to Perdu.");
-							}
+                                player.getInventory().add(new Item(id, it.getAmount()));
+                            }
+                            itemsToKeep.get().clear();
+                        }
+                    }
+                    boolean handledDeath = player.getArea() != null && player.getArea().handleDeath(player, killer);
+                    if (!handledDeath) {
+                        player.moveTo(GameConstants.DEFAULT_LOCATION);
+                        if (loseItems) {
+                            if (player.isOpenPresetsOnDeath()) {
+                                Presetables.open(player);
+                            }
+                        }
+                    }
 
-							player.getInventory().add(new Item(id, it.getAmount()));
-						}
-						itemsToKeep.get().clear();
-					}
-				}
-
-				boolean handledDeath = false;
-
-				if (player.getArea() != null) {
-					handledDeath = player.getArea().handleDeath(player, killer);
-				}
-
-				if (!handledDeath) {
-					player.moveTo(GameConstants.DEFAULT_LOCATION);
-					if (loseItems) {
-						if (player.isOpenPresetsOnDeath()) {
-							Presetables.open(player);
-						}
-					}
-				}
-
-				// Stop the event..
-				stop();
-				break;
-			}
+                    // Stop the event..
+                    stop();
+                }
+            }
 			ticks--;
 		} catch (Exception e) {
 			super.stop();

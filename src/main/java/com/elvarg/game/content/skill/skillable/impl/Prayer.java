@@ -90,7 +90,7 @@ public class Prayer {
         WYVERN_BONES(6816, 72),
         LAVA_DRAGON_BONES(11943, 85);
 
-        static final Map<Integer, BuriableBone> bones = new HashMap<Integer, BuriableBone>();
+        static final Map<Integer, BuriableBone> bones = new HashMap<>();
 
         static {
             for (BuriableBone b : BuriableBone.values()) {
@@ -194,14 +194,8 @@ public class Prayer {
         @Override
         public boolean hasRequirements(Player player) {
             //Check if player has bones..
-            if (!player.getInventory().contains(bone.getBoneID())) {
-                return false;
-            }
+            return player.getInventory().contains(bone.getBoneID()) && amount > 0 && super.hasRequirements(player);
             //Check if we offered all bones..
-            if (amount <= 0) {
-                return false;
-            }
-            return super.hasRequirements(player);
         }
 
         @Override

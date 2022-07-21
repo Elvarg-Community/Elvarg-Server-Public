@@ -10,13 +10,13 @@ public class PlayerPunishment {
     private static final String BAN_DIRECTORY = "./data/saves/";
     private static final String MUTE_DIRECTORY = "./data/saves/";
 
-    public static ArrayList<String> IPSBanned = new ArrayList<String>();
-    public static ArrayList<String> IPSMuted = new ArrayList<String>();
-    public static ArrayList<String> AccountsBanned = new ArrayList<String>();
-    public static ArrayList<String> AccountsMuted = new ArrayList<String>();
+    public static ArrayList<String> IPSBanned = new ArrayList<>();
+    public static ArrayList<String> IPSMuted = new ArrayList<>();
+    public static ArrayList<String> AccountsBanned = new ArrayList<>();
+    public static ArrayList<String> AccountsMuted = new ArrayList<>();
 
     public static void init() {
-        // Incase we're reloading bans, reset lists first.
+        //In case we're reloading bans, reset lists first.
         IPSBanned.clear();
         IPSMuted.clear();
         AccountsBanned.clear();
@@ -30,7 +30,7 @@ public class PlayerPunishment {
 
     public static void initializeList(String directory, String file, ArrayList<String> list) {
         try {
-            BufferedReader in = new BufferedReader(new FileReader("" + directory + "" + file + ".txt"));
+            BufferedReader in = new BufferedReader(new FileReader(directory + "" + file + ".txt"));
             String data = null;
             while ((data = in.readLine()) != null) {
                 list.add(data);
@@ -43,14 +43,14 @@ public class PlayerPunishment {
 
     public static void addBannedIP(String IP) {
         if (!IPSBanned.contains(IP))
-            addToFile("" + BAN_DIRECTORY + "IPBans.txt", IP);
+            addToFile(BAN_DIRECTORY + "IPBans.txt", IP);
         IPSBanned.add(IP);
 
     }
 
     public static void addMutedIP(String IP) {
         if (!IPSMuted.contains(IP))
-            addToFile("" + MUTE_DIRECTORY + "IPMutes.txt", IP);
+            addToFile(MUTE_DIRECTORY + "IPMutes.txt", IP);
         IPSMuted.add(IP);
 
     }
@@ -58,7 +58,7 @@ public class PlayerPunishment {
     public static void ban(String p) {
         p = Misc.formatPlayerName(p.toLowerCase());
         if (!AccountsBanned.contains(p))
-            addToFile("" + BAN_DIRECTORY + "Bans.txt", p);
+            addToFile(BAN_DIRECTORY + "Bans.txt", p);
         AccountsBanned.add(p);
 
     }
@@ -66,7 +66,7 @@ public class PlayerPunishment {
     public static void mute(String p) {
         p = Misc.formatPlayerName(p.toLowerCase());
         if (!AccountsMuted.contains(p))
-            addToFile("" + MUTE_DIRECTORY + "Mutes.txt", p);
+            addToFile(MUTE_DIRECTORY + "Mutes.txt", p);
         AccountsMuted.add(p);
 
     }
@@ -95,14 +95,14 @@ public class PlayerPunishment {
 
     public static void unban(String player) {
         player = Misc.formatPlayerName(player.toLowerCase());
-        deleteFromFile("" + BAN_DIRECTORY + "Bans.txt", player);
+        deleteFromFile(BAN_DIRECTORY + "Bans.txt", player);
         AccountsBanned.remove(player);
 
     }
 
     public static void unmute(String player) {
         player = Misc.formatPlayerName(player.toLowerCase());
-        deleteFromFile("" + MUTE_DIRECTORY + "Mutes.txt", player);
+        deleteFromFile(MUTE_DIRECTORY + "Mutes.txt", player);
         AccountsMuted.remove(player);
 
     }
@@ -121,7 +121,7 @@ public class PlayerPunishment {
         GameLogic.submit(() -> {
             try {
                 BufferedReader r = new BufferedReader(new FileReader(file));
-                ArrayList<String> contents = new ArrayList<String>();
+                ArrayList<String> contents = new ArrayList<>();
                 while (true) {
                     String line = r.readLine();
                     if (line == null) {
@@ -150,12 +150,9 @@ public class PlayerPunishment {
     public static void addToFile(String file, String data) {
         GameLogic.submit(() -> {
             try {
-                BufferedWriter out = new BufferedWriter(new FileWriter(file, true));
-                try {
+                try (BufferedWriter out = new BufferedWriter(new FileWriter(file, true))) {
                     out.write(data);
                     out.newLine();
-                } finally {
-                    out.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

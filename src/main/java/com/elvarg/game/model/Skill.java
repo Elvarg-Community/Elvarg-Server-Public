@@ -44,7 +44,7 @@ public enum Skill {
      * The {@link ImmutableSet} which represents the skills that a player can set to a desired level.
      */
     private static final ImmutableSet<Skill> ALLOWED_TO_SET_LEVLES = Sets.immutableEnumSet(ATTACK, DEFENCE, STRENGTH, HITPOINTS, RANGED, PRAYER, MAGIC);
-    private static Map<Integer, Skill> skillMap = new HashMap<Integer, Skill>();
+    private static Map<Integer, Skill> skillMap = new HashMap<>();
 
     static {
         for (Skill skill : Skill.values()) {
@@ -70,7 +70,7 @@ public enum Skill {
      * @param chatboxInterface
      * @param button
      */
-    private Skill(int chatboxInterface, int button) {
+    Skill(int chatboxInterface, int button) {
         this.chatboxInterface = chatboxInterface;
         this.button = button;
     }

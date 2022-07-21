@@ -9,7 +9,7 @@ public class InfiniteHealth implements Command {
     @Override
     public void execute(Player player, String command, String[] parts) {
         player.setInfiniteHealth(!player.hasInfiniteHealth());
-        player.getPacketSender().sendMessage("Invulnerable: " + String.valueOf(player.hasInfiniteHealth()));
+        player.getPacketSender().sendMessage("Invulnerable: " + player.hasInfiniteHealth());
     }
 
     @Override

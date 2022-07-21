@@ -78,7 +78,7 @@ public class Fletching extends ItemIdentifiers {
         for (FletchableCrossbow c : FletchableCrossbow.values()) {
             if ((c.getStock() == itemUsed || c.getStock() == itemUsedWith)
                     && (c.getLimbs() == itemUsed || c.getLimbs() == itemUsedWith)) {                
-                player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to make?", Arrays.asList(c.getUnstrung()), (itemId, amount) -> {
+                player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to make?", List.of(c.getUnstrung()), (itemId, amount) -> {
                     player.getSkillManager().startSkillable(new ItemCreationSkillable(Arrays.asList(new RequiredItem(new Item(c.getStock()), true), new RequiredItem(new Item(c.getLimbs()), true)), new Item(c.getUnstrung()), amount, Optional.empty(), c.getLevel(), c.getLimbsExp(), Skill.FLETCHING));
                 }));
                 return true;
@@ -102,7 +102,7 @@ public class Fletching extends ItemIdentifiers {
             StringableBow bow = StringableBow.unstrungBows.get(unstrung);
             if (bow != null) {
                 if (bow.getBowStringId() == string) {
-                    player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to make?", Arrays.asList(bow.getResult()), (itemId, amount) -> {
+                    player.getPacketSender().sendCreationMenu(new CreationMenu("How many would you like to make?", List.of(bow.getResult()), (itemId, amount) -> {
                         player.getSkillManager().startSkillable(new ItemCreationSkillable(Arrays.asList(new RequiredItem(new Item(bow.getItemId()), true), new RequiredItem(new Item(bow.getBowStringId()), true)), new Item(bow.getResult()), amount, Optional.of(new AnimationLoop(bow.getAnimation(), 3)), bow.getLevelReq(), bow.getExp(), Skill.FLETCHING));
                     }));
                     return true;
@@ -192,7 +192,7 @@ public class Fletching extends ItemIdentifiers {
 
         public final int item1, item2, outcome, xp, levelReq;
 
-        private FletchableAmmo(int item1, int item2, int outcome, int xp, int levelReq) {
+        FletchableAmmo(int item1, int item2, int outcome, int xp, int levelReq) {
             this.item1 = item1;
             this.item2 = item2;
             this.outcome = outcome;
@@ -299,7 +299,7 @@ public class Fletching extends ItemIdentifiers {
         ACBOW(ADAMANT_CROSSBOW_U_, CROSSBOW_STRING, ADAMANT_CROSSBOW, 61, 82, new Animation(6676)),
         RCBOW(RUNITE_CROSSBOW_U_, CROSSBOW_STRING, RUNE_CROSSBOW, 69, 100, new Animation(6677)),;
 
-        static Map<Integer, StringableBow> unstrungBows = new HashMap<Integer, StringableBow>();
+        static Map<Integer, StringableBow> unstrungBows = new HashMap<>();
 
         static {
             for (StringableBow l : StringableBow.values()) {
@@ -381,7 +381,7 @@ public class Fletching extends ItemIdentifiers {
                 new FletchableItem(new Item(MAGIC_SHORTBOW_U_), 80, 166, CUTTING_LOGS_ANIM),
                 new FletchableItem(new Item(MAGIC_LONGBOW_U_), 85, 183, CUTTING_LOGS_ANIM)),;
 
-        static Map<Integer, FletchableLog> logs = new HashMap<Integer, FletchableLog>();
+        static Map<Integer, FletchableLog> logs = new HashMap<>();
 
         static {
             for (FletchableLog l : FletchableLog.values()) {

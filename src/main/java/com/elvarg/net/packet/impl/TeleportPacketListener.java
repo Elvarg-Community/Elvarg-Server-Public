@@ -31,7 +31,7 @@ public class TeleportPacketListener implements PacketExecutor {
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
 			player.getPacketSender().sendMessage(
-					"Selected a teleport. Type: " + Integer.toString(type) + ", index: " + Integer.toString(index) + ".");
+					"Selected a teleport. Type: " + type + ", index: " + index + ".");
 		}
 
 		for (Teleportable teleport : Teleportable.values()) {

@@ -15,9 +15,8 @@ public class MutePlayer implements Command {
         String player2 = command.substring(parts[0].length() + 1);
         Optional<Player> plr = World.getPlayerByName(player2);
 
-        if (!PlayerSaving.playerExists(player2) && plr == null) {
+        if (!PlayerSaving.playerExists(player2) && !plr.isPresent()) {
             player.getPacketSender().sendMessage("Player " + player2 + " does not exist.");
-            return;
         }
     }
 

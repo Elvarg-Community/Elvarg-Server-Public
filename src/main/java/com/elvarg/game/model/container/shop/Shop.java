@@ -125,7 +125,7 @@ public class Shop {
     }
 
     public List<Item> getCurrentStockList() {
-        List<Item> list = new ArrayList<Item>();
+        List<Item> list = new ArrayList<>();
         for (Item item : currentStock) {
             if (item == null)
                 continue;

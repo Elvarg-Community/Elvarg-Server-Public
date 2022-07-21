@@ -192,7 +192,7 @@ public class NPCUpdating {
             }
         }
         if (flag.flagged(Flag.FACE_POSITION) && npc.getPositionToFace() != null) {
-            final Location position = npc.getPositionToFace();
+            Location position = npc.getPositionToFace();
             block.putShort(position.getX() * 2 + 1, ByteOrder.LITTLE);
             block.putShort(position.getY() * 2 + 1, ByteOrder.LITTLE);
         }

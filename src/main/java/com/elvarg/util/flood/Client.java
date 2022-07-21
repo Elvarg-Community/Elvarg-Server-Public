@@ -56,7 +56,7 @@ public class Client {
             socketStream.flushInputStream(incoming.payload, 8);
             incoming.currentPosition = 0;
             serverSeed = incoming.readLong(); // aka server session key
-            int seed[] = new int[4];
+            int[] seed = new int[4];
             seed[0] = (int) (Math.random() * 99999999D);
             seed[1] = (int) (Math.random() * 99999999D);
             seed[2] = (int) (serverSeed >> 32);

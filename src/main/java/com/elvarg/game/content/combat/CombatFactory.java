@@ -333,8 +333,8 @@ public class CombatFactory {
 			}
 		}
 		
-		final Location attackerPosition = attacker.getLocation();
-		final Location targetPosition = target.getLocation();
+		Location attackerPosition = attacker.getLocation();
+		Location targetPosition = target.getLocation();
 		
 		if (attackerPosition.equals(targetPosition)) {
 		    return false;
@@ -519,11 +519,11 @@ public class CombatFactory {
 	 *            The QueueableHit to execute.
 	 */
 	public static void executeHit(PendingHit qHit) {
-		final Mobile attacker = qHit.getAttacker();
-		final Mobile target = qHit.getTarget();
-		final CombatMethod method = qHit.getCombatMethod();
-		final CombatType combatType = qHit.getCombatType();
-		final int damage = qHit.getTotalDamage();
+		Mobile attacker = qHit.getAttacker();
+		Mobile target = qHit.getTarget();
+		CombatMethod method = qHit.getCombatMethod();
+		CombatType combatType = qHit.getCombatType();
+		int damage = qHit.getTotalDamage();
 
 		// If target/attacker is dead, don't continue.
 		if (target.getHitpoints() <= 0 || attacker.getHitpoints() <= 0) {
@@ -545,7 +545,7 @@ public class CombatFactory {
 
 		// Do other stuff for players..
 		if (target.isPlayer()) {
-			final Player p_ = target.getAsPlayer();
+			Player p_ = target.getAsPlayer();
 
 			// Close their current interface
 			if (p_.getRights() != PlayerRights.DEVELOPER && p_.busy()) {
@@ -600,9 +600,7 @@ public class CombatFactory {
 					poison = CombatPoisonData.getPoisonType(p_.getEquipment().get(Equipment.AMMUNITION_SLOT));
 				}
 
-				if (poison.isPresent()) {
-					CombatFactory.poisonEntity(target, poison.get());
-				}
+				poison.ifPresent(poisonType -> CombatFactory.poisonEntity(target, poisonType));
 			}
 
 			// Handle barrows effects if damage is more than zero.
@@ -689,7 +687,7 @@ public class CombatFactory {
 		}
 
 		// Add all other skills xp
-		final int[] exp = hit.getSkills();
+		int[] exp = hit.getSkills();
 		for (int i : exp) {
 			Skill skill = Skill.values()[i];
 			player.getSkillManager().addExperience(skill, (int) (((hit.getTotalDamage()) / exp.length)));
@@ -792,7 +790,7 @@ public class CombatFactory {
 	 * @param damage
 	 */
 	public static void handleRecoil(Player player, Mobile attacker, int damage) {
-		final int returnDmg = (int) Math.ceil(damage * 0.1D);
+		int returnDmg = (int) Math.ceil(damage * 0.1D);
 		if (returnDmg <= 0) {
 			return;
 		}
@@ -1036,10 +1034,10 @@ public class CombatFactory {
 	 */
 	public static boolean checkAmmo(Player player, int amountRequired) {
 		// Get the ranged weapon data
-		final RangedWeapon rangedWeapon = player.getCombat().getRangedWeapon();
+		RangedWeapon rangedWeapon = player.getCombat().getRangedWeapon();
 
 		// Get the ranged ammo data
-		final Ammunition ammoData = player.getCombat().getAmmunition();
+		Ammunition ammoData = player.getCombat().getAmmunition();
 
 		if (rangedWeapon == null) {
 			player.getCombat().reset();
@@ -1107,7 +1105,7 @@ public class CombatFactory {
 	public static void decrementAmmo(Player player, Location pos, int amount) {
 
 		// Get the ranged weapon data
-		final RangedWeapon rangedWeapon = player.getCombat().getRangedWeapon();
+		RangedWeapon rangedWeapon = player.getCombat().getRangedWeapon();
 
 		// Determine which slot we are decrementing ammo from.
 		int slot = Equipment.AMMUNITION_SLOT;

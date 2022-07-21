@@ -48,26 +48,26 @@ public class MovementPacketListener implements PacketExecutor {
         /*if (packet.getOpcode() == 248) {
             size -= 14;
         }*/
-        final int steps = (size - 5) / 2;
+        int steps = (size - 5) / 2;
         
         if (steps < 0) {
             return;
         }
         
-        final int plane = packet.readUnsignedByte();
-        final int firstStepX = packet.readLEShortA();
-        final int[][] path = new int[steps][2];
+        int plane = packet.readUnsignedByte();
+        int firstStepX = packet.readLEShortA();
+        int[][] path = new int[steps][2];
         for (int i = 0; i < steps; i++) {
             path[i][0] = packet.readByte();
             path[i][1] = packet.readByte();
         }
-        final int firstStepY = packet.readLEShort();
-        final Location[] positions = new Location[steps + 1];
+        int firstStepY = packet.readLEShort();
+        Location[] positions = new Location[steps + 1];
         positions[0] = new Location(firstStepX, firstStepY, plane);
         for (int i = 0; i < steps; i++) {
             positions[i + 1] = new Location(path[i][0] + firstStepX, path[i][1] + firstStepY, plane);
         }
-        final Location end = positions[positions.length - 1];
+        Location end = positions[positions.length - 1];
 
         if (end.getZ() != player.getLocation().getZ()) {
             return;

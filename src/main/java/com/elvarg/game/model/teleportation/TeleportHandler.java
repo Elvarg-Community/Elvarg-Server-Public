@@ -32,7 +32,7 @@ public class TeleportHandler {
 			if (wilderness) {
 				warning.append("Are you sure you want to teleport there? ");
 				if (wildernessLevel > 0) {
-					warning.append("It's in level @red@" + wildernessLevel + "@bla@ wilderness! ");
+					warning.append("It's in level @red@").append(wildernessLevel).append("@bla@ wilderness! ");
 					if (WildernessArea.multi(targetLocation.getX(), targetLocation.getY())) {
 						warning.append(
 								"Additionally, @red@it's a multi zone@bla@. Other players may attack you simultaneously.");
@@ -132,41 +132,38 @@ public class TeleportHandler {
 			return false;
 		}
 
-		if (player.getArea() != null) {
-			if (!player.getArea().canTeleport(player)) {
-				return false;
-			}
-		}
+		return player.getArea() == null || player.getArea().canTeleport(player);
 
-		return true;
 	}
 
 	public static boolean handleButton(Player player, int buttonId, int menuId) {
 		TeleportButton teleportButton = TeleportButton.get(buttonId);
 		if (teleportButton != null) {
 			switch (menuId) {
-			case 0: // Click to teleport
-				if (teleportButton == TeleportButton.HOME) {
-					if (TeleportHandler.checkReqs(player, GameConstants.DEFAULT_LOCATION)) {
-						TeleportHandler.teleport(player, GameConstants.DEFAULT_LOCATION,
-								player.getSpellbook().getTeleportType(), false);
-						player.getPreviousTeleports().put(teleportButton, GameConstants.DEFAULT_LOCATION);
+				case 0 -> { // Click to teleport
+					if (teleportButton == TeleportButton.HOME) {
+						if (TeleportHandler.checkReqs(player, GameConstants.DEFAULT_LOCATION)) {
+							TeleportHandler.teleport(player, GameConstants.DEFAULT_LOCATION,
+									player.getSpellbook().getTeleportType(), false);
+							player.getPreviousTeleports().put(teleportButton, GameConstants.DEFAULT_LOCATION);
+						}
+						return true;
 					}
+					player.getPacketSender().sendTeleportInterface(teleportButton.menu);
 					return true;
 				}
-				player.getPacketSender().sendTeleportInterface(teleportButton.menu);
-				return true;
-			case 1: // Previous option on teleport
-				if (player.getPreviousTeleports().containsKey(teleportButton)) {
-					Location tele = player.getPreviousTeleports().get(teleportButton);
-					if (TeleportHandler.checkReqs(player, tele)) {
-						TeleportHandler.teleport(player, tele, player.getSpellbook().getTeleportType(), true);
+				case 1 -> { // Previous option on teleport
+					if (player.getPreviousTeleports().containsKey(teleportButton)) {
+						Location tele = player.getPreviousTeleports().get(teleportButton);
+						if (TeleportHandler.checkReqs(player, tele)) {
+							TeleportHandler.teleport(player, tele, player.getSpellbook().getTeleportType(), true);
+						}
+					} else {
+						player.getPacketSender().sendMessage("Unable to find a previous teleport.");
 					}
-				} else {
-					player.getPacketSender().sendMessage("Unable to find a previous teleport.");
+					player.getPacketSender().sendInterfaceRemoval();
+					return true;
 				}
-				player.getPacketSender().sendInterfaceRemoval();
-				return true;
 			}
 		}
 		return false;

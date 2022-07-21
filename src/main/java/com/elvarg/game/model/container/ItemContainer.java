@@ -146,7 +146,7 @@ public abstract class ItemContainer {
      * @return items in a list format.
      */
     public ArrayList<Item> getValidItems() {
-        ArrayList<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<>();
         for (Item item : this.items) {
             if (item != null && item.getId() > 0) {
                 if (item.getAmount() > 0 || (this instanceof Bank && item.getAmount() == 0)) {
