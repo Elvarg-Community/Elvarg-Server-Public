@@ -34,13 +34,7 @@ public enum SlayerMaster {
     }
     
     public boolean canAssign(Player player) {
-        if (player.getSkillManager().getCombatLevel() < combatLevel) {
-            return false;
-        }
-        if (this == SlayerMaster.DURADEL) {
-            return player.getSkillManager().getMaxLevel(Skill.SLAYER) >= 50;
-        }
-        return true;
+        return player.getSkillManager().getCombatLevel() >= combatLevel && (this != SlayerMaster.DURADEL || player.getSkillManager().getMaxLevel(Skill.SLAYER) >= 50);
     }
     
     public static final SlayerMaster[] MASTERS = values();

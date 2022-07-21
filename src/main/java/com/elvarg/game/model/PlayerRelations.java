@@ -28,12 +28,12 @@ public class PlayerRelations {
     /**
      * This map contains the player's friends list.
      */
-    private List<Long> friendList = new ArrayList<Long>(200);
+    private List<Long> friendList = new ArrayList<>(200);
 
     /**
      * This map contains the player's ignore list.
      */
-    private List<Long> ignoreList = new ArrayList<Long>(100);
+    private List<Long> ignoreList = new ArrayList<>(100);
 
     /**
      * The player's current private message index.
@@ -119,17 +119,17 @@ public class PlayerRelations {
                 continue;
             boolean temporaryOnlineStatus = online;
             if (players.getRelations().friendList.contains(player.getLongUsername())) {
-                if (status.equals(PrivateChatStatus.FRIENDS_ONLY) && !friendList.contains(players.getLongUsername())
-                        || status.equals(PrivateChatStatus.OFF) || ignoreList.contains(players.getLongUsername())) {
+                if (status == PrivateChatStatus.FRIENDS_ONLY && !friendList.contains(players.getLongUsername())
+                        || status == PrivateChatStatus.OFF || ignoreList.contains(players.getLongUsername())) {
                     temporaryOnlineStatus = false;
                 }
                 players.getPacketSender().sendFriend(player.getLongUsername(), temporaryOnlineStatus ? 1 : 0);
             }
             boolean tempOn = true;
             if (player.getRelations().friendList.contains(players.getLongUsername())) {
-                if (players.getRelations().status.equals(PrivateChatStatus.FRIENDS_ONLY)
+                if (players.getRelations().status == PrivateChatStatus.FRIENDS_ONLY
                         && !players.getRelations().getFriendList().contains(player.getLongUsername())
-                        || players.getRelations().status.equals(PrivateChatStatus.OFF)
+                        || players.getRelations().status == PrivateChatStatus.OFF
                         || players.getRelations().getIgnoreList().contains(player.getLongUsername())) {
                     tempOn = false;
                 }
@@ -273,8 +273,7 @@ public class PlayerRelations {
             sendAddIgnore(username);
             updateLists(true);
             Optional<Player> ignored = World.getPlayerByName(name);
-            if (ignored.isPresent())
-                ignored.get().getRelations().updateLists(false);
+            ignored.ifPresent(value -> value.getRelations().updateLists(false));
         }
     }
 
@@ -292,10 +291,9 @@ public class PlayerRelations {
             ignoreList.remove(username);
             sendDeleteIgnore(username);
             updateLists(true);
-            if (status.equals(PrivateChatStatus.ON)) {
+            if (status == PrivateChatStatus.ON) {
                 Optional<Player> ignored = World.getPlayerByName(name);
-                if (ignored.isPresent())
-                    ignored.get().getRelations().updateLists(true);
+                ignored.ifPresent(value -> value.getRelations().updateLists(true));
             }
         } else {
             player.getPacketSender().sendMessage("This player is not on your ignore list!");
@@ -309,9 +307,9 @@ public class PlayerRelations {
      * @param message The message being sent in bytes.
      */
     public void message(Player friend, byte[] message, int size) {
-        if (friend.getRelations().status.equals(PrivateChatStatus.FRIENDS_ONLY)
+        if (friend.getRelations().status == PrivateChatStatus.FRIENDS_ONLY
                 && !friend.getRelations().friendList.contains(player.getLongUsername())
-                || friend.getRelations().status.equals(PrivateChatStatus.OFF)) {
+                || friend.getRelations().status == PrivateChatStatus.OFF) {
             player.getPacketSender().sendMessage("This player is currently offline.");
             return;
         }
@@ -325,7 +323,7 @@ public class PlayerRelations {
      * Represents a player's friends list status, whether others will be able to see
      * them online or not.
      */
-    public static enum PrivateChatStatus {
+    public enum PrivateChatStatus {
         ON, FRIENDS_ONLY, OFF;
     }
 }

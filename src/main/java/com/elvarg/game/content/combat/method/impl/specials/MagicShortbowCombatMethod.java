@@ -37,7 +37,7 @@ public class MagicShortbowCombatMethod extends RangedCombatMethod {
 
     @Override
     public void start(Mobile character, Mobile target) {
-        final Player player = character.getAsPlayer();
+        Player player = character.getAsPlayer();
         CombatSpecial.drain(player, CombatSpecial.MAGIC_SHORTBOW.getDrainAmount());
         player.performAnimation(ANIMATION);
         player.performGraphic(GRAPHIC);

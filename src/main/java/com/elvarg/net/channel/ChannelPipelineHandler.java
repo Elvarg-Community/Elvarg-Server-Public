@@ -29,7 +29,7 @@ public class ChannelPipelineHandler extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
-        final ChannelPipeline pipeline = channel.pipeline();
+        ChannelPipeline pipeline = channel.pipeline();
 
         channel.attr(NetworkConstants.SESSION_KEY).setIfAbsent(new PlayerSession(channel));
 

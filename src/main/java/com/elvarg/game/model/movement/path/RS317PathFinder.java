@@ -19,14 +19,14 @@ public class RS317PathFinder {
                 return;
             }
 
-            final int height = gc.getLocation().getZ() % 4;
+            int height = gc.getLocation().getZ() % 4;
             destX = destX - 8 * gc.getLocation().getRegionX();
             destY = destY - 8 * gc.getLocation().getRegionY();
-            final int[][] via = new int[104][104];
-            final int[][] cost = new int[104][104];
-            final LinkedList<Integer> tileQueueX = new LinkedList<Integer>();
-            final LinkedList<Integer> tileQueueY = new LinkedList<Integer>();
-            final PrivateArea privateArea = gc.getPrivateArea();
+            int[][] via = new int[104][104];
+            int[][] cost = new int[104][104];
+            LinkedList<Integer> tileQueueX = new LinkedList<>();
+            LinkedList<Integer> tileQueueY = new LinkedList<>();
+            PrivateArea privateArea = gc.getPrivateArea();
             for (int xx = 0; xx < 104; xx++)
                 for (int yy = 0; yy < 104; yy++)
                     cost[xx][yy] = 99999999;
@@ -45,8 +45,8 @@ public class RS317PathFinder {
             while (tail != tileQueueX.size() && tileQueueX.size() < DEFAULT_PATH_LENGTH) {
                 curX = tileQueueX.get(tail);
                 curY = tileQueueY.get(tail);
-                final int curAbsX = gc.getLocation().getRegionX() * 8 + curX;
-                final int curAbsY = gc.getLocation().getRegionY() * 8 + curY;
+                int curAbsX = gc.getLocation().getRegionX() * 8 + curX;
+                int curAbsY = gc.getLocation().getRegionY() * 8 + curY;
                 if (curX == destX && curY == destY) {
                     foundPath = true;
                     break;
@@ -55,7 +55,7 @@ public class RS317PathFinder {
 
                 if (cost.length < curX || cost[curX].length < curY)
                     return;
-                final int thisCost = cost[curX][curY] + 1;
+                int thisCost = cost[curX][curY] + 1;
 
                 if (curY > 0
                         && via[curX][curY - 1] == 0
@@ -153,7 +153,7 @@ public class RS317PathFinder {
                                     i_229_ = destY - y;
                                 else if (y > destY + yLength - 1)
                                     i_229_ = y - (destY + yLength - 1);
-                                final int i_230_ = i_228_ * i_228_ + i_229_
+                                int i_230_ = i_228_ * i_228_ + i_229_
                                         * i_229_;
                                 if (i_230_ < i_223_ || i_230_ == i_223_
                                         && cost[x][y] < thisCost) {
@@ -188,7 +188,7 @@ public class RS317PathFinder {
                 else if ((j5 & 4) != 0)
                     curY--;
             }
-            final int size = tail--;
+            int size = tail--;
             int pathX = gc.getLocation().getRegionX() * 8 + tileQueueX.get(tail);
             int pathY = gc.getLocation().getRegionY() * 8 + tileQueueY.get(tail);
             gc.getMovementQueue().addFirstStep(new Location(pathX, pathY, gc.getLocation().getZ()));

@@ -137,15 +137,9 @@ public class Runecrafting {
 			}
 			if (container.isPresent()) {
 				switch (actionType) {
-				case 1:
-					container.get().store(player);
-					break;
-				case 2:
-					container.get().check(player);
-					break;
-				case 3:
-					container.get().withdraw(player);
-					break;
+					case 1 -> container.get().store(player);
+					case 2 -> container.get().check(player);
+					case 3 -> container.get().withdraw(player);
 				}
 				return true;
 			}
@@ -274,7 +268,7 @@ public class Runecrafting {
 										true), LAW_RUNE(563, 54, 15, 14904, true), DEATH_RUNE(560, 65, 16, 14907,
 												true), BLOOD_RUNE(565, 75, 27, 27978, true);
 
-		private static final Map<Integer, Rune> runes = new HashMap<Integer, Rune>();
+		private static final Map<Integer, Rune> runes = new HashMap<>();
 
 		static {
 			for (Rune rune : Rune.values()) {
@@ -339,7 +333,7 @@ public class Runecrafting {
 																		new Location(2208, 4829)), BLOOD_TALISMAN(1450,
 																				77, new Location(1722, 3826));
 
-		private static final Map<Integer, Talisman> talismans = new HashMap<Integer, Talisman>();
+		private static final Map<Integer, Talisman> talismans = new HashMap<>();
 
 		static {
 			for (Talisman t : Talisman.values()) {
@@ -388,7 +382,7 @@ public class Runecrafting {
 		SMALL_POUCH(5509, 1, 3, -1), MEDIUM_POUCH(5510, 25, 6, 45), LARGE_POUCH(5512, 50, 9, 29), GIANT_POUCH(5514, 75,
 				12, 10),;
 
-		private static final Map<Integer, Pouch> pouches = new HashMap<Integer, Pouch>();
+		private static final Map<Integer, Pouch> pouches = new HashMap<>();
 
 		static {
 			for (Pouch p : Pouch.values()) {
@@ -495,7 +489,7 @@ public class Runecrafting {
 			}
 			if (player.getSkillManager().getMaxLevel(Skill.RUNECRAFTING) < pouch.getRequiredLevel()) {
 				player.getPacketSender().sendMessage("You need a Runecrafting level of at least "
-						+ Integer.toString(pouch.getRequiredLevel()) + " to use this.");
+						+ pouch.getRequiredLevel() + " to use this.");
 				return;
 			}
 			for (int i = getStoredAmount(); i < pouch.getCapacity(); i++) {
@@ -545,8 +539,8 @@ public class Runecrafting {
 		public void check(Player player) {
 			player.getPacketSender()
 					.sendMessage("Your " + Misc.capitalize(pouch.toString().toLowerCase().replace("_", " "))
-							+ " contains " + Integer.toString(runeEssenceAmt) + " Rune essence and "
-							+ Integer.toString(pureEssenceAmt) + " Pure essence.");
+							+ " contains " + runeEssenceAmt + " Rune essence and "
+							+ pureEssenceAmt + " Pure essence.");
 		}
 
 		/**

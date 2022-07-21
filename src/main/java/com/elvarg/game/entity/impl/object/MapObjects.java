@@ -26,7 +26,7 @@ public class MapObjects {
     /**
      * A map which holds all of our map objects.
      */
-    public static final Map<Long, ArrayList<GameObject>> mapObjects = new HashMap<Long, ArrayList<GameObject>>();
+    public static final Map<Long, ArrayList<GameObject>> mapObjects = new HashMap<>();
 
     /**
      * Attempts to get an object with the given id and position.
@@ -166,7 +166,7 @@ public class MapObjects {
                     mapObjects.get(hash).add(object);
                 }
             } else {
-                ArrayList<GameObject> list = new ArrayList<GameObject>();
+                ArrayList<GameObject> list = new ArrayList<>();
                 list.add(object);
                 mapObjects.put(hash, list);
             }

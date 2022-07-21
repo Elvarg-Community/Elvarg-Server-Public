@@ -174,7 +174,7 @@ public abstract class Mobile extends Entity {
     }
 	
 	public Location[] boundaryTiles() {
-	    final int size = size();
+	    int size = size();
         Location[] tiles = new Location[size * size];
         int index = 0;
 	    for (int x = 0; x < size; x++) {
@@ -186,7 +186,7 @@ public abstract class Mobile extends Entity {
 	}
 	
 	public Location[] outterTiles() {
-	    final int size = size();
+	    int size = size();
         Location[] tiles = new Location[size * 4];
         int index = 0;
         for (int x = 0; x < size; x++) {
@@ -201,7 +201,7 @@ public abstract class Mobile extends Entity {
 	}
 	
 	public Location[] tiles() {
-	    final int size = size();
+	    int size = size();
 	    Location[] tiles = new Location[size * size];
 	    int index = 0;
         for (int x = 0; x < size; x++) {

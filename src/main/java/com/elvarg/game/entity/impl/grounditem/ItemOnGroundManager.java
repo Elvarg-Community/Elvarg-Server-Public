@@ -108,24 +108,19 @@ public class ItemOnGroundManager {
 		if (item.getPosition().getDistance(player.getLocation()) > 64)
 			return;
 		switch (type) {
-		case ALTER:
-			player.getPacketSender().alterGroundItem(item);
-			break;
-		case DELETE:
-			player.getPacketSender().deleteGroundItem(item);
-			break;
-		case CREATE:
-			if (!isOwner(player.getUsername(), item)) {
-				if (item.getState() == State.SEEN_BY_PLAYER)
-					return;
-				if (!item.getItem().getDefinition().isTradeable() || !item.getItem().getDefinition().isDropable())
-					return;
+			case ALTER -> player.getPacketSender().alterGroundItem(item);
+			case DELETE -> player.getPacketSender().deleteGroundItem(item);
+			case CREATE -> {
+				if (!isOwner(player.getUsername(), item)) {
+					if (item.getState() == State.SEEN_BY_PLAYER)
+						return;
+					if (!item.getItem().getDefinition().isTradeable() || !item.getItem().getDefinition().isDropable())
+						return;
+				}
+				player.getPacketSender().createGroundItem(item);
 			}
-			player.getPacketSender().createGroundItem(item);
-			break;
-		default:
-			throw new UnsupportedOperationException(
-					"Unsupported operation (" + type.toString() + ")  on: " + item.toString());
+			default -> throw new UnsupportedOperationException(
+					"Unsupported operation (" + type + ")  on: " + item);
 		}
 	}
 
@@ -288,7 +283,7 @@ public class ItemOnGroundManager {
 				continue;
 			}
 			if (item.getState() == State.SEEN_BY_PLAYER) {
-				if (!owner.isPresent() || !isOwner(owner.get(), item)) {
+				if (owner.isEmpty() || !isOwner(owner.get(), item)) {
 					continue;
 				}
 			}
@@ -322,10 +317,7 @@ public class ItemOnGroundManager {
 	 * @return
 	 */
 	public static boolean isOwner(String player, ItemOnGround i) {
-		if (i.getOwner().isPresent()) {
-			return i.getOwner().get().equals(player);
-		}
-		return false;
+		return i.getOwner().isPresent() && i.getOwner().get().equals(player);
 	}
 
 	/**

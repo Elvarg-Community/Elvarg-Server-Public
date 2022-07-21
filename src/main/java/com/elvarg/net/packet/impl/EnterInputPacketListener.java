@@ -23,24 +23,24 @@ public class EnterInputPacketListener implements PacketExecutor {
         }
 
         switch (packet.getOpcode()) {
-        case PacketConstants.ENTER_SYNTAX_OPCODE:
-            String name = ByteBufUtils.readString(packet.getBuffer());
-            if (name == null)
-                return;
-            if (player.getEnteredSyntaxAction() != null) {
-                player.getEnteredSyntaxAction().execute(name);
-                player.setEnteredSyntaxAction(null);
+            case PacketConstants.ENTER_SYNTAX_OPCODE -> {
+                String name = ByteBufUtils.readString(packet.getBuffer());
+                if (name == null)
+                    return;
+                if (player.getEnteredSyntaxAction() != null) {
+                    player.getEnteredSyntaxAction().execute(name);
+                    player.setEnteredSyntaxAction(null);
+                }
             }
-            break;
-        case PacketConstants.ENTER_AMOUNT_OPCODE:
-            int amount = packet.readInt();
-            if (amount <= 0)
-                return;
-            if (player.getEnteredAmountAction() != null) {
-                player.getEnteredAmountAction().execute(amount);
-                player.setEnteredAmountAction(null);
+            case PacketConstants.ENTER_AMOUNT_OPCODE -> {
+                int amount = packet.readInt();
+                if (amount <= 0)
+                    return;
+                if (player.getEnteredAmountAction() != null) {
+                    player.getEnteredAmountAction().execute(amount);
+                    player.setEnteredAmountAction(null);
+                }
             }
-            break;
         }
     }
 }

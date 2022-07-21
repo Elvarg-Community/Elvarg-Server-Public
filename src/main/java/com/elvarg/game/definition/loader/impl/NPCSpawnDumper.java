@@ -19,7 +19,7 @@ public class NPCSpawnDumper extends DefinitionLoader {
 
 	@Override
 	public void load() throws Throwable {
-		BufferedReader r = new BufferedReader(new FileReader(new File(file())));
+		BufferedReader r = new BufferedReader(new FileReader(file()));
 		String s;
 		
 		Path path = Paths.get(GameConstants.DEFINITIONS_DIRECTORY, "gay.json");

@@ -6,7 +6,7 @@ import com.elvarg.game.model.equipment.BonusManager;
 
 public class Autocasting {
 
-    public static boolean toggleAutocast(final Player player, int actionButtonId) {
+    public static boolean toggleAutocast(Player player, int actionButtonId) {
         CombatSpell cbSpell = CombatSpells.getCombatSpell(actionButtonId);
         if (cbSpell == null) {
             return false;

@@ -15,7 +15,7 @@ public class TeleportTablets {
         Optional<TeleportTablet> tab = TeleportTablet.getTab(itemId);
 
         // Checks if the tab isn't present, if not perform nothing
-        if (!tab.isPresent()) {
+        if (tab.isEmpty()) {
             return false;
         }
 
@@ -63,7 +63,7 @@ public class TeleportTablets {
          * @param tabId
          * @param position
          */
-        private TeleportTablet(int tabId, Location position) {
+        TeleportTablet(int tabId, Location position) {
             this.tabId = tabId;
             this.position = position;
         }

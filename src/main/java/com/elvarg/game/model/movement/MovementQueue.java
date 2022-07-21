@@ -41,7 +41,7 @@ public final class MovementQueue {
 	/**
 	 * The queue of directions.
 	 */
-	private final Deque<Point> points = new ArrayDeque<Point>();
+	private final Deque<Point> points = new ArrayDeque<>();
 
 	/**
 	 * The current {@link MovementStatus}.
@@ -72,14 +72,8 @@ public final class MovementQueue {
 	 * @return
 	 */
 	public boolean canWalk(int deltaX, int deltaY) {
-        if (!canMove()) {
-            return false;
-        }
-        if (character.getLocation().getZ() == -1) {
-            return true;
-        }
-        return RegionManager.canMove(character.getLocation(), character.getLocation().transform(deltaX, deltaY), character.size(), character.size(), character.getPrivateArea());
-    }
+		return canMove() && (character.getLocation().getZ() == -1 || RegionManager.canMove(character.getLocation(), character.getLocation().transform(deltaX, deltaY), character.size(), character.size(), character.getPrivateArea()));
+	}
 
 	/**
 	 * Steps away from a Gamecharacter
@@ -149,10 +143,10 @@ public final class MovementQueue {
 		if (points.size() >= MAXIMUM_SIZE)
 			return;
 
-		final Point last = getLast();
-		final int deltaX = x - last.position.getX();
-		final int deltaY = y - last.position.getY();
-		final Direction direction = Direction.fromDeltas(deltaX, deltaY);
+		Point last = getLast();
+		int deltaX = x - last.position.getX();
+		int deltaY = y - last.position.getY();
+		Direction direction = Direction.fromDeltas(deltaX, deltaY);
 		if (direction != Direction.NONE)
 			points.add(new Point(new Location(x, y, heightLevel), direction));
 	}
@@ -169,12 +163,12 @@ public final class MovementQueue {
 			return;
 		}
 
-		final Point last = getLast();
-		final int x = step.getX();
-		final int y = step.getY();
+		Point last = getLast();
+		int x = step.getX();
+		int y = step.getY();
 		int deltaX = x - last.position.getX();
 		int deltaY = y - last.position.getY();
-		final int max = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+		int max = Math.max(Math.abs(deltaX), Math.abs(deltaY));
 		for (int i = 0; i < max; i++) {
 			if (deltaX < 0)
 				deltaX++;
@@ -204,7 +198,7 @@ public final class MovementQueue {
 	 * @return The last point.
 	 */
 	private Point getLast() {
-		final Point last = points.peekLast();
+		Point last = points.peekLast();
 		if (last == null)
 			return new Point(character.getLocation(), Direction.NONE);
 		return last;
@@ -303,8 +297,8 @@ public final class MovementQueue {
 
 	public void handleRegionChange() {
 		Player player = ((Player) character);
-		final int diffX = character.getLocation().getX() - character.getLastKnownRegion().getRegionX() * 8;
-		final int diffY = character.getLocation().getY() - character.getLastKnownRegion().getRegionY() * 8;
+		int diffX = character.getLocation().getX() - character.getLastKnownRegion().getRegionX() * 8;
+		int diffY = character.getLocation().getY() - character.getLastKnownRegion().getRegionY() * 8;
 		boolean regionChanged = false;
 		if (diffX < 16)
 			regionChanged = true;
@@ -359,9 +353,9 @@ public final class MovementQueue {
 	 * Processes following.
 	 */
     public void processFollowing() {
-        final Mobile following = character.getFollowing();
-        final int size = character.size();
-        final int followingSize = following.size();
+        Mobile following = character.getFollowing();
+        int size = character.size();
+        int followingSize = following.size();
         
         // Update interaction
         character.setMobileInteraction(following);
@@ -373,7 +367,7 @@ public final class MovementQueue {
         }
 
         boolean combatFollow = character.getCombat().getTarget() == following;
-        final CombatMethod method = CombatFactory.getMethod(character);
+        CombatMethod method = CombatFactory.getMethod(character);
         
         if (combatFollow && CombatFactory.canReach(character, method, following)) {
             reset();
@@ -406,11 +400,9 @@ public final class MovementQueue {
                     return;
                 }
 
-                switch (npc.getId()) {
-                case NpcIdentifiers.TZTOK_JAD:
-                    reset = false;
-                    break;
-                }
+				switch (npc.getId()) {
+					case NpcIdentifiers.TZTOK_JAD -> reset = false;
+				}
             }
 
             if (reset) {
@@ -427,9 +419,9 @@ public final class MovementQueue {
             }
         }
 
-        final boolean dancing = (!combatFollow && character.isPlayer() && following.isPlayer() && following.getFollowing() == character);
-        final boolean basicPathing = (combatFollow && character.isNpc() && !((NPC)character).canUsePathFinding());
-        final Location current = character.getLocation();
+        boolean dancing = (!combatFollow && character.isPlayer() && following.isPlayer() && following.getFollowing() == character);
+        boolean basicPathing = (combatFollow && character.isNpc() && !((NPC)character).canUsePathFinding());
+        Location current = character.getLocation();
         Location destination = following.getLocation();        
         if (dancing) {
             destination = following.getAsPlayer().getOldPosition();

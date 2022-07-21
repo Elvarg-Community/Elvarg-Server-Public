@@ -36,28 +36,27 @@ public class ChatPacketListener implements PacketExecutor {
     @Override
     public void execute(Player player, Packet packet) {
         switch (packet.getOpcode()) {
-        case PacketConstants.CLAN_CHAT_OPCODE:
-            String clanMessage = packet.readString();
-            if (!allowChat(player, clanMessage)) {
-                return;
+            case PacketConstants.CLAN_CHAT_OPCODE -> {
+                String clanMessage = packet.readString();
+                if (!allowChat(player, clanMessage)) {
+                    return;
+                }
+                ClanChatManager.sendMessage(player, clanMessage);
             }
-            ClanChatManager.sendMessage(player, clanMessage);
-            break;
-        case PacketConstants.REGULAR_CHAT_OPCODE:
-            int size = packet.getSize() - 2;
-            int color = packet.readByteS();
-            int effect = packet.readByteS();
-            byte[] text = packet.readReversedBytesA(size);
-            String chatMessage = Misc.ucFirst(Misc.textUnpack(text, size).toLowerCase());
-
-            if (!allowChat(player, chatMessage)) {
-                return;
+            case PacketConstants.REGULAR_CHAT_OPCODE -> {
+                int size = packet.getSize() - 2;
+                int color = packet.readByteS();
+                int effect = packet.readByteS();
+                byte[] text = packet.readReversedBytesA(size);
+                String chatMessage = Misc.ucFirst(Misc.textUnpack(text, size).toLowerCase());
+                if (!allowChat(player, chatMessage)) {
+                    return;
+                }
+                if (player.getChatMessageQueue().size() >= 5) {
+                    return;
+                }
+                player.getChatMessageQueue().add(new ChatMessage(color, effect, text));
             }
-            if (player.getChatMessageQueue().size() >= 5) {
-                return;
-            }
-            player.getChatMessageQueue().add(new ChatMessage(color, effect, text));
-            break;
         }
     }
 }

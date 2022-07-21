@@ -17,7 +17,7 @@ public class NpcDropDefinition {
     /**
      * The map containing all our {@link NpcDropDefinition}s.
      */
-    public static Map<Integer, NpcDropDefinition> definitions = new HashMap<Integer, NpcDropDefinition>();
+    public static Map<Integer, NpcDropDefinition> definitions = new HashMap<>();
     /**
      * The npcs which share this {@link NpcDropDefinition}.
      */
@@ -106,7 +106,7 @@ public class NpcDropDefinition {
         }
     }
 
-    public static enum RDT {
+    public enum RDT {
         LAW_RUNE(563, 45, 64),
         DEATH_RUNE(560, 45, 64),
         NATURE_RUNE(561, 67, 43),
@@ -139,7 +139,7 @@ public class NpcDropDefinition {
         private final int amount;
         private final int chance;
 
-        private RDT(int itemId, int amount, int chance) {
+        RDT(int itemId, int amount, int chance) {
             this.itemId = itemId;
             this.amount = amount;
             this.chance = chance;

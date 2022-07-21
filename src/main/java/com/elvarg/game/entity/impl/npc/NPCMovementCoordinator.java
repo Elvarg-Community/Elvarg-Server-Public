@@ -52,12 +52,10 @@ public class NPCMovementCoordinator {
         updateCoordinator();
 
         switch (coordinateState) {
-            case HOME:
-
+            case HOME -> {
                 if (CombatFactory.inCombat(npc)) {
                     return;
                 }
-
                 if (!npc.getMovementQueue().isMoving()) {
                     if (Misc.getRandom(9) <= 1) {
                         Location pos = generateLocalPosition();
@@ -66,12 +64,8 @@ public class NPCMovementCoordinator {
                         }
                     }
                 }
-
-                break;
-            case RETREATING:
-            case AWAY:
-                RS317PathFinder.findPath(npc, npc.getSpawnPosition().getX(), npc.getSpawnPosition().getY(), true, 1, 1);
-                break;
+            }
+            case RETREATING, AWAY -> RS317PathFinder.findPath(npc, npc.getSpawnPosition().getX(), npc.getSpawnPosition().getY(), true, 1, 1);
         }
     }
 

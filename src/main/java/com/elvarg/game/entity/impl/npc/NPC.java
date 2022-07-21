@@ -85,67 +85,16 @@ public class NPC extends Mobile {
 	 * @return
 	 */
 	public static NPC create(int id, Location location) {
-		switch (id) {
-		case NpcIdentifiers.VETION:
-		case NpcIdentifiers.VETION_REBORN:
-			return new Vetion(id, location);
-		case NpcIdentifiers.VETION_HELLHOUND:
-		case NpcIdentifiers.GREATER_VETION_HELLHOUND:
-			return new VetionHellhound(id, location);
-		case NpcIdentifiers.KNIGHT_OF_SARADOMIN:
-		case NpcIdentifiers.KNIGHT_OF_SARADOMIN_2:
-		case NpcIdentifiers.SARADOMIN_PRIEST:
-		case NpcIdentifiers.SPIRITUAL_WARRIOR:
-		case NpcIdentifiers.SPIRITUAL_RANGER:
-		case NpcIdentifiers.SPIRITUAL_MAGE:
-			return new GodwarsFollower(id, location, God.SARADOMIN);
-		case NpcIdentifiers.AVIANSIE_3:
-		case NpcIdentifiers.AVIANSIE_4:
-		case NpcIdentifiers.AVIANSIE_6:
-		case NpcIdentifiers.AVIANSIE_7:
-		case NpcIdentifiers.AVIANSIE_8:
-		case NpcIdentifiers.AVIANSIE_9:
-		case NpcIdentifiers.AVIANSIE_12:
-		case NpcIdentifiers.AVIANSIE_13:
-		case NpcIdentifiers.AVIANSIE_14:
-		case NpcIdentifiers.SPIRITUAL_WARRIOR_4:
-		case NpcIdentifiers.SPIRITUAL_RANGER_4:
-		case NpcIdentifiers.SPIRITUAL_MAGE_4:
-			return new GodwarsFollower(id, location, God.ARMADYL);
-		case NpcIdentifiers.IMP:
-		case NpcIdentifiers.ICEFIEND:
-		case NpcIdentifiers.PYREFIEND:
-		case NpcIdentifiers.GORAK_2:
-		case NpcIdentifiers.VAMPIRE:
-		case NpcIdentifiers.BLOODVELD_5:
-		case NpcIdentifiers.WEREWOLF_21:
-		case NpcIdentifiers.WEREWOLF_22:
-		case NpcIdentifiers.HELLHOUND_4:
-		case NpcIdentifiers.SPIRITUAL_WARRIOR_3:
-		case NpcIdentifiers.SPIRITUAL_MAGE_3:
-		case NpcIdentifiers.SPIRITUAL_RANGER_3:
-			return new GodwarsFollower(id, location, God.ZAMORAK);
-		case NpcIdentifiers.GOBLIN_18:
-		case NpcIdentifiers.GOBLIN_19:
-		case NpcIdentifiers.GOBLIN_20:
-		case NpcIdentifiers.GOBLIN_21:			
-		case NpcIdentifiers.GOBLIN_22:
-		case NpcIdentifiers.HOBGOBLIN_2:
-		case NpcIdentifiers.OGRE_5:
-		case NpcIdentifiers.JOGRE_2:
-		case NpcIdentifiers.CYCLOPS_8:
-		case NpcIdentifiers.CYCLOPS_9:
-		case NpcIdentifiers.ORK_5:
-		case NpcIdentifiers.ORK_6:
-		case NpcIdentifiers.ORK_7:
-		case NpcIdentifiers.ORK_8:
-		case NpcIdentifiers.SPIRITUAL_WARRIOR_2:
-		case NpcIdentifiers.SPIRITUAL_RANGER_2:
-		case NpcIdentifiers.SPIRITUAL_MAGE_2:
-			return new GodwarsFollower(id, location, God.BANDOS);
-		}
-		return new NPC(id, location);
-	}
+        return switch (id) {
+            case NpcIdentifiers.VETION, NpcIdentifiers.VETION_REBORN -> new Vetion(id, location);
+            case NpcIdentifiers.VETION_HELLHOUND, NpcIdentifiers.GREATER_VETION_HELLHOUND -> new VetionHellhound(id, location);
+            case NpcIdentifiers.KNIGHT_OF_SARADOMIN, NpcIdentifiers.KNIGHT_OF_SARADOMIN_2, NpcIdentifiers.SARADOMIN_PRIEST, NpcIdentifiers.SPIRITUAL_WARRIOR, NpcIdentifiers.SPIRITUAL_RANGER, NpcIdentifiers.SPIRITUAL_MAGE -> new GodwarsFollower(id, location, God.SARADOMIN);
+            case NpcIdentifiers.AVIANSIE_3, NpcIdentifiers.AVIANSIE_4, NpcIdentifiers.AVIANSIE_6, NpcIdentifiers.AVIANSIE_7, NpcIdentifiers.AVIANSIE_8, NpcIdentifiers.AVIANSIE_9, NpcIdentifiers.AVIANSIE_12, NpcIdentifiers.AVIANSIE_13, NpcIdentifiers.AVIANSIE_14, NpcIdentifiers.SPIRITUAL_WARRIOR_4, NpcIdentifiers.SPIRITUAL_RANGER_4, NpcIdentifiers.SPIRITUAL_MAGE_4 -> new GodwarsFollower(id, location, God.ARMADYL);
+            case NpcIdentifiers.IMP, NpcIdentifiers.ICEFIEND, NpcIdentifiers.PYREFIEND, NpcIdentifiers.GORAK_2, NpcIdentifiers.VAMPIRE, NpcIdentifiers.BLOODVELD_5, NpcIdentifiers.WEREWOLF_21, NpcIdentifiers.WEREWOLF_22, NpcIdentifiers.HELLHOUND_4, NpcIdentifiers.SPIRITUAL_WARRIOR_3, NpcIdentifiers.SPIRITUAL_MAGE_3, NpcIdentifiers.SPIRITUAL_RANGER_3 -> new GodwarsFollower(id, location, God.ZAMORAK);
+            case NpcIdentifiers.GOBLIN_18, NpcIdentifiers.GOBLIN_19, NpcIdentifiers.GOBLIN_20, NpcIdentifiers.GOBLIN_21, NpcIdentifiers.GOBLIN_22, NpcIdentifiers.HOBGOBLIN_2, NpcIdentifiers.OGRE_5, NpcIdentifiers.JOGRE_2, NpcIdentifiers.CYCLOPS_8, NpcIdentifiers.CYCLOPS_9, NpcIdentifiers.ORK_5, NpcIdentifiers.ORK_6, NpcIdentifiers.ORK_7, NpcIdentifiers.ORK_8, NpcIdentifiers.SPIRITUAL_WARRIOR_2, NpcIdentifiers.SPIRITUAL_RANGER_2, NpcIdentifiers.SPIRITUAL_MAGE_2 -> new GodwarsFollower(id, location, God.BANDOS);
+            default -> new NPC(id, location);
+        };
+    }
 	
 	/**
 	 * Can this npc walk through other NPCs?
@@ -317,19 +266,12 @@ public class NPC extends Mobile {
 
 	@Override
 	public int getBaseDefence(CombatType type) {
-		int base = 0;
-		switch (type) {
-		case MAGIC:
-			base = getDefinition().getStats()[13];
-			break;
-		case MELEE:
-			base = getDefinition().getStats()[10];
-			break;
-		case RANGED:
-			base = getDefinition().getStats()[14];
-			break;
-		}
-		// 10,11,12 = melee
+		int base = switch (type) {
+            case MAGIC -> getDefinition().getStats()[13];
+            case MELEE -> getDefinition().getStats()[10];
+            case RANGED -> getDefinition().getStats()[14];
+        };
+        // 10,11,12 = melee
 		// 13 = magic
 		// 14 = range
 		return base;

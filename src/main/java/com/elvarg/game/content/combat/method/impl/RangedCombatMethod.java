@@ -52,9 +52,9 @@ public class RangedCombatMethod extends CombatMethod {
 
     @Override
     public void start(Mobile character, Mobile target) {
-        final Ammunition ammo = character.getCombat().getAmmunition();
-        final RangedWeapon rangedWeapon = character.getCombat().getRangedWeapon();
-        final int animation = character.getAttackAnim();
+        Ammunition ammo = character.getCombat().getAmmunition();
+        RangedWeapon rangedWeapon = character.getCombat().getRangedWeapon();
+        int animation = character.getAttackAnim();
 
         if (animation != -1) {
             character.performAnimation(new Animation(animation));
@@ -124,7 +124,7 @@ public class RangedCombatMethod extends CombatMethod {
 
     @Override
     public int attackDistance(Mobile character) {
-    	final RangedWeapon bow = character.getCombat().getRangedWeapon();
+    	RangedWeapon bow = character.getCombat().getRangedWeapon();
         if (bow != null) {
 
             if (character.isNpc() || character.isPlayer()

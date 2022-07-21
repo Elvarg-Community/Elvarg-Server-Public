@@ -62,9 +62,7 @@ public class TimedObjectSpawnTask extends Task {
         } else if (tick >= ticks) {
             ObjectManager.deregister(temp, true);
 
-            if (action.isPresent()) {
-                action.get().execute();
-            }
+            action.ifPresent(Action::execute);
 
             stop();
         }

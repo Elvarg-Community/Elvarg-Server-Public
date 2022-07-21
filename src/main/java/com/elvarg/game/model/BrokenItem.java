@@ -23,7 +23,7 @@ public enum BrokenItem {
     //Original item value * this multiplier is the repair cost of all items.
     //Currently 3%
     private static final double REPAIR_COST_MULTIPLIER = 0.03;
-    private static Map<Integer, BrokenItem> brokenItems = new HashMap<Integer, BrokenItem>();
+    private static Map<Integer, BrokenItem> brokenItems = new HashMap<>();
 
     static {
         for (BrokenItem brokenItem : BrokenItem.values()) {
@@ -49,7 +49,7 @@ public enum BrokenItem {
     public static int getRepairCost(Player player) {
         int cost = 0;
         for (BrokenItem b : BrokenItem.values()) {
-            final int amt = player.getInventory().getAmount(b.getBrokenItem());
+            int amt = player.getInventory().getAmount(b.getBrokenItem());
             if (amt > 0) {
                 cost += ((int) (ItemDefinition.forId(b.getOriginalItem()).getValue() * REPAIR_COST_MULTIPLIER) * amt);
             }
@@ -66,9 +66,9 @@ public enum BrokenItem {
         boolean fixed = false;
 
         for (BrokenItem b : BrokenItem.values()) {
-            final int amt = player.getInventory().getAmount(b.getBrokenItem());
+            int amt = player.getInventory().getAmount(b.getBrokenItem());
             if (amt > 0) {
-                final int cost = ((int) (ItemDefinition.forId(b.getOriginalItem()).getValue() * REPAIR_COST_MULTIPLIER) * amt);
+                int cost = ((int) (ItemDefinition.forId(b.getOriginalItem()).getValue() * REPAIR_COST_MULTIPLIER) * amt);
                 if (player.getInventory().getAmount(ItemIdentifiers.COINS) >= cost) {
                     player.getInventory().delete(ItemIdentifiers.COINS, cost);
                     player.getInventory().delete(b.getBrokenItem(), amt);

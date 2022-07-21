@@ -37,7 +37,7 @@ public class BallistaCombatMethod extends RangedCombatMethod {
 
     @Override
     public void start(Mobile character, Mobile target) {
-        final Player player = character.getAsPlayer();
+        Player player = character.getAsPlayer();
         CombatSpecial.drain(player, CombatSpecial.BALLISTA.getDrainAmount());
         character.performAnimation(ANIMATION);
         new Projectile(player, target, 1301, 70, 30, 43, 31).sendProjectile();

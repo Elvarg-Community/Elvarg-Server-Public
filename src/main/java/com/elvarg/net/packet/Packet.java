@@ -89,7 +89,7 @@ public class Packet {
         try {
             b = buffer.readByte();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return b;
     }

@@ -163,7 +163,7 @@ public class Dueling {
             }
 
             // The other players' current duel state.
-            final DuelState t_state = t_.getDueling().getState();
+            DuelState t_state = t_.getDueling().getState();
 
             // Should we initiate the duel or simply send a request?
             boolean initiateDuel = false;
@@ -235,7 +235,7 @@ public class Dueling {
         if (state != DuelState.NONE) {
 
             // Cache the current interact
-            final Player interact_ = interact;
+            Player interact_ = interact;
 
             // Return all items...
             for (Item t : container.getValidItems()) {
@@ -343,10 +343,10 @@ public class Dueling {
                         return;
                     }
 
-                    final Item item = new Item(id, amount);
+                    Item item = new Item(id, amount);
 
                     // Only sort items if we're withdrawing items from the duel.
-                    final boolean sort = (from == (player.getDueling().getContainer()));
+                    boolean sort = (from == (player.getDueling().getContainer()));
 
                     // Do the switch!
                     if (item.getAmount() == 1) {
@@ -380,10 +380,10 @@ public class Dueling {
         // }
 
         // Cache the interact...
-        final Player interact_ = interact;
+        Player interact_ = interact;
 
         // Interact's current trade state.
-        final DuelState t_state = interact_.getDueling().getState();
+        DuelState t_state = interact_.getDueling().getState();
 
         // Check which action to take..
         if (state == DuelState.DUEL_SCREEN) {
@@ -433,8 +433,8 @@ public class Dueling {
                 // Both accepted, start duel
 
                 // Decide where they will spawn in the arena..
-                final boolean obstacle = rules[DuelRule.OBSTACLES.ordinal()];
-                final boolean movementDisabled = rules[DuelRule.NO_MOVEMENT.ordinal()];
+                boolean obstacle = rules[DuelRule.OBSTACLES.ordinal()];
+                boolean movementDisabled = rules[DuelRule.NO_MOVEMENT.ordinal()];
 
                 Location pos1 = getRandomSpawn(obstacle);
                 Location pos2 = getRandomSpawn(obstacle);
@@ -657,7 +657,7 @@ public class Dueling {
 
             // Add won items to a list..
             int totalValue = 0;
-            List<Item> winnings = new ArrayList<Item>();
+            List<Item> winnings = new ArrayList<>();
             for (Item item : interact.getDueling().getContainer().getValidItems()) {
                 interact.getInventory().add(item);
                 winnings.add(item);

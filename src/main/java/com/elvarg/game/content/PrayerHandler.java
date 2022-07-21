@@ -69,16 +69,11 @@ public class PrayerHandler {
      * @return the protecting prayer.
      */
     public static int getProtectingPrayer(CombatType type) {
-        switch (type) {
-            case MELEE:
-                return PROTECT_FROM_MELEE;
-            case MAGIC:
-                return PROTECT_FROM_MAGIC;
-            case RANGED:
-                return PROTECT_FROM_MISSILES;
-            default:
-                throw new IllegalArgumentException("Invalid combat type: " + type);
-        }
+        return switch (type) {
+            case MELEE -> PROTECT_FROM_MELEE;
+            case MAGIC -> PROTECT_FROM_MAGIC;
+            case RANGED -> PROTECT_FROM_MISSILES;
+        };
     }
 
     public static boolean isActivated(Mobile c, int prayer) {
@@ -91,7 +86,7 @@ public class PrayerHandler {
      * @param player   The player clicking on prayer button.
      * @param buttonId The button the player is clicking.
      */
-    public static boolean togglePrayer(Player player, final int buttonId) {
+    public static boolean togglePrayer(Player player, int buttonId) {
         PrayerData prayerData = PrayerData.actionButton.get(buttonId);
         if (prayerData != null) {
             if (!player.getPrayerActive()[prayerData.ordinal()])
@@ -111,7 +106,7 @@ public class PrayerHandler {
      * @param prayerId  The id of the prayer being turned on, also known as the ordinal in
      *                  the respective enum.
      */
-    public static void activatePrayer(Mobile character, final int prayerId) {
+    public static void activatePrayer(Mobile character, int prayerId) {
 
         // Get the prayer data.
         PrayerData pd = PrayerData.prayerData.get(prayerId);
@@ -153,56 +148,32 @@ public class PrayerHandler {
         }
 
         switch (prayerId) {
-            case THICK_SKIN:
-            case ROCK_SKIN:
-            case STEEL_SKIN:
-                resetPrayers(character, DEFENCE_PRAYERS, prayerId);
-                break;
-            case BURST_OF_STRENGTH:
-            case SUPERHUMAN_STRENGTH:
-            case ULTIMATE_STRENGTH:
+            case THICK_SKIN, ROCK_SKIN, STEEL_SKIN -> resetPrayers(character, DEFENCE_PRAYERS, prayerId);
+
+            case BURST_OF_STRENGTH, SUPERHUMAN_STRENGTH, ULTIMATE_STRENGTH -> {
                 resetPrayers(character, STRENGTH_PRAYERS, prayerId);
                 resetPrayers(character, RANGED_PRAYERS, prayerId);
                 resetPrayers(character, MAGIC_PRAYERS, prayerId);
-                break;
-            case CLARITY_OF_THOUGHT:
-            case IMPROVED_REFLEXES:
-            case INCREDIBLE_REFLEXES:
+            }
+            case CLARITY_OF_THOUGHT, IMPROVED_REFLEXES, INCREDIBLE_REFLEXES -> {
                 resetPrayers(character, ATTACK_PRAYERS, prayerId);
                 resetPrayers(character, RANGED_PRAYERS, prayerId);
                 resetPrayers(character, MAGIC_PRAYERS, prayerId);
-                break;
-            case SHARP_EYE:
-            case HAWK_EYE:
-            case EAGLE_EYE:
-            case MYSTIC_WILL:
-            case MYSTIC_LORE:
-            case MYSTIC_MIGHT:
+            }
+            case SHARP_EYE, HAWK_EYE, EAGLE_EYE, MYSTIC_WILL, MYSTIC_LORE, MYSTIC_MIGHT -> {
                 resetPrayers(character, STRENGTH_PRAYERS, prayerId);
                 resetPrayers(character, ATTACK_PRAYERS, prayerId);
                 resetPrayers(character, RANGED_PRAYERS, prayerId);
                 resetPrayers(character, MAGIC_PRAYERS, prayerId);
-                break;
-            case CHIVALRY:
-            case PIETY:
-            case RIGOUR:
-            case AUGURY:
+            }
+            case CHIVALRY, PIETY, RIGOUR, AUGURY -> {
                 resetPrayers(character, DEFENCE_PRAYERS, prayerId);
                 resetPrayers(character, STRENGTH_PRAYERS, prayerId);
                 resetPrayers(character, ATTACK_PRAYERS, prayerId);
                 resetPrayers(character, RANGED_PRAYERS, prayerId);
                 resetPrayers(character, MAGIC_PRAYERS, prayerId);
-                break;
-            case PROTECT_FROM_MAGIC:
-            case PROTECT_FROM_MISSILES:
-            case PROTECT_FROM_MELEE:
-                resetPrayers(character, OVERHEAD_PRAYERS, prayerId);
-                break;
-            case RETRIBUTION:
-            case REDEMPTION:
-            case SMITE:
-                resetPrayers(character, OVERHEAD_PRAYERS, prayerId);
-                break;
+            }
+            case PROTECT_FROM_MAGIC, PROTECT_FROM_MISSILES, PROTECT_FROM_MELEE, RETRIBUTION, REDEMPTION, SMITE -> resetPrayers(character, OVERHEAD_PRAYERS, prayerId);
         }
         character.setPrayerActive(prayerId, true);
 
@@ -416,7 +387,7 @@ public class PrayerHandler {
      *
      * @param player The player to start prayer drain for.
      */
-    private static void startDrain(final Player player) {
+    private static void startDrain(Player player) {
         if (player.isDrainingPrayer()) {
             return;
         }
@@ -489,9 +460,9 @@ public class PrayerHandler {
      * @param prayerID The prayer ID to not turn off (exception)
      */
     public static void resetPrayers(Mobile c, int[] prayers, int prayerID) {
-        for (int i = 0; i < prayers.length; i++) {
-            if (prayers[i] != prayerID)
-                deactivatePrayer(c, prayers[i]);
+        for (int prayer : prayers) {
+            if (prayer != prayerID)
+                deactivatePrayer(c, prayer);
         }
     }
 
@@ -502,8 +473,8 @@ public class PrayerHandler {
      * @param prayers
      */
     public static void resetPrayers(Player player, int[] prayers) {
-        for (int i = 0; i < prayers.length; i++) {
-            deactivatePrayer(player, prayers[i]);
+        for (int prayer : prayers) {
+            deactivatePrayer(player, prayer);
         }
     }
 
@@ -512,7 +483,7 @@ public class PrayerHandler {
      *
      * @param buttonId action button being hit.
      */
-    public static final boolean isButton(final int actionButtonID) {
+    public static boolean isButton(int actionButtonID) {
         return PrayerData.actionButton.containsKey(actionButtonID);
     }
 
@@ -556,11 +527,11 @@ public class PrayerHandler {
         /**
          * Contains the PrayerData with their corresponding prayerId.
          */
-        private static HashMap<Integer, PrayerData> prayerData = new HashMap<Integer, PrayerData>();
+        private static HashMap<Integer, PrayerData> prayerData = new HashMap<>();
         /**
          * Contains the PrayerData with their corresponding buttonId.
          */
-        private static HashMap<Integer, PrayerData> actionButton = new HashMap<Integer, PrayerData>();
+        private static HashMap<Integer, PrayerData> actionButton = new HashMap<>();
 
         /**
          * Populates the prayerId and buttonId maps.
@@ -599,7 +570,7 @@ public class PrayerHandler {
          */
         private String name;
 
-        private PrayerData(int requirement, double drainRate, int buttonId, int configId, int... hint) {
+        PrayerData(int requirement, double drainRate, int buttonId, int configId, int... hint) {
             this.requirement = requirement;
             this.drainRate = drainRate;
             this.buttonId = buttonId;
@@ -613,7 +584,7 @@ public class PrayerHandler {
          *
          * @return The prayer's name
          */
-        private final String getPrayerName() {
+        private String getPrayerName() {
             if (name == null)
                 return Misc.capitalizeWords(toString().toLowerCase().replaceAll("_", " "));
             return name;

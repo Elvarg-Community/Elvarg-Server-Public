@@ -35,7 +35,7 @@ public class DarkBowCombatMethod extends RangedCombatMethod {
 
 	@Override
 	public void start(Mobile character, Mobile target) {
-		final Player player = character.getAsPlayer();
+		Player player = character.getAsPlayer();
 		CombatSpecial.drain(player, CombatSpecial.DARK_BOW.getDrainAmount());
 		player.performAnimation(ANIMATION);
 		int projectileId = 1099;

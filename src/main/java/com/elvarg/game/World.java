@@ -88,7 +88,7 @@ public class World {
 			if (player == null)
 				break;
 			// Kick any copies before adding the new player
-			World.getPlayerByName(player.getUsername()).ifPresent(e -> e.requestLogout());
+			World.getPlayerByName(player.getUsername()).ifPresent(Player::requestLogout);
 			getPlayers().add(player);
 		}
 

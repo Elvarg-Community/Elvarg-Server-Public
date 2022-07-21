@@ -28,7 +28,7 @@ public enum Teleportable {
 	private final int index;
 	private final Location position;
 	
-	private Teleportable(TeleportButton teleportButton, int type, int index, Location position) {
+	Teleportable(TeleportButton teleportButton, int type, int index, Location position) {
 		this.teleportButton = teleportButton;
 		this.type = type;
 		this.index = index;

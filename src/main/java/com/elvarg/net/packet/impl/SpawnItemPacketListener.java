@@ -67,9 +67,9 @@ public class SpawnItemPacketListener implements PacketExecutor {
 
     @Override
     public void execute(com.elvarg.game.entity.impl.player.Player player, Packet packet) {
-        final int item = packet.readInt();
-        final boolean spawnX = packet.readByte() == 1;
-        final boolean toBank = packet.readByte() == 1;
+        int item = packet.readInt();
+        boolean spawnX = packet.readByte() == 1;
+        boolean toBank = packet.readByte() == 1;
 
         ItemDefinition def = ItemDefinition.forId(item);
         if (def == null) {

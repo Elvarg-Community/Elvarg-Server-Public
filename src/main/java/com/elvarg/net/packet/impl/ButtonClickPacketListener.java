@@ -129,7 +129,7 @@ public class ButtonClickPacketListener implements PacketExecutor {
 		}
 
 		if (player.getRights() == PlayerRights.DEVELOPER) {
-			player.getPacketSender().sendMessage("Button clicked: " + Integer.toString(button) + ".");
+			player.getPacketSender().sendMessage("Button clicked: " + button + ".");
 		}
 
 		if (handlers(player, button)) {
@@ -165,11 +165,7 @@ public class ButtonClickPacketListener implements PacketExecutor {
 			if (player.busy()) {
 				player.getPacketSender().sendInterfaceRemoval();
 			}
-			if (player.getRunEnergy() > 0) {
-				player.setRunning(!player.isRunning());
-			} else {
-				player.setRunning(false);
-			}
+            player.setRunning(player.getRunEnergy() > 0 && !player.isRunning());
 			player.getPacketSender().sendRunStatus();
 			break;
 
@@ -238,7 +234,7 @@ public class ButtonClickPacketListener implements PacketExecutor {
             break;
 
 		case DESTROY_ITEM:
-			final int item = player.getDestroyItem();
+			int item = player.getDestroyItem();
 			player.getPacketSender().sendInterfaceRemoval();
 			if (item != -1) {
 				player.getInventory().delete(item, player.getInventory().getAmount(item));

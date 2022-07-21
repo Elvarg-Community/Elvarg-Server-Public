@@ -15,7 +15,7 @@ public class NpcDefinition {
     /**
      * The map containing all our {@link ItemDefinition}s.
      */
-    public static final Map<Integer, NpcDefinition> definitions = new HashMap<Integer, NpcDefinition>();
+    public static final Map<Integer, NpcDefinition> definitions = new HashMap<>();
 
     
     /**

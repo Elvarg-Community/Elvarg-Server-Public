@@ -16,7 +16,7 @@ public class ItemDefinition {
     /**
      * The map containing all our {@link ItemDefinition}s.
      */
-    public static final Map<Integer, ItemDefinition> definitions = new HashMap<Integer, ItemDefinition>();
+    public static final Map<Integer, ItemDefinition> definitions = new HashMap<>();
 
     /**
      * The default {@link ItemDefinition} that will be used.

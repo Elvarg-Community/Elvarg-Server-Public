@@ -120,7 +120,7 @@ public class Emotes {
 		SNOWMAN_DANCE(11102, new Animation(7531), null),
 		FREEZE(11103, new Animation(11044), new Graphic(1973))*/;
 
-        private static Map<Integer, EmoteData> emotes = new HashMap<Integer, EmoteData>();
+        private static Map<Integer, EmoteData> emotes = new HashMap<>();
 
         static {
             for (EmoteData t : EmoteData.values()) {

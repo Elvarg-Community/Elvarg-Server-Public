@@ -36,6 +36,7 @@ public class OpenThread implements Command {
             in.close();
 
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
     }

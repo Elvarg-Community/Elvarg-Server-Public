@@ -95,7 +95,7 @@ public class Slayer {
         }
         
         boolean isTask = false;
-        final String killedNpcName = npc.getDefinition().getName().toLowerCase();
+        String killedNpcName = npc.getDefinition().getName().toLowerCase();
         for (String npcName : player.getSlayerTask().getTask().getNpcNames()) {
             if (npcName.equals(killedNpcName)) {
                 isTask = true;

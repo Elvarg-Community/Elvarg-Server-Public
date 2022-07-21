@@ -33,7 +33,7 @@ public class ClanChat {
 
 	public ClanChat(String ownerName, String name, int index) {
 		Optional<Player> o = World.getPlayerByName(ownerName);
-		this.owner = o.isPresent() ? o.get() : null;
+		this.owner = o.orElse(null);
 		this.ownerName = ownerName;
 		this.name = name;
 		this.index = index;

@@ -35,7 +35,7 @@ public enum PlayerMagicStaff {
      * @param itemIds the staves that can be used in place of runes.
      * @param runeIds the runes that the staves can be used for.
      */
-    private PlayerMagicStaff(int[] itemIds, int[] runeIds) {
+    PlayerMagicStaff(int[] itemIds, int[] runeIds) {
         this.staves = itemIds;
         this.runes = runeIds;
     }

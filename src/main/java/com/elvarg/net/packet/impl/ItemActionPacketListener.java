@@ -26,7 +26,7 @@ import com.elvarg.util.ItemIdentifiers;
 
 public class ItemActionPacketListener implements PacketExecutor {
 
-	private static void firstAction(final Player player, Packet packet) {
+	private static void firstAction(Player player, Packet packet) {
 		@SuppressWarnings("unused")
 		int interfaceId = packet.readUnsignedShort();
 		int itemId = packet.readShort();
@@ -253,10 +253,8 @@ public class ItemActionPacketListener implements PacketExecutor {
 		}
 
 		switch (itemId) {
-		case 12926:
-			player.getPacketSender()
+			case 12926 -> player.getPacketSender()
 					.sendMessage("Your Toxic blowpipe has " + player.getBlowpipeScales() + " Zulrah scales left.");
-			break;
 		}
 	}
 
@@ -265,15 +263,9 @@ public class ItemActionPacketListener implements PacketExecutor {
 		if (player == null || player.getHitpoints() <= 0)
 			return;
 		switch (packet.getOpcode()) {
-		case PacketConstants.SECOND_ITEM_ACTION_OPCODE:
-			secondAction(player, packet);
-			break;
-		case PacketConstants.FIRST_ITEM_ACTION_OPCODE:
-			firstAction(player, packet);
-			break;
-		case PacketConstants.THIRD_ITEM_ACTION_OPCODE:
-			thirdClickAction(player, packet);
-			break;
+			case PacketConstants.SECOND_ITEM_ACTION_OPCODE -> secondAction(player, packet);
+			case PacketConstants.FIRST_ITEM_ACTION_OPCODE -> firstAction(player, packet);
+			case PacketConstants.THIRD_ITEM_ACTION_OPCODE -> thirdClickAction(player, packet);
 		}
 	}
 }

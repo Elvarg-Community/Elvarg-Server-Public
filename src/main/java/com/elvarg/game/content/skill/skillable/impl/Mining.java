@@ -125,7 +125,7 @@ public class Mining extends DefaultSkillable {
         }
 
         //Check if we found one..
-        if (!pickaxe.isPresent()) {
+        if (pickaxe.isEmpty()) {
             player.getPacketSender().sendMessage("You don't have a pickaxe which you can use.");
             return false;
         }
@@ -144,11 +144,8 @@ public class Mining extends DefaultSkillable {
 
         //Finally, check if the rock object remains there.
         //Another player may have mined it already.
-        if (!MapObjects.exists(rockObject)) {
-            return false;
-        }
+        return MapObjects.exists(rockObject) && super.hasRequirements(player);
 
-        return super.hasRequirements(player);
     }
 
     @Override
@@ -169,7 +166,7 @@ public class Mining extends DefaultSkillable {
      * Holds data related to the pickaxes
      * that can be used for this skill.
      */
-    public static enum Pickaxe {
+    public enum Pickaxe {
         BRONZE(1265, 1, new Animation(625), 0.03),
         IRON(1267, 1, new Animation(626), 0.05),
         STEEL(1269, 6, new Animation(627), 0.09),
@@ -182,7 +179,7 @@ public class Mining extends DefaultSkillable {
         private final Animation animation;
         private final double speed;
 
-        private Pickaxe(int id, int req, Animation animaion, double speed) {
+        Pickaxe(int id, int req, Animation animaion, double speed) {
             this.id = id;
             this.requiredLevel = req;
             this.animation = animaion;
@@ -210,7 +207,7 @@ public class Mining extends DefaultSkillable {
      * Holds data related to the rocks
      * which can be used to train this skill.
      */
-    public static enum Rock {
+    public enum Rock {
         CLAY(new int[]{9711, 9712, 9713, 15503, 15504, 15505}, 1, 5, 434, 11, 2),
         COPPER(new int[]{9708, 9709, 9710, 11936, 11960, 11961, 11962, 11189, 11190, 11191, 29231, 29230, 2090}, 1, 18, 436, 12, 4),
         TIN(new int[]{9714, 9715, 9716, 11933, 11957, 11958, 11959, 11186, 11187, 11188, 2094, 29227, 29229}, 1, 18, 438, 12, 4),
@@ -222,7 +219,7 @@ public class Mining extends DefaultSkillable {
         ADAMANTITE(new int[]{11941, 11939, 29233, 29235}, 70, 95, 449, 18, 14),
         RUNITE(new int[]{14859, 4860, 2106, 2107}, 85, 125, 451, 23, 45),;
 
-        private static final Map<Integer, Rock> rocks = new HashMap<Integer, Rock>();
+        private static final Map<Integer, Rock> rocks = new HashMap<>();
 
         static {
             for (Rock t : Rock.values()) {
@@ -233,10 +230,10 @@ public class Mining extends DefaultSkillable {
             }
         }
 
-        private int objects[];
+        private int[] objects;
         private int oreId, requiredLevel, xpReward, cycles, respawnTimer;
 
-        private Rock(int[] objects, int requiredLevel, int xpReward, int oreId, int cycles, int respawnTimer) {
+        Rock(int[] objects, int requiredLevel, int xpReward, int oreId, int cycles, int respawnTimer) {
             this.objects = objects;
             this.requiredLevel = requiredLevel;
             this.xpReward = xpReward;

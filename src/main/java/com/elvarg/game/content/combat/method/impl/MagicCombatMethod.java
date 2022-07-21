@@ -39,12 +39,9 @@ public class MagicCombatMethod extends CombatMethod {
 		}
 
 		// Character didn't have autocast spell either.
-		if (character.getCombat().getCastSpell() == null) {
-			return false;
-		}
+        return character.getCombat().getCastSpell() != null && character.getCombat().getCastSpell().canCast(character.getAsPlayer(), true);
 
-		return character.getCombat().getCastSpell().canCast(character.getAsPlayer(), true);
-	}
+    }
 
 	@Override
 	public void start(Mobile character, Mobile target) {
@@ -79,7 +76,7 @@ public class MagicCombatMethod extends CombatMethod {
 		// Reset the castSpell to autocastSpell
 		// Update previousCastSpell so effects can be handled.
 
-		final CombatSpell current = character.getCombat().getCastSpell();
+		CombatSpell current = character.getCombat().getCastSpell();
 
 		character.getCombat().setCastSpell(null);
 

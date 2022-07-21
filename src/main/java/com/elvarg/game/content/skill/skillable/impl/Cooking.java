@@ -8,10 +8,7 @@ import com.elvarg.game.model.*;
 import com.elvarg.util.Misc;
 import com.elvarg.util.ObjectIdentifiers;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Represents the Cooking skill.
@@ -36,7 +33,7 @@ public class Cooking extends ItemCreationSkillable {
     private final Cookable cookable;
 
     public Cooking(GameObject object, Cookable cookable, int amount) {
-        super(Arrays.asList(new RequiredItem(new Item(cookable.getRawItem()), true)),
+        super(List.of(new RequiredItem(new Item(cookable.getRawItem()), true)),
                 new Item(cookable.getCookedItem()), amount, Optional.of(new AnimationLoop(ANIMATION, 4)),
                 cookable.getLevelReq(), cookable.getXp(), Skill.COOKING);
         this.object = object;
@@ -94,18 +91,15 @@ public class Cooking extends ItemCreationSkillable {
     @Override
     public boolean hasRequirements(Player player) {
         // If we're using a fire, make sure to check it's still there.
-        if (object.getId() == ObjectIdentifiers.FIRE_5
-                && !ObjectManager.exists(ObjectIdentifiers.FIRE_5, object.getLocation())) {
-            return false;
-        }
+        return (object.getId() != ObjectIdentifiers.FIRE_5
+                || ObjectManager.exists(ObjectIdentifiers.FIRE_5, object.getLocation())) && super.hasRequirements(player);
 
-        return super.hasRequirements(player);
     }
 
     /**
      * Data for the cooking skill.
      */
-    public static enum Cookable {
+    public enum Cookable {
         SHRIMP(317, 315, 7954, 1, 30, 33, "shrimp"),
         ANCHOVIES(321, 319, 323, 1, 30, 34, "anchovies"),
         TROUT(335, 333, 343, 15, 70, 50, "trout"),
@@ -120,7 +114,7 @@ public class Cooking extends ItemCreationSkillable {
         SEA_TURTLE(395, 397, 399, 82, 212, 105, "sea turtle"),
         MANTA_RAY(389, 391, 393, 91, 217, 99, "manta ray"),;
 
-        private static final Map<Integer, Cookable> cookables = new HashMap<Integer, Cookable>();
+        private static final Map<Integer, Cookable> cookables = new HashMap<>();
 
         static {
             for (Cookable c : Cookable.values()) {

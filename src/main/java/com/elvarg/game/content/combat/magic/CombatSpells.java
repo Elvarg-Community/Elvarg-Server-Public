@@ -1753,7 +1753,7 @@ public enum CombatSpells {
 					return;
 				}
 
-				final int seconds = player.getPrayerActive()[PrayerHandler.PROTECT_FROM_MAGIC] ? 300 : 600;
+				int seconds = player.getPrayerActive()[PrayerHandler.PROTECT_FROM_MAGIC] ? 300 : 600;
 				
 				player.getCombat().getTeleBlockTimer().start(seconds);
 				player.getPacketSender().sendEffectTimer(seconds, EffectTimer.TELE_BLOCK)
@@ -2848,7 +2848,7 @@ public enum CombatSpells {
      * @param spell
      *            the spell attached to this element.
      */
-    private CombatSpells(CombatSpell spell) {
+    CombatSpells(CombatSpell spell) {
         this.spell = spell;
     }
 
@@ -2874,9 +2874,6 @@ public enum CombatSpells {
     
 	public static CombatSpell getCombatSpell(int spellId) {
 		Optional<CombatSpells> spell = getCombatSpells(spellId);
-		if(spell.isPresent()) {
-			return spell.get().getSpell();
-		}
-		return null;
-	}
+        return spell.map(CombatSpells::getSpell).orElse(null);
+    }
 }

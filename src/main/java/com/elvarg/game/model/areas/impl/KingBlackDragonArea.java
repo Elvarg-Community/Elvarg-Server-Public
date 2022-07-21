@@ -1,6 +1,7 @@
 package com.elvarg.game.model.areas.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.elvarg.game.entity.impl.Mobile;
@@ -13,7 +14,7 @@ public class KingBlackDragonArea extends Area {
 	public static final Boundary BOUNDARY = new Boundary(2249, 2292, 4672, 4720);
 
 	public KingBlackDragonArea() {
-		super(Arrays.asList(BOUNDARY));
+		super(List.of(BOUNDARY));
 	}
 
 	@Override

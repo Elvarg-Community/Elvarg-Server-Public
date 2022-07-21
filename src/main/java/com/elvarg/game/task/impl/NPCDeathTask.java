@@ -50,7 +50,7 @@ public class NPCDeathTask extends Task {
     public void execute() {
         try {
             switch (ticks) {
-                case 1:
+                case 1 -> {
                     // Reset and disable movement queue..
                     npc.getMovementQueue().setBlockMovement(true).reset();
 
@@ -65,15 +65,15 @@ public class NPCDeathTask extends Task {
 
                     // Reset interacting entity..
                     npc.setMobileInteraction(null);
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     if (killer.isPresent()) {
                         Player player = killer.get();
 
                         if (player.getArea() != null) {
                             player.getArea().defeated(player, npc);
                         }
-                        
+
                         // Slayer
                         Slayer.killed(player, npc);
 
@@ -81,7 +81,7 @@ public class NPCDeathTask extends Task {
                         NPCDropGenerator.start(player, npc);
                     }
                     stop();
-                    break;
+                }
             }
             ticks--;
         } catch (Exception e) {

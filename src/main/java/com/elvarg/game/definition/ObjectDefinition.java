@@ -33,7 +33,7 @@ public final class ObjectDefinition extends ObjectIdentifiers {
     public int id;
     public boolean impenetrable;
     public int mapscene;
-    public int childrenIDs[];
+    public int[] childrenIDs;
     public int supportItems;
     public int objectSizeY;
     public boolean contouredGround;
@@ -53,7 +53,7 @@ public final class ObjectDefinition extends ObjectIdentifiers {
     public int animation;
     public int translateZ;
     public int[] modifiedModelColors;
-    public String interactions[];
+    public String[] interactions;
     private short[] originalModelTexture;
     private short[] modifiedModelTexture;
     
@@ -164,9 +164,10 @@ public final class ObjectDefinition extends ObjectIdentifiers {
             objectDef.name = "Passage";
         }
         switch (id) {
-            case 10638:
+            case 10638 -> {
                 objectDef.isInteractive = true;
                 return objectDef;
+            }
         }
 
 
@@ -449,17 +450,11 @@ public final class ObjectDefinition extends ObjectIdentifiers {
     }
     
     public int getSize() {
-    	switch (id) {
-    	case BARROWS_STAIRCASE_AHRIM:
-    	case BARROWS_STAIRCASE_DHAROK:
-    	case BARROWS_STAIRCASE_GUTHAN:
-    	case BARROWS_STAIRCASE_KARIL:
-    	case BARROWS_STAIRCASE_VERAC:
-    		return 2;
-    	case BARROWS_STAIRCASE_TORAG:
-    		return 3;
-    	}
-    	    	
-    	return (getSizeX() + getSizeY()) - 1;
+        return switch (id) {
+            case BARROWS_STAIRCASE_AHRIM, BARROWS_STAIRCASE_DHAROK, BARROWS_STAIRCASE_GUTHAN, BARROWS_STAIRCASE_KARIL, BARROWS_STAIRCASE_VERAC -> 2;
+            case BARROWS_STAIRCASE_TORAG -> 3;
+            default -> (getSizeX() + getSizeY()) - 1;
+        };
+
     }
 }

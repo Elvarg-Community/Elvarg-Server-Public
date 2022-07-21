@@ -120,7 +120,7 @@ public class DialogueManager {
      * Starts the dialogue at the current {@code index}.
      */
     private void start() {
-        final Dialogue dialogue = dialogues.get(index);
+        Dialogue dialogue = dialogues.get(index);
         if (dialogue == null) {
             player.getPacketSender().sendInterfaceRemoval();
             return;
@@ -135,7 +135,7 @@ public class DialogueManager {
      * @param option
      */
     public void handleOption(Player player, DialogueOption option) {
-        final Dialogue dialogue = dialogues.get(index);
+        Dialogue dialogue = dialogues.get(index);
         if (!(dialogue instanceof OptionDialogue)) {
             player.getPacketSender().sendInterfaceRemoval();
             return;

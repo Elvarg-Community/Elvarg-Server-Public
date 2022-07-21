@@ -124,56 +124,32 @@ public class QuickPrayers extends PrayerHandler {
         sendCheck(prayer);
 
         switch (index) {
-            case THICK_SKIN:
-            case ROCK_SKIN:
-            case STEEL_SKIN:
-                uncheck(DEFENCE_PRAYERS, index);
-                break;
-            case BURST_OF_STRENGTH:
-            case SUPERHUMAN_STRENGTH:
-            case ULTIMATE_STRENGTH:
+            case THICK_SKIN, ROCK_SKIN, STEEL_SKIN -> uncheck(DEFENCE_PRAYERS, index);
+            case BURST_OF_STRENGTH, SUPERHUMAN_STRENGTH, ULTIMATE_STRENGTH -> {
                 uncheck(STRENGTH_PRAYERS, index);
                 uncheck(RANGED_PRAYERS, index);
                 uncheck(MAGIC_PRAYERS, index);
-                break;
-            case CLARITY_OF_THOUGHT:
-            case IMPROVED_REFLEXES:
-            case INCREDIBLE_REFLEXES:
+            }
+            case CLARITY_OF_THOUGHT, IMPROVED_REFLEXES, INCREDIBLE_REFLEXES -> {
                 uncheck(ATTACK_PRAYERS, index);
                 uncheck(RANGED_PRAYERS, index);
                 uncheck(MAGIC_PRAYERS, index);
-                break;
-            case SHARP_EYE:
-            case HAWK_EYE:
-            case EAGLE_EYE:
-            case MYSTIC_WILL:
-            case MYSTIC_LORE:
-            case MYSTIC_MIGHT:
+            }
+            case SHARP_EYE, HAWK_EYE, EAGLE_EYE, MYSTIC_WILL, MYSTIC_LORE, MYSTIC_MIGHT -> {
                 uncheck(STRENGTH_PRAYERS, index);
                 uncheck(ATTACK_PRAYERS, index);
                 uncheck(RANGED_PRAYERS, index);
                 uncheck(MAGIC_PRAYERS, index);
-                break;
-            case CHIVALRY:
-            case PIETY:
-            case RIGOUR:
-            case AUGURY:
+            }
+            case CHIVALRY, PIETY, RIGOUR, AUGURY -> {
                 uncheck(DEFENCE_PRAYERS, index);
                 uncheck(STRENGTH_PRAYERS, index);
                 uncheck(ATTACK_PRAYERS, index);
                 uncheck(RANGED_PRAYERS, index);
                 uncheck(MAGIC_PRAYERS, index);
-                break;
-            case PROTECT_FROM_MAGIC:
-            case PROTECT_FROM_MISSILES:
-            case PROTECT_FROM_MELEE:
-                uncheck(OVERHEAD_PRAYERS, index);
-                break;
-            case RETRIBUTION:
-            case REDEMPTION:
-            case SMITE:
-                uncheck(OVERHEAD_PRAYERS, index);
-                break;
+            }
+            case PROTECT_FROM_MAGIC, PROTECT_FROM_MISSILES, PROTECT_FROM_MELEE -> uncheck(OVERHEAD_PRAYERS, index);
+            case RETRIBUTION, REDEMPTION, SMITE -> uncheck(OVERHEAD_PRAYERS, index);
         }
     }
 
@@ -261,7 +237,7 @@ public class QuickPrayers extends PrayerHandler {
         //Clicking prayers
         if (button >= 17202 && button <= 17230) {
             if (selectingPrayers) {
-                final int index = button - 17202;
+                int index = button - 17202;
                 toggle(index);
             }
             return true;

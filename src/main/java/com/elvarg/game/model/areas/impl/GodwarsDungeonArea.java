@@ -1,6 +1,7 @@
 package com.elvarg.game.model.areas.impl;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.elvarg.game.entity.impl.Mobile;
@@ -14,7 +15,7 @@ public class GodwarsDungeonArea extends Area {
 	public static final Boundary BOUNDARY = new Boundary(2800, 2950, 5200, 5400);
 
 	public GodwarsDungeonArea() {
-		super(Arrays.asList(BOUNDARY));
+		super(List.of(BOUNDARY));
 	}
 
 	@Override

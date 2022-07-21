@@ -82,6 +82,7 @@ public final class ChannelEventHandler extends SimpleChannelInboundHandler<Objec
 		try {
 			ctx.channel().close();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

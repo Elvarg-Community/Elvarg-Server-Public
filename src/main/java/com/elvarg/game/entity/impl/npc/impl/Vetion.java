@@ -81,7 +81,7 @@ public class Vetion extends NPC {
 	
 	@Override
 	public PendingHit manipulateHit(PendingHit hit) {
-		if (spawnedHellhounds && hellhounds.size() > 0) {
+		if (spawnedHellhounds && !hellhounds.isEmpty()) {
 			hit.setTotalDamage(0);
 		}
 		return hit;

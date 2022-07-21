@@ -166,8 +166,8 @@ public enum FightType {
      * @param bonusType  the bonus type.
      * @param fightStyle the fighting style.
      */
-    private FightType(int animation, int parentId, int childId, int bonusType,
-                      FightStyle style) {
+    FightType(int animation, int parentId, int childId, int bonusType,
+              FightStyle style) {
         this.animation = animation;
         this.parentId = parentId;
         this.childId = childId;
@@ -226,19 +226,13 @@ public enum FightType {
      * @return the corresponding bonus for this fight type.
      */
     public int getCorrespondingBonus() {
-        switch (bonusType) {
-            case BonusManager.ATTACK_CRUSH:
-                return BonusManager.DEFENCE_CRUSH;
-            case BonusManager.ATTACK_MAGIC:
-                return BonusManager.DEFENCE_MAGIC;
-            case BonusManager.ATTACK_RANGE:
-                return BonusManager.DEFENCE_RANGE;
-            case BonusManager.ATTACK_SLASH:
-                return BonusManager.DEFENCE_SLASH;
-            case BonusManager.ATTACK_STAB:
-                return BonusManager.DEFENCE_STAB;
-            default:
-                return BonusManager.DEFENCE_CRUSH;
-        }
+        return switch (bonusType) {
+            case BonusManager.ATTACK_CRUSH -> BonusManager.DEFENCE_CRUSH;
+            case BonusManager.ATTACK_MAGIC -> BonusManager.DEFENCE_MAGIC;
+            case BonusManager.ATTACK_RANGE -> BonusManager.DEFENCE_RANGE;
+            case BonusManager.ATTACK_SLASH -> BonusManager.DEFENCE_SLASH;
+            case BonusManager.ATTACK_STAB -> BonusManager.DEFENCE_STAB;
+            default -> BonusManager.DEFENCE_CRUSH;
+        };
     }
 }

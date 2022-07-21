@@ -41,7 +41,7 @@ public class BankTabCreationPacketListener implements PacketExecutor {
                 }
 
                 //Temporarily disable note whilst we do switch
-                final boolean note = player.withdrawAsNote();
+                boolean note = player.withdrawAsNote();
                 player.setNoteWithdrawal(false);
 
                 //Make the item switch

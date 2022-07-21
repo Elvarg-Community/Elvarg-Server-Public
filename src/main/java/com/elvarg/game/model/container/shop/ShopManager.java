@@ -18,7 +18,7 @@ public class ShopManager extends ShopIdentifiers {
     /**
      * A {@link Map} with all of our shops and their ids.
      */
-    public static final Map<Integer, Shop> shops = new HashMap<Integer, Shop>();
+    public static final Map<Integer, Shop> shops = new HashMap<>();
 
     /**
      * Attempts to open the shop with the given id.
@@ -472,14 +472,12 @@ public class ShopManager extends ShopIdentifiers {
      */
     private static String getCurrencyName(Player player, ItemDefinition itemDef, int shopId) {
 
-        switch (shopId) {
-            case PVP_SHOP:
-                return "blood money";
-            case POINTS_SHOP:
-                return "points";
-        }
+        return switch (shopId) {
+            case PVP_SHOP -> "blood money";
+            case POINTS_SHOP -> "points";
+            default -> "coins";
+        };
 
-        return "coins";
     }
 
     /**
@@ -491,14 +489,11 @@ public class ShopManager extends ShopIdentifiers {
      * @return
      */
     private static int getCurrencyAmount(Player player, ItemDefinition itemDef, int shopId) {
-        switch (shopId) {
-            case POINTS_SHOP:
-                return player.getPoints();
-            case PVP_SHOP:
-                return player.getInventory().getAmount(ItemIdentifiers.BLOOD_MONEY);
-            default:
-                return player.getInventory().getAmount(ItemIdentifiers.COINS);
-        }
+        return switch (shopId) {
+            case POINTS_SHOP -> player.getPoints();
+            case PVP_SHOP -> player.getInventory().getAmount(ItemIdentifiers.BLOOD_MONEY);
+            default -> player.getInventory().getAmount(ItemIdentifiers.COINS);
+        };
     }
 
     /**
@@ -510,15 +505,9 @@ public class ShopManager extends ShopIdentifiers {
      */
     private static void decrementCurrency(Player player, ItemDefinition itemDef, int amount, int shopId) {
         switch (shopId) {
-            case POINTS_SHOP:
-                player.setPoints(player.getPoints() - amount);
-                break;
-            case PVP_SHOP:
-                player.getInventory().delete(ItemIdentifiers.BLOOD_MONEY, amount);
-                break;
-            default:
-                player.getInventory().delete(ItemIdentifiers.COINS, amount);
-                break;
+            case POINTS_SHOP -> player.setPoints(player.getPoints() - amount);
+            case PVP_SHOP -> player.getInventory().delete(ItemIdentifiers.BLOOD_MONEY, amount);
+            default -> player.getInventory().delete(ItemIdentifiers.COINS, amount);
         }
     }
 
@@ -533,15 +522,9 @@ public class ShopManager extends ShopIdentifiers {
      */
     private static void incrementCurrency(Player player, ItemDefinition itemDef, int amount, int shopId) {
         switch (shopId) {
-            case POINTS_SHOP:
-                player.setPoints(player.getPoints() + amount);
-                break;
-            case PVP_SHOP:
-                player.getInventory().add(ItemIdentifiers.BLOOD_MONEY, amount);
-                break;
-            default:
-                player.getInventory().add(ItemIdentifiers.COINS, amount);
-                break;
+            case POINTS_SHOP -> player.setPoints(player.getPoints() + amount);
+            case PVP_SHOP -> player.getInventory().add(ItemIdentifiers.BLOOD_MONEY, amount);
+            default -> player.getInventory().add(ItemIdentifiers.COINS, amount);
         }
     }
 

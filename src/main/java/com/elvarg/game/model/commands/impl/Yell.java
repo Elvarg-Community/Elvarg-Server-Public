@@ -33,7 +33,7 @@ public class Yell implements Command {
 					"You must wait another " + player.getYellDelay().secondsRemaining() + " seconds to do that.");
 			return;
 		}
-		final String yellMessage = command.substring(4, command.length());
+		String yellMessage = command.substring(4, command.length());
 		if (Misc.blockedWord(yellMessage)) {
 		//	DialogueManager.sendStatement(player, "A word was blocked in your sentence. Please do not repeat it!");
 			return;

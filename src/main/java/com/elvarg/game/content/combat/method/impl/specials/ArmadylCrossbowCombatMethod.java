@@ -34,7 +34,7 @@ public class ArmadylCrossbowCombatMethod extends RangedCombatMethod {
 
     @Override
     public void start(Mobile character, Mobile target) {
-        final Player player = character.getAsPlayer();        
+        Player player = character.getAsPlayer();
         CombatSpecial.drain(player, CombatSpecial.ARMADYL_CROSSBOW.getDrainAmount());
         player.performAnimation(ANIMATION);
         new Projectile(character, target, 301, 50, 70, 44, 35).sendProjectile();

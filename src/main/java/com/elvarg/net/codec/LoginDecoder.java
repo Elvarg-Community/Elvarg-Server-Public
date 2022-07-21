@@ -57,18 +57,9 @@ public final class LoginDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) throws Exception {
         switch (state) {
-
-            case LOGIN_REQUEST:
-                decodeRequest(ctx, buffer);
-                break;
-
-            case LOGIN_TYPE:
-                decodeType(ctx, buffer);
-                break;
-
-            case LOGIN:
-                decodeLogin(ctx, buffer, out);
-                break;
+            case LOGIN_REQUEST -> decodeRequest(ctx, buffer);
+            case LOGIN_TYPE -> decodeType(ctx, buffer);
+            case LOGIN -> decodeLogin(ctx, buffer, out);
         }
     }
 

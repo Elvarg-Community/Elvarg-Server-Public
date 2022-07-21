@@ -150,7 +150,7 @@ public class Presetables {
 	 * @param index
 	 *            The preset(to edit)'s index
 	 */
-	private static void edit(Player player, final int index) {
+	private static void edit(Player player, int index) {
 		// Check if we can edit..
 		if (player.getArea() instanceof WildernessArea) {
 			player.getPacketSender().sendMessage("You can't edit a preset in the wilderness!");
@@ -261,8 +261,8 @@ public class Presetables {
 	 * @param preset
 	 *            The preset to load.
 	 */
-	private static void load(Player player, final Presetable preset) {
-		final int oldCbLevel = player.getSkillManager().getCombatLevel();
+	private static void load(Player player, Presetable preset) {
+		int oldCbLevel = player.getSkillManager().getCombatLevel();
 
 		// Close!
 		player.getPacketSender().sendInterfaceRemoval();
@@ -306,7 +306,7 @@ public class Presetables {
 
 		// Check for the preset's valuable items and see if the player has them.
 		if (!preset.isGlobal()) {
-			List<Item> nonSpawnables = new ArrayList<Item>();
+			List<Item> nonSpawnables = new ArrayList<>();
 
 			// Get all the valuable items in this preset and check if player has them..
 			for (Item item : Misc.concat(preset.getInventory(), preset.getEquipment())) {
@@ -383,8 +383,8 @@ public class Presetables {
 		player.getPacketSender().sendString(31200, "" + player.getSkillManager().getTotalLevel());
 
 		// Send combat level
-		final int newCbLevel = player.getSkillManager().getCombatLevel();
-		final String combatLevel = "Combat level: " + newCbLevel;
+		int newCbLevel = player.getSkillManager().getCombatLevel();
+		String combatLevel = "Combat level: " + newCbLevel;
 		player.getPacketSender().sendString(19000, combatLevel).sendString(5858, combatLevel);
 
 		if (newCbLevel != oldCbLevel) {
@@ -412,34 +412,37 @@ public class Presetables {
 		if (player.getInterfaceId() != INTERFACE_ID) {
 			return false;
 		}
-		switch (button) {
-		case 45060: // Toggle on death show
-			player.setOpenPresetsOnDeath(!player.isOpenPresetsOnDeath());
-			player.getPacketSender().sendConfig(987, player.isOpenPresetsOnDeath() ? 0 : 1);
-			return true;
-		case 45061: // Edit preset
-			if (player.getCurrentPreset() == null) {
-				player.getPacketSender().sendMessage("You haven't selected any preset yet.");
-				return true;
-			}
-			if (player.getCurrentPreset().isGlobal()) {
-				player.getPacketSender().sendMessage("You can only edit your own presets.");
-				return true;
-			}
-			edit(player, player.getCurrentPreset().getIndex());
-			return true;
-		case 45064: // Load preset
-			if (player.getCurrentPreset() == null) {
-				player.getPacketSender().sendMessage("You haven't selected any preset yet.");
-				return true;
-			}
-			load(player, player.getCurrentPreset());
-			return true;
-		}
+        switch (button) {
+            case 45060 -> { // Toggle on death show
+                player.setOpenPresetsOnDeath(!player.isOpenPresetsOnDeath());
+                player.getPacketSender().sendConfig(987, player.isOpenPresetsOnDeath() ? 0 : 1);
+                return true;
+            }
+            case 45061 -> { // Edit preset
+                if (player.getCurrentPreset() == null) {
+                    player.getPacketSender().sendMessage("You haven't selected any preset yet.");
+                    return true;
+                }
+                if (player.getCurrentPreset().isGlobal()) {
+                    player.getPacketSender().sendMessage("You can only edit your own presets.");
+                    return true;
+                }
+                edit(player, player.getCurrentPreset().getIndex());
+                return true;
+            }
+            case 45064 -> { // Load preset
+                if (player.getCurrentPreset() == null) {
+                    player.getPacketSender().sendMessage("You haven't selected any preset yet.");
+                    return true;
+                }
+                load(player, player.getCurrentPreset());
+                return true;
+            }
+        }
 
 		// Global presets selection
 		if (button >= 45070 && button <= 45079) {
-			final int index = button - 45070;
+			int index = button - 45070;
 			if (GLOBAL_PRESETS[index] == null) {
 				player.getPacketSender().sendMessage("That preset is currently unavailable.");
 				return true;
@@ -456,7 +459,7 @@ public class Presetables {
 
 		// Custom presets selection
 		if (button >= 45082 && button <= 45091) {
-			final int index = button - 45082;
+			int index = button - 45082;
 
 			if (player.getPresets()[index] == null) {
 				/*DialogueManager.start(player, 10);

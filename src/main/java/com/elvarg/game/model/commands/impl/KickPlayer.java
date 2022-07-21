@@ -12,9 +12,7 @@ public class KickPlayer implements Command {
 	@Override
 	public void execute(Player player, String command, String[] parts) {
 		Optional<Player> plr = World.getPlayerByName(command.substring(parts[0].length() + 1));
-		if (plr.isPresent()) {
-			plr.get().requestLogout();
-		}
+        plr.ifPresent(Player::requestLogout);
 	}
 
 	@Override

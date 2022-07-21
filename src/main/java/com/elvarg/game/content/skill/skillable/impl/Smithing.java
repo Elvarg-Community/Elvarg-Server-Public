@@ -303,7 +303,7 @@ public class Smithing extends ItemIdentifiers {
         ADAMANTITE_BAR(2361, new RequiredItem[]{new RequiredItem(new Item(449), true), new RequiredItem(new Item(453, 6), true)}, 70, 4500, 2412, new int[][]{{7446, 1}, {7444, 5}, {7443, 10}, {7442, -1}}, Optional.of(SmithableEquipment.ADAMANT_ITEMS)),
         RUNITE_BAR(2363, new RequiredItem[]{new RequiredItem(new Item(451), true), new RequiredItem(new Item(453, 8), true)}, 85, 5560, 2413, new int[][]{{7450, 1}, {7449, 5}, {7448, 10}, {7447, -1}}, Optional.of(SmithableEquipment.RUNE_ITEMS)),;
 
-        private static Map<Integer, Bar> smeltables = new HashMap<Integer, Bar>();
+        private static Map<Integer, Bar> smeltables = new HashMap<>();
 
         static {
             for (Bar s : Bar.values()) {
@@ -398,7 +398,7 @@ public class Smithing extends ItemIdentifiers {
             //Search for bar..
             Optional<Bar> bar = Optional.empty();
             for (Bar b : Bar.values()) {
-                if (!b.getItems().isPresent()) {
+                if (b.getItems().isEmpty()) {
                     continue;
                 }
                 if (player.getInventory().contains(b.getBar())) {
@@ -433,7 +433,7 @@ public class Smithing extends ItemIdentifiers {
                     if (player.getSkillManager().getCurrentLevel(Skill.SMITHING) >= b.getRequiredLevel()) {
                         itemColor = "@whi@";
                     }
-                    player.getPacketSender().sendString(b.getBarFrame(), barColor + Integer.toString(b.getBarsRequired()) + " " + (b.getBarsRequired() > 1 ? "bars" : "bar"));
+                    player.getPacketSender().sendString(b.getBarFrame(), barColor + b.getBarsRequired() + " " + (b.getBarsRequired() > 1 ? "bars" : "bar"));
                     player.getPacketSender().sendString(b.getNameFrame(), itemColor + b.getName());
                 }
 

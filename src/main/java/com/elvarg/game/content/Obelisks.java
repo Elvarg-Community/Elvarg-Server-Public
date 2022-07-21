@@ -45,7 +45,7 @@ public class Obelisks {
      * @return true if the object is an obelisk
      */
     public static boolean activate(int objectId) {
-        final int index = getObeliskIndex(objectId);
+        int index = getObeliskIndex(objectId);
         if (index >= 0) {
             if (!OBELISK_ACTIVATED[index]) {
                 OBELISK_ACTIVATED[index] = true;
@@ -55,8 +55,8 @@ public class Obelisks {
                     obeliskX = i == 1 || i == 3 ? OBELISK_COORDS[index][0] + 4 : OBELISK_COORDS[index][0];
                     obeliskY = i >= 2 ? OBELISK_COORDS[index][1] + 4 : OBELISK_COORDS[index][1];
 
-                    final int obeliskX_ = obeliskX;
-                    final int obeliskY_ = obeliskY;
+                    int obeliskX_ = obeliskX;
+                    int obeliskY_ = obeliskY;
                     /*
 					 * obelisks[i] = new GameObject(14825, 3, new Position(obeliskX_, obeliskY_)) {
 					 * 
@@ -68,12 +68,12 @@ public class Obelisks {
                 TaskManager.submit(new Task(4, false) {
                     @Override
                     public void execute() {
-                        final Location obeliskLocation = new Location(OBELISK_COORDS[index][0] + 2,
+                        Location obeliskLocation = new Location(OBELISK_COORDS[index][0] + 2,
                                 OBELISK_COORDS[index][1] + 2);
                         int random = Misc.getRandom(5);
                         while (random == index)
                             random = Misc.getRandom(5);
-                        final Location newLocation = new Location(OBELISK_COORDS[random][0] + 2,
+                        Location newLocation = new Location(OBELISK_COORDS[random][0] + 2,
                                 OBELISK_COORDS[random][1] + 2);
                         for (Player player : World.getPlayers()) {
                             if (player == null || !(player.getArea() instanceof WildernessArea))

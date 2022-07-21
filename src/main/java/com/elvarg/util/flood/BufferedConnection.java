@@ -61,7 +61,7 @@ public final class BufferedConnection implements Runnable {
             return inputStream.available();
     }
 
-    public void flushInputStream(byte abyte0[], int j) throws IOException {
+    public void flushInputStream(byte[] abyte0, int j) throws IOException {
         int i = 0;// was parameter
         if (closed)
             return;
@@ -75,7 +75,7 @@ public final class BufferedConnection implements Runnable {
 
     }
 
-    public void queueBytes(int i, byte abyte0[]) throws IOException {
+    public void queueBytes(int i, byte[] abyte0) throws IOException {
         if (closed) {
             System.out.println("Closed");
             return;
@@ -114,6 +114,7 @@ public final class BufferedConnection implements Runnable {
                     try {
                         wait();
                     } catch (InterruptedException _ex) {
+                        _ex.printStackTrace();
                     }
                 if (!isWriter)
                     return;
@@ -149,6 +150,7 @@ public final class BufferedConnection implements Runnable {
         try {
             System.out.println("available:" + available());
         } catch (IOException _ex) {
+            _ex.printStackTrace();
         }
     }
 }

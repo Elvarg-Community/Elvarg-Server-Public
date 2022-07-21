@@ -59,7 +59,7 @@ public class Bank extends ItemContainer {
         if (player.getStatus() == PlayerStatus.BANKING && player.getInterfaceId() == 5292) {
 
             // The items real tab
-            final int itemTab = Bank.getTabForItem(player, item);
+            int itemTab = Bank.getTabForItem(player, item);
 
             // Check if we're withdrawing the item from the proper tab, but only if we
             // aren't bank searching
@@ -156,7 +156,7 @@ public class Bank extends ItemContainer {
                 return;
             }
 
-            final int tab = Bank.getTabForItem(player, item);
+            int tab = Bank.getTabForItem(player, item);
             if (!player.isSearchingBank()) {
                 player.setCurrentBankTab(tab);
             }
@@ -314,18 +314,14 @@ public class Bank extends ItemContainer {
         if (player.getInterfaceId() == 32500) {
             // Handle bank settings
             switch (button) {
-            case 32503:
-                player.getPacketSender().sendInterfaceRemoval();
-                break;
-            case 32512:
-                player.getBank(player.getCurrentBankTab()).open();
-                break;
-            case 32513:
-                player.setPlaceholders(!player.isPlaceholders());
-                player.getPacketSender().sendConfig(118, player.isPlaceholders() ? 1 : 0);
-                player.getPacketSender().sendMessage(
-                        "Placeholders are now " + (player.isPlaceholders() ? "enabled" : "disabled") + ".");
-                break;
+                case 32503 -> player.getPacketSender().sendInterfaceRemoval();
+                case 32512 -> player.getBank(player.getCurrentBankTab()).open();
+                case 32513 -> {
+                    player.setPlaceholders(!player.isPlaceholders());
+                    player.getPacketSender().sendConfig(118, player.isPlaceholders() ? 1 : 0);
+                    player.getPacketSender().sendMessage(
+                            "Placeholders are now " + (player.isPlaceholders() ? "enabled" : "disabled") + ".");
+                }
             }
             return true;
         } else if (player.getInterfaceId() == 5292) {
@@ -334,7 +330,7 @@ public class Bank extends ItemContainer {
                 for (int bankId = 0; bankId < TOTAL_BANK_TABS; bankId++) {
                     if (button == tab_select_start + (bankId * 4)) {
 
-                        final boolean searching = player.isSearchingBank();
+                        boolean searching = player.isSearchingBank();
                         if (searching) {
                             exitSearch(player, false);
                         }
@@ -365,7 +361,7 @@ public class Bank extends ItemContainer {
                             }
 
                             // Temporarily disabled note withdrawal...
-                            final boolean noteWithdrawal = player.withdrawAsNote();
+                            boolean noteWithdrawal = player.withdrawAsNote();
                             player.setNoteWithdrawal(false);
 
                             // Move items from tab to main tab
@@ -403,43 +399,28 @@ public class Bank extends ItemContainer {
                 }
 
                 switch (button) {
-                case 50013:
-                    // Show menu
-                    player.getPacketSender().sendInterfaceRemoval();
-                    player.getPacketSender().sendInterface(32500);
-                    break;
-                case 5386:
-                    player.setNoteWithdrawal(true);
-                    break;
-                case 5387:
-                    player.setNoteWithdrawal(false);
-                    break;
-                case 8130:
-                    player.setInsertMode(false);
-                    break;
-                case 8131:
-                    player.setInsertMode(true);
-                    break;
-                case 50004:
-                    depositItems(player, player.getInventory(), false);
-                    break;
-                case 50007:
-                    depositItems(player, player.getEquipment(), false);
-                    break;
-                case 5384:
-                case 50001:
-                    player.getPacketSender().sendInterfaceRemoval();
-                    break;
-                case 50010:
-                    if (player.isSearchingBank()) {
-                        exitSearch(player, true);
-                        return true;
+                    case 50013 -> {
+                        // Show menu
+                        player.getPacketSender().sendInterfaceRemoval();
+                        player.getPacketSender().sendInterface(32500);
                     }
-                    player.setEnteredSyntaxAction((input) -> {
-                        Bank.search(player, input);
-                    });
-                    player.getPacketSender().sendEnterInputPrompt("What do you wish to search for?");
-                    break;
+                    case 5386 -> player.setNoteWithdrawal(true);
+                    case 5387 -> player.setNoteWithdrawal(false);
+                    case 8130 -> player.setInsertMode(false);
+                    case 8131 -> player.setInsertMode(true);
+                    case 50004 -> depositItems(player, player.getInventory(), false);
+                    case 50007 -> depositItems(player, player.getEquipment(), false);
+                    case 5384, 50001 -> player.getPacketSender().sendInterfaceRemoval();
+                    case 50010 -> {
+                        if (player.isSearchingBank()) {
+                            exitSearch(player, true);
+                            return true;
+                        }
+                        player.setEnteredSyntaxAction((input) -> {
+                            Bank.search(player, input);
+                        });
+                        player.getPacketSender().sendEnterInputPrompt("What do you wish to search for?");
+                    }
                 }
             }
             return true;

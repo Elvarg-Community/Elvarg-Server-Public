@@ -69,7 +69,7 @@ public class ItemCreationSkillable extends DefaultSkillable {
 
     @Override
     public void startAnimationLoop(Player player) {
-        if (!animLoop.isPresent()) {
+        if (animLoop.isEmpty()) {
             return;
         }
         Task animLoopTask = new Task(animLoop.get().getLoopDelay(), player, true) {
@@ -131,7 +131,7 @@ public class ItemCreationSkillable extends DefaultSkillable {
         // Check if we have required stringing level..
         if (player.getSkillManager().getCurrentLevel(skill) < requiredLevel) {
             player.getPacketSender().sendMessage("You need a " + skill.getName() + " level of at least "
-                    + Integer.toString(requiredLevel) + " to do this.");
+                    + requiredLevel + " to do this.");
             return false;
         }
 
@@ -146,11 +146,8 @@ public class ItemCreationSkillable extends DefaultSkillable {
                 hasItems = false;
             }
         }
-        if (!hasItems) {
-            return false;
-        }
+        return hasItems && super.hasRequirements(player);
 
-        return super.hasRequirements(player);
     }
 
     @Override

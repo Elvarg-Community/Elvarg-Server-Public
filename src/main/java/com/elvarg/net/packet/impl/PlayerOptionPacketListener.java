@@ -22,7 +22,7 @@ public class PlayerOptionPacketListener implements PacketExecutor {
         int index = packet.readLEShort();
         if (index > World.getPlayers().capacity() || index < 0)
             return;
-        final Player attacked = World.getPlayers().get(index);
+        Player attacked = World.getPlayers().get(index);
 
         if (attacked == null || attacked.getHitpoints() <= 0 || attacked.equals(player)) {
             player.getMovementQueue().reset();
@@ -129,18 +129,10 @@ public class PlayerOptionPacketListener implements PacketExecutor {
             return;
         }
         switch (packet.getOpcode()) {
-            case PacketConstants.ATTACK_PLAYER_OPCODE:
-                attack(player, packet);
-                break;
-            case PacketConstants.PLAYER_OPTION_1_OPCODE:
-                option1(player, packet);
-                break;
-            case PacketConstants.PLAYER_OPTION_2_OPCODE:
-                option2(player, packet);
-                break;
-            case PacketConstants.PLAYER_OPTION_3_OPCODE:
-                option3(player, packet);
-                break;
+            case PacketConstants.ATTACK_PLAYER_OPCODE -> attack(player, packet);
+            case PacketConstants.PLAYER_OPTION_1_OPCODE -> option1(player, packet);
+            case PacketConstants.PLAYER_OPTION_2_OPCODE -> option2(player, packet);
+            case PacketConstants.PLAYER_OPTION_3_OPCODE -> option3(player, packet);
         }
     }
 }

@@ -175,7 +175,7 @@ public class Combat {
 	public Optional<Player> getKiller(boolean clearMap) {
 
 		// Return null if no players killed this entity.
-		if (damageMap.size() == 0) {
+		if (damageMap.isEmpty()) {
 			return Optional.empty();
 		}
 

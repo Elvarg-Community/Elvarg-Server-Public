@@ -24,11 +24,11 @@ import java.util.Optional;
 public class SecondGroundItemOptionPacketListener implements PacketExecutor {
 
     @Override
-    public void execute(final Player player, Packet packet) {
-        final int y = packet.readLEShort();
-        final int itemId = packet.readShort();
-        final int x = packet.readLEShort();
-        final Location position = new Location(x, y, player.getLocation().getZ());
+    public void execute(Player player, Packet packet) {
+        int y = packet.readLEShort();
+        int itemId = packet.readShort();
+        int x = packet.readLEShort();
+        Location position = new Location(x, y, player.getLocation().getZ());
 
         if (player == null || player.getHitpoints() <= 0) {
             return;

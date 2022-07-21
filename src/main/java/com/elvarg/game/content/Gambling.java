@@ -39,8 +39,8 @@ public class Gambling {
             player.getPacketSender().sendMessage("You cannot plant a seed right here.");
             return;
         }
-        final FlowersData flowers = FlowersData.generate();
-        final GameObject flowerObject = new GameObject(flowers.objectId, player.getLocation().clone(), 10, 0, player.getPrivateArea());
+        FlowersData flowers = FlowersData.generate();
+        GameObject flowerObject = new GameObject(flowers.objectId, player.getLocation().clone(), 10, 0, player.getPrivateArea());
 
         //Stop skilling..
         player.getSkillManager().stopSkillable();

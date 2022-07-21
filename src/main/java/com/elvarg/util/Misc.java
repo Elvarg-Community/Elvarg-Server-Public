@@ -41,12 +41,12 @@ public class Misc {
     /**
      * An array containing valid player name characters.
      */
-    public static final char VALID_PLAYER_CHARACTERS[] = {'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+    public static final char[] VALID_PLAYER_CHARACTERS = {'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
             'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '[', ']', '/', '-', ' '};
     /**
      * An array containing valid characters that may be used on the server.
      */
-    public static final char VALID_CHARACTERS[] = {'_', 'a', 'b', 'c', 'd',
+    public static final char[] VALID_CHARACTERS = {'_', 'a', 'b', 'c', 'd',
             'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
             'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
             '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&',
@@ -57,19 +57,18 @@ public class Misc {
      * Random instance, used to generate pseudo-random primitive types.
      */
     private static final RandomGen RANDOM = new RandomGen();
-    private static final String[] BLOCKED_WORDS = new String[]{
+    private static final String[] BLOCKED_WORDS = {
             ".com", ".net", ".org", "<img", "@cr", "<img=", ":tradereq:", ":duelreq:",
             "<col=", "<shad="};
     public static final int[][] DIRECTIONS = { { -1, 1 }, { 0, 1 }, { 1, 1 },
             { -1, 0 }, { 1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
-    public static byte xlateDirectionToClient[] = new byte[]{1, 2, 4, 7, 6, 5, 3, 0};
-    public static char xlateTable[] = {' ', 'e', 't', 'a', 'o', 'i', 'h', 'n',
+    public static byte[] xlateDirectionToClient = {1, 2, 4, 7, 6, 5, 3, 0};
+    public static char[] xlateTable = {' ', 'e', 't', 'a', 'o', 'i', 'h', 'n',
             's', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'f', 'g', 'p', 'b',
             'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4', '5', '6',
             '7', '8', '9', ' ', '!', '?', '.', ',', ':', ';', '(', ')', '-',
             '&', '*', '\\', '\'', '@', '#', '+', '=', '\243', '$', '%', '"',
             '[', ']'};
-    private static ZonedDateTime zonedDateTime;
 
     public static int getRandom(int length) {
         return RANDOM.get().nextInt(length + 1);
@@ -92,7 +91,7 @@ public class Misc {
     }
 
     public static String getCurrentServerTime() {
-        zonedDateTime = ZonedDateTime.now();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
         int hour = zonedDateTime.getHour();
         String hourPrefix = hour < 10 ? "0" + hour + "" : "" + hour + "";
         int minute = zonedDateTime.getMinute();
@@ -101,19 +100,18 @@ public class Misc {
     }
 
     public static String getTimePlayed(long totalPlayTime) {
-        final int sec = (int) (totalPlayTime / 1000), h = sec / 3600, m = sec / 60 % 60, s = sec % 60;
+        int sec = (int) (totalPlayTime / 1000), h = sec / 3600, m = sec / 60 % 60, s = sec % 60;
         return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
     }
 
     public static String getHoursPlayed(long totalPlayTime) {
-        final int sec = (int) (totalPlayTime / 1000), h = sec / 3600;
+        int sec = (int) (totalPlayTime / 1000), h = sec / 3600;
         return (h < 10 ? "0" + h : h) + "h";
     }
 
     public static int getMinutesPassed(long t) {
         int seconds = (int) ((t / 1000) % 60);
-        int minutes = (int) (((t - seconds) / 1000) / 60);
-        return minutes;
+        return (int) (((t - seconds) / 1000) / 60);
     }
 
     public static Item[] concat(Item[] a, Item[] b) {
@@ -132,7 +130,7 @@ public class Misc {
         return null;
     }
 
-    public static final int getDirection(int x, int y) {
+    public static int getDirection(int x, int y) {
         for (int i = 0; i < 8; i++) {
             if (DIRECTIONS[i][0] == x && DIRECTIONS[i][1] == y)
                 return i;
@@ -192,7 +190,7 @@ public class Misc {
                 + number.substring(number.length() - 3, number.length());
     }
 
-    public static String textUnpack(byte packedData[], int size) {
+    public static String textUnpack(byte[] packedData, int size) {
     	byte[] decodeBuf = new byte[4096];
         int idx = 0, highNibble = -1;
         for (int i = 0; i < size * 2; i++) {
@@ -217,7 +215,7 @@ public class Misc {
      * @param packedData The destination of the packed text.
      * @param text       The unpacked text.
      */
-    public static void textPack(byte packedData[], String text) {
+    public static void textPack(byte[] packedData, String text) {
         if (text.length() > 80) {
             text = text.substring(0, 80);
         }
@@ -270,12 +268,12 @@ public class Misc {
         assert classLoader != null;
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);
-        List<File> dirs = new ArrayList<File>();
+        List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
             dirs.add(new File(resource.getFile()));
         }
-        ArrayList<Class> classes = new ArrayList<Class>();
+        ArrayList<Class> classes = new ArrayList<>();
         for (File directory : dirs) {
             classes.addAll(findClasses(directory, packageName));
         }
@@ -284,7 +282,7 @@ public class Misc {
 
     @SuppressWarnings("rawtypes")
     private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
         }
@@ -612,7 +610,7 @@ public class Misc {
      */
     public static String longToString(long l) {
         int i = 0;
-        char ac[] = new char[12];
+        char[] ac = new char[12];
         while (l != 0L) {
             long l1 = l;
             l /= 37L;
@@ -664,8 +662,8 @@ public class Misc {
      * @return The formatted name.
      */
     private static String fixName(String name) {
-        if (name.length() > 0) {
-            final char ac[] = name.toCharArray();
+        if (!name.isEmpty()) {
+            char[] ac = name.toCharArray();
             for (int j = 0; j < ac.length; j++)
                 if (ac[j] == '_') {
                     ac[j] = ' ';
@@ -684,12 +682,12 @@ public class Misc {
         }
     }
 
-    public static final String[] EFFECTS = new String[] { "@gre@", "@cya@", "@red@", "chalreq", "tradereq", "@bro@",
+    public static final String[] EFFECTS = { "@gre@", "@cya@", "@red@", "chalreq", "tradereq", "@bro@",
             "@yel@", "@blu@", "@gr1@", "@gr2@", "@gr3@", "@str@", "@mag@", "@dre@", "@dbl@", "@or1@", "@or2@", "@or3@",
             "@whi@", "@bla@", "@cr", "<col", "<shad", "<str", "<u", "<br", "<trans", "duelreq", "<img", "@lre@",
             ":clan:", "]cr", "::summ", "<str" };
 
-    public static String[] wrapText(final String text, final int len) {
+    public static String[] wrapText(String text, int len) {
         // return empty array for null text
         if (text == null)
             return new String[]{};
@@ -702,32 +700,32 @@ public class Misc {
         if (text.length() <= len)
             return new String[]{text};
 
-        final char[] chars = text.toCharArray();
-        final Vector<String> lines = new Vector<>();
-        final StringBuffer line = new StringBuffer();
-        final StringBuffer word = new StringBuffer();
+        char[] chars = text.toCharArray();
+        Vector<String> lines = new Vector<>();
+        StringBuilder line = new StringBuilder();
+        StringBuilder word = new StringBuilder();
 
         // Text effects
-        String effects = null;
+        StringBuilder effects = null;
         for (String effectCode : Misc.EFFECTS) {
             if (text.contains(effectCode)) {
                 if (effects == null) {
-                    effects = "";
+                    effects = new StringBuilder();
                 }
-                effects += effectCode;
+                effects.append(effectCode);
             }
         }
 
-        for (int i = 0; i < chars.length; i++) {
-            word.append(chars[i]);
+        for (char character : chars) {
+            word.append(character);
 
-            if (chars[i] == ' ') {
+            if (character == ' ') {
 
                 if ((line.length() + word.length()) > len) {
                     String line_ = line.toString();
 
                     // Apply effects
-                    if (effects != null && !line_.startsWith(effects)) {
+                    if (effects != null && !line_.startsWith(effects.toString())) {
                         line_ = effects + line_;
                     }
 
@@ -741,12 +739,12 @@ public class Misc {
         }
 
         // handle any extra chars in current word
-        if (word.length() > 0) {
+        if (!word.isEmpty()) {
             if ((line.length() + word.length()) > len) {
                 String line_ = line.toString();
 
                 // Apply effects
-                if (effects != null && !line_.startsWith(effects)) {
+                if (effects != null && !line_.startsWith(effects.toString())) {
                     line_ = effects + line_;
                 }
 
@@ -757,20 +755,20 @@ public class Misc {
         }
 
         // handle extra line
-        if (line.length() > 0) {
+        if (!line.isEmpty()) {
             String line_ = line.toString();
 
             // Apply effects
-            if (effects != null && !line_.startsWith(effects)) {
+            if (effects != null && !line_.startsWith(effects.toString())) {
                 line_ = effects + line_;
             }
 
             lines.add(line_);
         }
 
-        final String[] ret = new String[lines.size()];
+        String[] ret = new String[lines.size()];
         int c = 0; // counter
-        for (final Enumeration<String> e = lines.elements(); e.hasMoreElements(); c++)
+        for (Enumeration<String> e = lines.elements(); e.hasMoreElements(); c++)
             ret[c] = e.nextElement();
 
         return ret;

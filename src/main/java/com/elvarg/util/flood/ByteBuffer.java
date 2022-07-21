@@ -380,13 +380,13 @@ public final class ByteBuffer {
         return ((buffer[position - 3] & 0xFF) << 24) + ((buffer[position - 4] & 0xFF) << 16) + ((buffer[position - 1] & 0xFF) << 8) + (buffer[position - 2] & 0xFF);
     }
 
-    public void method441(int i, byte abyte0[], int j) {
+    public void method441(int i, byte[] abyte0, int j) {
         for (int k = i + j - 1; k >= i; k--) {
             buffer[position++] = (byte) (abyte0[k] + 128);
         }
     }
 
-    public void method442(int i, int j, byte abyte0[]) {
+    public void method442(int i, int j, byte[] abyte0) {
         for (int k = j + i - 1; k >= j; k--) {
             abyte0[k] = buffer[position++];
         }

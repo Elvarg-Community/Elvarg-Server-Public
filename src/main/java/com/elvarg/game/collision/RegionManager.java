@@ -43,7 +43,7 @@ public class RegionManager {
     /**
      * The map with all of our regions.
      */
-    public static Map<Integer, Region> regions = new HashMap<Integer, Region>();
+    public static Map<Integer, Region> regions = new HashMap<>();
 
     /**
      * Loads the client's map_index file and constructs new regions based on the
@@ -367,7 +367,7 @@ public class RegionManager {
      * @param direction
      */
     public static void addObject(int objectId, int x, int y, int height, int type, int direction) {
-        final Location position = new Location(x, y, height);
+        Location position = new Location(x, y, height);
 
         // Edge walls removal
         if (height == 0) {
@@ -487,9 +487,7 @@ public class RegionManager {
             return;
         }
         Optional<Region> r = getRegion(x, y);
-        if (r.isPresent()) {
-            r.get().addClip(x, y, height, shift);
-        }
+        r.ifPresent(region -> region.addClip(x, y, height, shift));
     }
 
     /**
@@ -506,9 +504,7 @@ public class RegionManager {
             return;
         }
         Optional<Region> r = getRegion(x, y);
-        if (r.isPresent()) {
-            r.get().removeClip(x, y, height, shift);
-        }
+        r.ifPresent(region -> region.removeClip(x, y, height, shift));
     }
 
     /**
@@ -528,10 +524,7 @@ public class RegionManager {
         }
         
         Optional<Region> r = getRegion(x, y);
-        if (r.isPresent()) {
-            return r.get().getClip(x, y, height);
-        }
-        return 0;
+        return r.map(region -> region.getClip(x, y, height)).orElse(0);
     }
     
     public static boolean wallExists(Location location, PrivateArea area, int type) {
@@ -820,7 +813,7 @@ public class RegionManager {
             int regionY = y >> 3;
             int regionId = ((regionX / 8) << 8) + (regionY / 8);
             Optional<Region> r = getRegion(regionId);
-            if (!r.isPresent()) {
+            if (r.isEmpty()) {
                 return;
             }
             if (r.get().isLoaded()) {

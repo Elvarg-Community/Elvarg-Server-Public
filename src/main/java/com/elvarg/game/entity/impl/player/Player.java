@@ -92,8 +92,8 @@ public class Player extends Mobile {
 		
 	public final SecondsTimer increaseStats = new SecondsTimer();
 	public final SecondsTimer decreaseStats = new SecondsTimer();
-	private final List<Player> localPlayers = new LinkedList<Player>();
-	private final List<NPC> localNpcs = new LinkedList<NPC>();
+	private final List<Player> localPlayers = new LinkedList<>();
+	private final List<NPC> localNpcs = new LinkedList<>();
 	private final PacketSender packetSender = new PacketSender(this);
 	private final Appearance appearance = new Appearance(this);
 	private final SkillManager skillManager = new SkillManager(this);
@@ -114,7 +114,7 @@ public class Player extends Mobile {
 	 * Fields
 	 */
 	private final SecondsTimer targetSearchTimer = new SecondsTimer();
-	private final List<String> recentKills = new ArrayList<String>(); // Contains ip addresses of recent kills
+	private final List<String> recentKills = new ArrayList<>(); // Contains ip addresses of recent kills
 	private final Queue<ChatMessage> chatMessageQueue = new ConcurrentLinkedQueue<>();
 	private ChatMessage currentChatMessage;
 	// Logout
@@ -276,8 +276,8 @@ public class Player extends Mobile {
 
 	@Override
 	public int getBlockAnim() {
-		final Item shield = getEquipment().getItems()[Equipment.SHIELD_SLOT];
-		final Item weapon = getEquipment().getItems()[Equipment.WEAPON_SLOT];
+		Item shield = getEquipment().getItems()[Equipment.SHIELD_SLOT];
+		Item weapon = getEquipment().getItems()[Equipment.WEAPON_SLOT];
 		ItemDefinition definition = shield.getId() > 0 ? shield.getDefinition() : weapon.getDefinition();
 		return definition.getBlockAnim();
 	}

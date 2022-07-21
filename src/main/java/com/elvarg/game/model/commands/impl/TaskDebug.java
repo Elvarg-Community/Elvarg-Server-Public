@@ -9,7 +9,7 @@ public class TaskDebug implements Command {
 
 	@Override
 	public void execute(Player player, String command, String[] parts) {
-		player.getPacketSender().sendMessage("Active tasks : " +  Integer.toString(TaskManager.getTaskAmount()) + ".");
+		player.getPacketSender().sendMessage("Active tasks : " + TaskManager.getTaskAmount() + ".");
 	}
 
 	@Override

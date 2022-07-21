@@ -104,9 +104,7 @@ public class Firemaking extends DefaultSkillable {
         if (itemUsed == ItemIdentifiers.TINDERBOX || itemUsedWith == ItemIdentifiers.TINDERBOX) {
             int logId = itemUsed == ItemIdentifiers.TINDERBOX ? itemUsedWith : itemUsed;
             Optional<LightableLog> log = LightableLog.getForItem(logId);
-            if (log.isPresent()) {
-                player.getSkillManager().startSkillable(new Firemaking(log.get()));
-            }
+            log.ifPresent(lightableLog -> player.getSkillManager().startSkillable(new Firemaking(lightableLog)));
             return true;
         }
         return false;
@@ -121,7 +119,7 @@ public class Firemaking extends DefaultSkillable {
         player.getPacketSender().sendMessage("You attempt to light the logs..");
 
         //If we're lighting a log from our inventory..
-        if (!groundLog.isPresent() && !bonfire.isPresent()) {
+        if (groundLog.isEmpty() && bonfire.isEmpty()) {
             //Delete logs from inventory..
             player.getInventory().delete(log.getLogId(), 1);
 
@@ -130,9 +128,7 @@ public class Firemaking extends DefaultSkillable {
         }
 
         //Face logs if present.
-        if (groundLog.isPresent()) {
-            player.setPositionToFace(groundLog.get().getPosition());
-        }
+        groundLog.ifPresent(itemOnGround -> player.setPositionToFace(itemOnGround.getPosition()));
 
         //Start parent execution task..
         super.start(player);
@@ -142,7 +138,7 @@ public class Firemaking extends DefaultSkillable {
     public void startAnimationLoop(Player player) {
         //If we're not adding to a bonfire
         //Simply do the regular animation.
-        if (!bonfire.isPresent()) {
+        if (bonfire.isEmpty()) {
             player.performAnimation(LIGHT_FIRE);
             return;
         }
@@ -176,9 +172,9 @@ public class Firemaking extends DefaultSkillable {
         if (bonfire.isPresent() || groundLog.isPresent() && ItemOnGroundManager.exists(groundLog.get())) {
 
             //If we aren't adding to a bonfire..
-            if (!bonfire.isPresent()) {
+            if (bonfire.isEmpty()) {
                 //The position to create the fire at..
-                final Location pos = groundLog.get().getPosition().clone();
+                Location pos = groundLog.get().getPosition().clone();
 
                 //Delete logs from ground ..
                 ItemOnGroundManager.deregister(groundLog.get());
@@ -187,7 +183,7 @@ public class Firemaking extends DefaultSkillable {
                 TaskManager.submit(new TimedObjectSpawnTask(new GameObject(ObjectIdentifiers.FIRE_5, pos, 10, 0, player.getPrivateArea()), log.getRespawnTimer(), Optional.of(new Action() {
                     @Override
                     public void execute() {
-                        if (!ItemOnGroundManager.getGroundItem(Optional.of(player.getUsername()), ItemIdentifiers.ASHES, pos).isPresent()) {
+                        if (ItemOnGroundManager.getGroundItem(Optional.of(player.getUsername()), ItemIdentifiers.ASHES, pos).isEmpty()) {
                             ItemOnGroundManager.register(player, new Item(ItemIdentifiers.ASHES), pos);
                         }
                     }
@@ -226,7 +222,7 @@ public class Firemaking extends DefaultSkillable {
     @Override
     public boolean hasRequirements(Player player) {
         //If we aren't adding logs to a fire - make sure player has a tinderbox..
-        if (!bonfire.isPresent()) {
+        if (bonfire.isEmpty()) {
             if (!player.getInventory().contains(ItemIdentifiers.TINDERBOX)) {
                 player.getPacketSender().sendMessage("You need a tinderbox to light fires.");
                 return false;
@@ -239,7 +235,7 @@ public class Firemaking extends DefaultSkillable {
         }
 
         //If we aren't lighting a log on the ground, make sure we have at least one in our inventory.
-        if (!groundLog.isPresent()) {
+        if (groundLog.isEmpty()) {
             if (!player.getInventory().contains(log.getLogId())) {
                 player.getPacketSender().sendMessage("You've run out of logs.");
                 return false;

@@ -41,8 +41,8 @@ public class ChangeAppearancePacketListener implements PacketExecutor {
             if (gender != 0 && gender != 1) {
                 return;
             }
-            final int[] apperances = new int[MALE_VALUES.length];
-            final int[] colors = new int[ALLOWED_COLORS.length];
+            int[] apperances = new int[MALE_VALUES.length];
+            int[] colors = new int[ALLOWED_COLORS.length];
             for (int i = 0; i < apperances.length; i++) {
                 int value = packet.readByte();
                 if (value < (gender == 0 ? MALE_VALUES[i][0] : FEMALE_VALUES[i][0]) || value > (gender == 0 ? MALE_VALUES[i][1] : FEMALE_VALUES[i][1]))

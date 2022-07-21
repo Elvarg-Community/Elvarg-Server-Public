@@ -20,7 +20,7 @@ public class Flooder implements Runnable {
      * We can use this map to distinguish fake-clients
      * from real ones.
      */
-    public final Map<String, Client> clients = new HashMap<String, Client>();
+    public final Map<String, Client> clients = new HashMap<>();
 
     /**
      * Is this flooder currently running?
@@ -61,7 +61,7 @@ public class Flooder implements Runnable {
         synchronized (clients) {
             for (int i = 0; i < amount; i++) {
                 try {
-                    String username = "bot" + Integer.toString(clients.size());
+                    String username = "bot" + clients.size();
                     String password = "bot";
                     new Client(Misc.formatText(username), password).attemptLogin();
                 } catch (Exception e) {

@@ -15,10 +15,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class HitQueue {
 
 	// Our list containing all our incoming hits waiting to be processed.
-	private List<PendingHit> pendingHits = new ArrayList<PendingHit>();
+	private List<PendingHit> pendingHits = new ArrayList<>();
 
 	// Our queue of current damage waiting to be dealt.
-	private Queue<HitDamage> pendingDamage = new ConcurrentLinkedQueue<HitDamage>();
+	private Queue<HitDamage> pendingDamage = new ConcurrentLinkedQueue<>();
 
 	public void process(Mobile character) {
 
