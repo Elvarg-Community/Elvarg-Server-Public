@@ -1,23 +1,16 @@
 package com.elvarg.net.packet;
 
-import java.util.List;
-
 import com.elvarg.game.GameConstants;
 import com.elvarg.game.entity.impl.Mobile;
 import com.elvarg.game.entity.impl.grounditem.ItemOnGround;
 import com.elvarg.game.entity.impl.object.GameObject;
 import com.elvarg.game.entity.impl.player.Player;
-import com.elvarg.game.model.Animation;
-import com.elvarg.game.model.EffectTimer;
-import com.elvarg.game.model.Graphic;
-import com.elvarg.game.model.Item;
-import com.elvarg.game.model.PlayerInteractingOption;
-import com.elvarg.game.model.PlayerStatus;
-import com.elvarg.game.model.Location;
-import com.elvarg.game.model.Skill;
+import com.elvarg.game.model.*;
 import com.elvarg.game.model.container.ItemContainer;
 import com.elvarg.game.model.container.impl.Bank;
 import com.elvarg.game.model.menu.CreationMenu;
+
+import java.util.List;
 
 /**
  * This class manages making the packets that will be sent (when called upon)
@@ -109,7 +102,7 @@ public class PacketSender {
 	public PacketSender sendCreationMenu(CreationMenu menu) {
 	    player.setCreationMenu(menu);
 	    sendString(31104, menu.getTitle());
-        PacketBuilder out = new PacketBuilder(167);
+        PacketBuilder out = new PacketBuilder(167, PacketType.VARIABLE_SHORT);
         out.put(menu.getItems().size());
         for (int itemId : menu.getItems()) {
             out.putInt(itemId);
@@ -126,8 +119,8 @@ public class PacketSender {
 	}
 
 	public PacketSender sendSound(int soundId, int volume, int delay) {
-		PacketBuilder out = new PacketBuilder(175);
-		out.putShort(soundId, ValueType.A, ByteOrder.LITTLE).put(volume).putShort(delay);
+		PacketBuilder out = new PacketBuilder(174);
+		out.putShort(soundId).put(volume).putShort(delay);
 		player.getSession().write(out);
 		return this;
 	}
@@ -174,7 +167,7 @@ public class PacketSender {
 	}
 
 	public PacketSender sendSpecialMessage(String name, int type, String message) {
-		PacketBuilder out = new PacketBuilder(252);
+		PacketBuilder out = new PacketBuilder(252, PacketType.VARIABLE);
 		out.put(type);
 		out.putString(name);
 		out.putString(message);
@@ -950,7 +943,7 @@ public class PacketSender {
 	}
 
 	public PacketSender sendConsoleMessage(String message) {
-		PacketBuilder out = new PacketBuilder(123);
+		PacketBuilder out = new PacketBuilder(123, PacketType.VARIABLE);
 		out.putString(message);
 		player.getSession().write(out);
 		return this;

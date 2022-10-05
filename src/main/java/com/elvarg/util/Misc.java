@@ -1,29 +1,21 @@
 package com.elvarg.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.elvarg.game.entity.impl.player.Player;
+import com.elvarg.game.model.Item;
+import com.elvarg.game.model.Location;
+import com.google.common.cache.CacheLoader;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
-
-import com.elvarg.game.entity.impl.player.Player;
-import com.elvarg.game.model.Item;
-import com.elvarg.game.model.Location;
-import com.google.common.cache.CacheLoader;
 
 public class Misc {
 	
@@ -121,6 +113,16 @@ public class Misc {
         System.arraycopy(a, 0, c, 0, aLen);
         System.arraycopy(b, 0, c, aLen, bLen);
         return c;
+    }
+
+    public static List<Player> getCombinedPlayerList(Player p) {
+        List<Player> plrs = new LinkedList<Player>();
+        for(Player localPlayer : p.getLocalPlayers()) {
+            if(localPlayer != null)
+                plrs.add(localPlayer);
+        }
+        plrs.add(p);
+        return plrs;
     }
 
     public static Player getCloseRandomPlayer(List<Player> plrs) {
