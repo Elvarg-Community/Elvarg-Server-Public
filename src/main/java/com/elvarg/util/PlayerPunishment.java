@@ -28,9 +28,14 @@ public class PlayerPunishment {
         initializeList(MUTE_DIRECTORY, "Mutes", AccountsMuted);
     }
 
-    public static void initializeList(String directory, String file, ArrayList<String> list) {
+    public static void initializeList(String directory, String name, ArrayList<String> list) {
         try {
-            BufferedReader in = new BufferedReader(new FileReader(directory + "" + file + ".txt"));
+            File file = new File(directory + "" + name + ".txt");
+            if(!file.exists()) {
+                file.mkdirs();
+            }
+            BufferedReader in = new BufferedReader(new FileReader(directory + "" + name + ".txt"));
+
             String data = null;
             while ((data = in.readLine()) != null) {
                 list.add(data);
