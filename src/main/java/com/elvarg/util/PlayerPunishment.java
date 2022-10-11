@@ -30,9 +30,9 @@ public class PlayerPunishment {
 
     public static void initializeList(String directory, String name, ArrayList<String> list) {
         try {
-            File file = new File(directory + "" + name + ".txt");
+            File file = new File(directory,name + ".txt");
             if(!file.exists()) {
-                file.mkdirs();
+                file.createNewFile();
             }
             BufferedReader in = new BufferedReader(new FileReader(directory + "" + name + ".txt"));
 
